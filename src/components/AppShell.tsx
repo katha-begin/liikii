@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { NavigationProvider } from '@/contexts/NavigationContext'
 import { DataProvider } from '@/contexts/DataContext'
+import { NotificationProvider } from './desktop/NotificationSystem'
+import DesktopIntegration from './desktop/DesktopIntegration'
 import Header from './Header'
 import NavigationSidebar from './navigation/NavigationSidebar'
 import ProjectsPage from '@/pages/ProjectsPage'
@@ -40,7 +42,11 @@ const AppShell: React.FC = () => {
     <Router>
       <NavigationProvider>
         <DataProvider>
-          <div className="app-shell">
+          <NotificationProvider>
+            <DesktopIntegration
+              onToggleSidebar={toggleSidebar}
+            />
+            <div className="app-shell">
           <Header
             isMobile={isMobile}
             onToggleSidebar={toggleSidebar}
@@ -72,6 +78,7 @@ const AppShell: React.FC = () => {
             </main>
           </div>
           </div>
+          </NotificationProvider>
         </DataProvider>
       </NavigationProvider>
     </Router>

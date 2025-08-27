@@ -3,6 +3,7 @@ import { Search, Plus, Settings, Sun, Moon, Bell, User, Menu } from 'lucide-reac
 import { useTheme } from './ThemeProvider'
 import { Input } from '@/components/ui'
 import Breadcrumbs from './navigation/Breadcrumbs'
+import BuildChannelSelector from './desktop/BuildChannelSelector'
 
 interface HeaderProps {
   isMobile?: boolean
@@ -36,26 +37,28 @@ const Header: React.FC<HeaderProps> = ({ isMobile, onToggleSidebar }) => {
       </div>
 
       <div className="header-right">
+        <BuildChannelSelector showLabel={false} />
+
         <button className="header-button" title="Add project">
           <Plus size={16} />
         </button>
-        
+
         <button className="header-button" title="Display options">
           <Settings size={16} />
         </button>
-        
-        <button 
-          className="header-button" 
+
+        <button
+          className="header-button"
           onClick={toggleTheme}
           title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
         >
           {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
         </button>
-        
+
         <button className="header-button" title="Notifications">
           <Bell size={16} />
         </button>
-        
+
         <button className="header-button user-avatar" title="User menu">
           <User size={16} />
         </button>
