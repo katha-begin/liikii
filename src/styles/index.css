@@ -362,6 +362,26 @@ html, body {
   overflow: hidden;
 }
 
+/* Project avatar collapsed state */
+.project-avatar-collapsed {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-2);
+}
+
+.project-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-input);
+  color: var(--bg-base);
+  font-weight: 600;
+  font-size: var(--text-h2);
+  flex-shrink: 0;
+}
+
 .nav-section {
   display: flex;
   flex-direction: column;
@@ -398,6 +418,36 @@ html, body {
 .nav-label {
   font-size: var(--text-body);
   font-weight: 500;
+}
+
+/* Collapsed sidebar nav-item styles */
+.sidebar.collapsed .nav-item,
+.navigation-sidebar.collapsed .nav-item {
+  justify-content: center;
+  padding: var(--space-2);
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+}
+
+.sidebar.collapsed .nav-item svg,
+.navigation-sidebar.collapsed .nav-item svg {
+  flex-shrink: 0;
+}
+
+.sidebar.collapsed .workspace-section,
+.navigation-sidebar.collapsed .project-switcher-section {
+  justify-content: center;
+  padding: var(--space-2);
+}
+
+.sidebar.collapsed .help-section .nav-item,
+.navigation-sidebar.collapsed .help-section .nav-item {
+  justify-content: center;
+  padding: var(--space-2);
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
 }
 
 .try-section {
