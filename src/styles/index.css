@@ -50,16 +50,16 @@
   --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
   
   /* Font sizes and line heights */
-  --text-h1: 20px;
-  --text-h1-lh: 28px;
-  --text-h2: 16px;
-  --text-h2-lh: 24px;
-  --text-body: 14px;
-  --text-body-lh: 20px;
-  --text-caption: 12px;
-  --text-caption-lh: 16px;
-  --text-mono: 12px;
-  --text-mono-lh: 16px;
+  --text-h1: 18px;
+  --text-h1-lh: 24px;
+  --text-h2: 14px;
+  --text-h2-lh: 20px;
+  --text-body: 13px;
+  --text-body-lh: 18px;
+  --text-caption: 11px;
+  --text-caption-lh: 14px;
+  --text-mono: 11px;
+  --text-mono-lh: 14px;
 }
 
 /* Light theme overrides */
@@ -193,7 +193,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 60px;
+  height: 56px;
   padding: 0 var(--space-4);
   background-color: var(--bg-surface-1);
   border-bottom: 1px solid var(--border-line);
@@ -233,14 +233,14 @@ html, body {
 
 .search-icon {
   position: absolute;
-  left: var(--space-3);
+  left: var(--space-2);
   color: var(--icon-quieter);
   pointer-events: none;
 }
 
 .search-input {
   width: 100%;
-  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-8);
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-5);
   background-color: var(--bg-surface-2);
   border: 1px solid var(--border-line);
   border-radius: var(--radius-input);
@@ -268,8 +268,8 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   background: none;
   border: none;
   border-radius: var(--radius-input);
