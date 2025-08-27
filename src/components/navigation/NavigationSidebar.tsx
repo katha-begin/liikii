@@ -23,14 +23,14 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
   const shouldShowExpanded = isMobile ? isOpen : isNavigationExpanded
   const shouldShowSidebar = isMobile ? isOpen : true
 
-  // Debug logging
-  console.log('NavigationSidebar render:', {
-    isMobile,
-    isOpen,
-    isNavigationExpanded,
-    shouldShowExpanded,
-    shouldShowSidebar
-  })
+  // Debug logging (remove in production)
+  // console.log('NavigationSidebar render:', {
+  //   isMobile,
+  //   isOpen,
+  //   isNavigationExpanded,
+  //   shouldShowExpanded,
+  //   shouldShowSidebar
+  // })
 
   const tryItems = [
     { id: 'importCsv', label: 'Import tasks (CSV)', icon: Upload },
@@ -138,10 +138,7 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
       {!isMobile && (
         <button
           className="sidebar-toggle"
-          onClick={() => {
-            console.log('Toggle clicked! Current state:', isNavigationExpanded)
-            setNavigationExpanded(!isNavigationExpanded)
-          }}
+          onClick={() => setNavigationExpanded(!isNavigationExpanded)}
           title={isNavigationExpanded ? 'Collapse sidebar' : 'Expand sidebar'}
         >
           <MoreHorizontal size={16} />

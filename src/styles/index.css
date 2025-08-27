@@ -1607,6 +1607,249 @@ html, body {
   flex-shrink: 0;
 }
 
+/* Projects Page Styles */
+.project-tabs {
+  display: flex;
+  gap: var(--space-1);
+  border-bottom: 1px solid var(--border-line);
+  padding-bottom: var(--space-1);
+}
+
+.project-tab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: none;
+  border: none;
+  border-radius: var(--radius-input);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: var(--text-body);
+  font-weight: 500;
+}
+
+.project-tab:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-surface-2);
+}
+
+.project-tab.active {
+  color: var(--text-primary);
+  background-color: var(--bg-surface-1);
+  border: 1px solid var(--border-line);
+}
+
+.project-tab.create-new {
+  color: var(--accent-blue);
+}
+
+.project-tab.create-new:hover {
+  background-color: var(--accent-blue);
+  color: var(--bg-base);
+}
+
+.tab-count {
+  margin-left: var(--space-1);
+}
+
+.filter-row {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border-line);
+}
+
+.filter-chips {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.filter-chip {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-chip:hover {
+  opacity: 0.8;
+}
+
+.projects-display {
+  margin-top: var(--space-4);
+}
+
+.project-card {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.project-card:hover {
+  border-color: var(--border-line);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.project-card.selected {
+  border-color: var(--accent-blue);
+  background-color: var(--bg-surface-1);
+}
+
+.project-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-input);
+  color: var(--bg-base);
+  font-weight: 600;
+  font-size: var(--text-body);
+  flex-shrink: 0;
+}
+
+.project-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.project-list-item {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.project-list-item:hover {
+  background-color: var(--bg-surface-1);
+  border-color: var(--accent-blue);
+}
+
+.project-list-item.selected {
+  background-color: var(--bg-surface-1);
+  border-color: var(--accent-blue);
+}
+
+.empty-state {
+  margin-top: var(--space-8);
+  text-align: center;
+}
+
+.empty-illustration {
+  margin-bottom: var(--space-6);
+}
+
+.cube-stack {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: var(--space-2);
+  height: 60px;
+}
+
+.cube {
+  width: 16px;
+  background: linear-gradient(135deg, var(--accent-lilac), var(--accent-blue));
+  border-radius: 2px;
+}
+
+.cube:nth-child(1) {
+  height: 20px;
+}
+
+.cube:nth-child(2) {
+  height: 35px;
+}
+
+.cube:nth-child(3) {
+  height: 25px;
+}
+
+/* Responsive Projects Page */
+@media (max-width: 768px) {
+  .project-tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .project-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-row {
+    flex-direction: column;
+    gap: var(--space-3);
+    align-items: flex-start !important;
+  }
+
+  .filter-chips {
+    flex-wrap: wrap;
+  }
+
+  .projects-display.grid .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-list-item .stack--horizontal {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: var(--space-3);
+  }
+
+  .project-list-item .stack--horizontal:last-child {
+    flex-direction: row;
+    align-items: center !important;
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .projects-display.list .project-list-item {
+    padding: var(--space-3);
+  }
+
+  .project-description {
+    -webkit-line-clamp: 1;
+  }
+
+  .empty-state {
+    margin-top: var(--space-6);
+    padding: var(--space-4);
+  }
+
+  .empty-illustration {
+    margin-bottom: var(--space-4);
+  }
+
+  .cube-stack {
+    height: 40px;
+  }
+
+  .cube {
+    width: 12px;
+  }
+
+  .cube:nth-child(1) {
+    height: 15px;
+  }
+
+  .cube:nth-child(2) {
+    height: 25px;
+  }
+
+  .cube:nth-child(3) {
+    height: 18px;
+  }
+}
+
 /* Mobile Header Adjustments */
 @media (max-width: 640px) {
   .header {
