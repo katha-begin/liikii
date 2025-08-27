@@ -362,6 +362,7 @@ html, body {
   text-align: left;
   white-space: nowrap;
   overflow: hidden;
+  text-decoration: none;
 }
 
 .nav-item:hover {

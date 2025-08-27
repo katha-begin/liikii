@@ -1,24 +1,28 @@
 import React, { useState } from 'react'
-import { 
-  Inbox, 
-  User, 
-  FolderOpen, 
-  Grid3X3, 
+import { Link, useLocation } from 'react-router-dom'
+import {
+  Inbox,
+  User,
+  FolderOpen,
+  Grid3X3,
   MoreHorizontal,
   Upload,
   UserPlus,
-  HelpCircle
+  HelpCircle,
+  Palette
 } from 'lucide-react'
 
 const Sidebar: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(true)
+  const location = useLocation()
 
   const navItems = [
-    { id: 'inbox', label: 'Inbox', icon: Inbox, active: false },
-    { id: 'myTasks', label: 'My tasks', icon: User, active: false },
-    { id: 'projects', label: 'Projects', icon: FolderOpen, active: true },
-    { id: 'views', label: 'Views', icon: Grid3X3, active: false },
-    { id: 'more', label: 'More', icon: MoreHorizontal, active: false },
+    { id: 'inbox', label: 'Inbox', icon: Inbox, href: '/inbox' },
+    { id: 'myTasks', label: 'My tasks', icon: User, href: '/my-tasks' },
+    { id: 'projects', label: 'Projects', icon: FolderOpen, href: '/projects' },
+    { id: 'views', label: 'Views', icon: Grid3X3, href: '/views' },
+    { id: 'designSystem', label: 'Design System', icon: Palette, href: '/design-system' },
+    { id: 'more', label: 'More', icon: MoreHorizontal, href: '/more' },
   ]
 
   const tryItems = [
@@ -40,14 +44,15 @@ const Sidebar: React.FC = () => {
         {/* Main navigation */}
         <nav className="nav-section">
           {navItems.map((item) => (
-            <button
+            <Link
               key={item.id}
-              className={`nav-item ${item.active ? 'active' : ''}`}
+              to={item.href}
+              className={`nav-item ${location.pathname === item.href ? 'active' : ''}`}
               title={!isExpanded ? item.label : undefined}
             >
               <item.icon size={16} />
               {isExpanded && <span className="nav-label">{item.label}</span>}
-            </button>
+            </Link>
           ))}
         </nav>
 

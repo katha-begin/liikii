@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Header from './Header'
 import Sidebar from './Sidebar'
 import ProjectsPage from '@/pages/ProjectsPage'
+import DesignSystemDemo from '@/pages/DesignSystemDemo'
 
 const AppShell: React.FC = () => {
   return (
@@ -16,6 +17,7 @@ const AppShell: React.FC = () => {
               <Route path="/" element={<ProjectsPage />} />
               <Route path="/projects" element={<ProjectsPage />} />
               <Route path="/projects/:id" element={<ProjectsPage />} />
+              <Route path="/design-system" element={<DesignSystemDemo />} />
               {/* Add more routes as needed */}
             </Routes>
           </main>
