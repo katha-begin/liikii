@@ -40,15 +40,15 @@ export const TaskDetailView: React.FC<TaskDetailViewProps> = ({ task }) => {
     switch (status.toLowerCase()) {
       case 'completed':
       case 'done':
-        return 'var(--color-status-success)'
+        return 'var(--semantic-success)'
       case 'in progress':
       case 'active':
-        return 'var(--color-status-warning)'
+        return 'var(--semantic-warning)'
       case 'blocked':
       case 'on hold':
-        return 'var(--color-status-error)'
+        return 'var(--semantic-danger)'
       default:
-        return 'var(--color-text-secondary)'
+        return 'var(--text-secondary)'
     }
   }
 

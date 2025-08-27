@@ -147,7 +147,7 @@ const MyTasksPage: React.FC = () => {
             </div>
           </div>
         ) : (
-          <Grid cols={1} gap="md" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))' }}>
+          <Grid cols={3} gap="md" responsive>
             {filteredTasks.map((task) => (
               <Card
                 key={task.id}
