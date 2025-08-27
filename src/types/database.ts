@@ -231,3 +231,16 @@ export interface Notification {
   createdAt: string
   metadata?: Record<string, any>
 }
+
+// Task Comments for Task Detail Panel
+export interface TaskComment {
+  id: string
+  taskId: string
+  userId: string
+  userName: string
+  userAvatar?: string
+  content: string
+  timestamp: string
+  createdAt: string
+  updatedAt?: string
+}

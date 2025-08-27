@@ -2081,6 +2081,22 @@ html, body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+.task-card.clickable {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.task-card.clickable:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.task-card.clickable:active {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
 .task-title {
   font-size: var(--text-h3-size);
   font-weight: var(--text-h3-weight);

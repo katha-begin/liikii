@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { NavigationProvider } from '@/contexts/NavigationContext'
 import { DataProvider } from '@/contexts/DataContext'
+import { TaskDetailProvider } from '@/contexts/TaskDetailContext'
 import { NotificationProvider } from './desktop/NotificationSystem'
 import DesktopIntegration from './desktop/DesktopIntegration'
+import { TaskDetailPanel } from './task-detail/TaskDetailPanel'
 import Header from './Header'
 import NavigationSidebar from './navigation/NavigationSidebar'
 import ProjectsPage from '@/pages/ProjectsPage'
@@ -42,7 +44,8 @@ const AppShell: React.FC = () => {
     <Router>
       <NavigationProvider>
         <DataProvider>
-          <NotificationProvider>
+          <TaskDetailProvider>
+            <NotificationProvider>
             <DesktopIntegration
               onToggleSidebar={toggleSidebar}
             />
@@ -78,7 +81,11 @@ const AppShell: React.FC = () => {
             </main>
           </div>
           </div>
+
+          {/* Task Detail Panel */}
+          <TaskDetailPanel />
           </NotificationProvider>
+          </TaskDetailProvider>
         </DataProvider>
       </NavigationProvider>
     </Router>

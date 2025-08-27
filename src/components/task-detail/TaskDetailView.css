@@ -1,0 +1,96 @@
+/* Task Detail View Styles */
+
+.task-detail-view {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Main task information */
+.task-detail-main {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task-detail-task-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.task-detail-task-id {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  margin: 0;
+}
+
+.task-detail-description {
+  margin-top: 12px;
+}
+
+.task-detail-description p {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Metadata fields */
+.task-detail-metadata {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.task-detail-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.task-detail-field-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.task-detail-field-label svg {
+  opacity: 0.7;
+}
+
+.task-detail-field-value {
+  font-size: 14px;
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+/* Badge customizations for task detail */
+.task-detail-field .badge {
+  align-self: flex-start;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .task-detail-view {
+    gap: 20px;
+  }
+  
+  .task-detail-task-title {
+    font-size: 18px;
+  }
+  
+  .task-detail-metadata {
+    gap: 14px;
+  }
+}

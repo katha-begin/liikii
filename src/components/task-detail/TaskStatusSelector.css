@@ -1,0 +1,116 @@
+/* Task Status Selector Styles */
+
+.task-status-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Current status display */
+.task-status-current {
+  padding: 12px 16px;
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.task-status-current-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Status options */
+.task-status-options {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.task-status-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.task-status-option:hover:not(:disabled) {
+  background: var(--color-background-hover);
+  color: var(--status-color);
+  border-color: var(--color-border);
+}
+
+.task-status-option.active {
+  background: var(--color-background-secondary);
+  color: var(--status-color);
+  border-color: var(--status-color);
+  cursor: default;
+}
+
+.task-status-option:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.task-status-option svg {
+  flex-shrink: 0;
+  color: inherit;
+}
+
+.task-status-option span {
+  flex: 1;
+  text-align: left;
+  font-weight: 500;
+}
+
+.task-status-check {
+  color: var(--status-color);
+  margin-left: auto;
+}
+
+/* Updating state */
+.task-status-updating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  background: var(--color-background-secondary);
+  border-radius: 6px;
+}
+
+.task-status-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--color-border);
+  border-top: 2px solid var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .task-status-option {
+    padding: 12px;
+  }
+  
+  .task-status-current {
+    padding: 14px 16px;
+  }
+}

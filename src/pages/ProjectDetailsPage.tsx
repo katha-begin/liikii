@@ -4,6 +4,7 @@ import { ArrowLeft, Search, Users, Calendar, TrendingUp, Clock, Play, Palette, Z
 import { PageWrapper, Stack, Grid } from '@/components/layout'
 import { Button, Badge, Card, Input } from '@/components/ui'
 import { useProject, useProjectTasks } from '@/hooks/useData'
+import { useTaskDetail } from '@/contexts/TaskDetailContext'
 
 // Department configuration with icons and colors
 const DEPARTMENTS = {
@@ -20,6 +21,7 @@ const DEPARTMENTS = {
 const ProjectDetailsPage: React.FC = () => {
   const { projectId } = useParams<{ projectId: string }>()
   const navigate = useNavigate()
+  const { openTaskDetail } = useTaskDetail()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedDepartment, setSelectedDepartment] = useState<string>('all')
   const [selectedStatus, setSelectedStatus] = useState<string>('all')
@@ -248,7 +250,11 @@ const ProjectDetailsPage: React.FC = () => {
 
                   <Grid cols={1} gap="sm" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))' }}>
                     {deptTasks.map((task) => (
-                      <Card key={task.id} className="task-card">
+                      <Card
+                        key={task.id}
+                        className="task-card clickable"
+                        onClick={() => openTaskDetail(task)}
+                      >
                         <Stack direction="vertical" gap="sm">
                           <Stack direction="horizontal" justify="between" align="start">
                             <div>

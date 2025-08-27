@@ -1,5 +1,5 @@
 // Mock Data Service - Simulates API calls with JSON database data
-import { UIProject, UITask, Notification } from '@/types/database'
+import { UIProject, UITask, Notification, TaskComment } from '@/types/database'
 import { DataResponse, QueryOptions } from './DataService'
 
 // Mock data based on our JSON database
@@ -508,6 +508,70 @@ const mockNotifications: Notification[] = [
   }
 ]
 
+// Mock task comments data
+const mockTaskComments: TaskComment[] = [
+  {
+    id: 'comment-1',
+    taskId: 'SWA-001',
+    userId: 'user-1',
+    userName: 'Alex Chen',
+    userAvatar: '/avatars/alex-chen.jpg',
+    content: 'Started working on the initial concept. The client wants a more dramatic lighting setup for this sequence.',
+    timestamp: '2025-08-26T10:30:00Z',
+    createdAt: '2025-08-26T10:30:00Z'
+  },
+  {
+    id: 'comment-2',
+    taskId: 'SWA-001',
+    userId: 'user-2',
+    userName: 'Sarah Kim',
+    userAvatar: '/avatars/sarah-kim.jpg',
+    content: 'Reviewed the concept art. Looks great! Can we add more atmospheric haze to enhance the mood?',
+    timestamp: '2025-08-26T14:15:00Z',
+    createdAt: '2025-08-26T14:15:00Z'
+  },
+  {
+    id: 'comment-3',
+    taskId: 'SWA-002',
+    userId: 'user-3',
+    userName: 'Mike Rodriguez',
+    userAvatar: '/avatars/mike-rodriguez.jpg',
+    content: 'Animation blocking is complete. Ready for review. The timing feels good but we might need to adjust the camera movement in shot 030.',
+    timestamp: '2025-08-26T16:45:00Z',
+    createdAt: '2025-08-26T16:45:00Z'
+  },
+  {
+    id: 'comment-4',
+    taskId: 'SWA-003',
+    userId: 'user-1',
+    userName: 'Alex Chen',
+    userAvatar: '/avatars/alex-chen.jpg',
+    content: 'Lighting setup is 80% complete. Working on the final touches for the hero shots. ETA: end of day.',
+    timestamp: '2025-08-27T09:20:00Z',
+    createdAt: '2025-08-27T09:20:00Z'
+  },
+  {
+    id: 'comment-5',
+    taskId: 'SWA-004',
+    userId: 'user-4',
+    userName: 'Emma Thompson',
+    userAvatar: '/avatars/emma-thompson.jpg',
+    content: 'Compositing notes from client review: Need to reduce the blue tint in the background and increase contrast on the main character.',
+    timestamp: '2025-08-27T11:30:00Z',
+    createdAt: '2025-08-27T11:30:00Z'
+  },
+  {
+    id: 'comment-6',
+    taskId: 'SWA-005',
+    userId: 'user-2',
+    userName: 'Sarah Kim',
+    userAvatar: '/avatars/sarah-kim.jpg',
+    content: 'Rendering is taking longer than expected due to the complex particle systems. Might need to optimize the setup.',
+    timestamp: '2025-08-27T13:45:00Z',
+    createdAt: '2025-08-27T13:45:00Z'
+  }
+]
+
 // Mock service implementation
 export class MockDataService {
   private delay(ms: number = 500): Promise<void> {
@@ -820,6 +884,46 @@ export class MockDataService {
     }
 
     return { projects, tasks }
+  }
+
+  // Task Comments methods
+  async getTaskComments(taskId: string): Promise<TaskComment[]> {
+    await this.delay(200)
+    return mockTaskComments
+      .filter(comment => comment.taskId === taskId)
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+  }
+
+  async addTaskComment(taskId: string, content: string, userId: string = 'user-1', userName: string = 'Current User'): Promise<TaskComment> {
+    await this.delay(300)
+
+    const newComment: TaskComment = {
+      id: `comment-${Date.now()}`,
+      taskId,
+      userId,
+      userName,
+      userAvatar: `/avatars/${userName.toLowerCase().replace(' ', '-')}.jpg`,
+      content,
+      timestamp: new Date().toISOString(),
+      createdAt: new Date().toISOString()
+    }
+
+    mockTaskComments.push(newComment)
+    return newComment
+  }
+
+  async updateTaskStatus(taskId: string, status: string): Promise<UITask | null> {
+    await this.delay(200)
+
+    const task = mockTasks.find(t => t.id === taskId)
+    if (task) {
+      // Map status to valid UITask status values
+      const validStatus = status.toLowerCase().replace(' ', '_') as UITask['status']
+      task.status = validStatus
+      task.updated_at = new Date().toISOString()
+      return task
+    }
+    return null
   }
 }
 

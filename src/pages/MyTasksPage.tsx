@@ -4,8 +4,10 @@ import { Card, Badge, Button } from '@/components/ui'
 import { Calendar, Clock, Flag, Play, Film, Filter, MoreHorizontal } from 'lucide-react'
 // import { UITask } from '@/types/database'
 import { useMyTasks } from '@/hooks/useData'
+import { useTaskDetail } from '@/contexts/TaskDetailContext'
 
 const MyTasksPage: React.FC = () => {
+  const { openTaskDetail } = useTaskDetail()
   const [filterStatus, setFilterStatus] = useState<'all' | 'not_started' | 'in_progress' | 'review' | 'approved'>('all')
   
   // Use data management hooks
@@ -147,7 +149,11 @@ const MyTasksPage: React.FC = () => {
         ) : (
           <Grid cols={1} gap="md" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))' }}>
             {filteredTasks.map((task) => (
-              <Card key={task.id} className="task-card">
+              <Card
+                key={task.id}
+                className="task-card clickable"
+                onClick={() => openTaskDetail(task)}
+              >
                 <Stack direction="vertical" gap="md">
                   {/* Task Header */}
                   <Stack direction="horizontal" justify="between" align="start">
