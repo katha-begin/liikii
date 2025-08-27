@@ -1,6 +1,7 @@
 import React from 'react'
 import { Search, Plus, Settings, Sun, Moon, Bell, User } from 'lucide-react'
 import { useTheme } from './ThemeProvider'
+import { Input } from '@/components/ui'
 
 const Header: React.FC = () => {
   const { theme, toggleTheme } = useTheme()
@@ -16,14 +17,11 @@ const Header: React.FC = () => {
       </div>
 
       <div className="header-center">
-        <div className="search-container">
-          <Search size={16} className="search-icon" />
-          <input 
-            type="text" 
-            placeholder="Search..." 
-            className="search-input"
-          />
-        </div>
+        <Input
+          variant="search"
+          placeholder="Search..."
+          leftIcon={<Search size={14} />}
+        />
       </div>
 
       <div className="header-right">

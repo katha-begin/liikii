@@ -1,5 +1,6 @@
 import React from 'react'
-import { Plus } from 'lucide-react'
+import { Plus, Filter, Settings } from 'lucide-react'
+import { Button, Badge } from '@/components/ui'
 
 const ProjectsPage: React.FC = () => {
   return (
@@ -13,14 +14,18 @@ const ProjectsPage: React.FC = () => {
 
       {/* Filter row */}
       <div className="filter-row">
-        <button className="filter-button">Filter</button>
+        <Button variant="ghost" size="sm" leftIcon={<Filter size={14} />}>
+          Filter
+        </Button>
         <div className="filter-chips">
-          <span className="filter-chip">Project: All</span>
-          <span className="filter-chip">Dept: All</span>
-          <span className="filter-chip">Assignee: Any</span>
+          <Badge variant="default" size="sm">Project: All</Badge>
+          <Badge variant="default" size="sm">Dept: All</Badge>
+          <Badge variant="default" size="sm">Assignee: Any</Badge>
         </div>
         <div className="display-options">
-          <button className="display-button">Display</button>
+          <Button variant="ghost" size="sm" leftIcon={<Settings size={14} />}>
+            Display
+          </Button>
         </div>
       </div>
 
@@ -43,13 +48,12 @@ const ProjectsPage: React.FC = () => {
         </p>
         
         <div className="empty-actions">
-          <button className="primary-button">
-            <Plus size={16} />
+          <Button variant="primary" leftIcon={<Plus size={16} />}>
             Create new project
-          </button>
-          <button className="secondary-button">
+          </Button>
+          <Button variant="secondary">
             Documentation
-          </button>
+          </Button>
         </div>
       </div>
     </div>
