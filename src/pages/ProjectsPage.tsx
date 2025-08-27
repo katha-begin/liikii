@@ -2,18 +2,13 @@ import React, { useState } from 'react'
 import { Plus, Download, Filter, LayoutGrid, List, Calendar, Users, MoreHorizontal } from 'lucide-react'
 import { Container, Stack, Grid } from '@/components/layout'
 import { Button, Badge, Card } from '@/components/ui'
+import { UIProject } from '@/types/database'
 
-interface Project {
-  id: string
-  name: string
-  description?: string
-  color: string
-  status: 'active' | 'inactive' | 'archived'
-  updatedAt: string
-  createdAt: string
-  ownerId: string
-  memberCount: number
-  taskCount: number
+// Helper function to generate UI color from project ID
+const getProjectColor = (projectId: string): string => {
+  const colors = ['#CBB7E8', '#B7D3F2', '#F4C6D7', '#CDE8D6', '#F4E4A6']
+  const index = projectId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % colors.length
+  return colors[index]
 }
 
 interface ProjectTab {
@@ -29,55 +24,222 @@ const ProjectsPage: React.FC = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'inactive'>('all')
 
-  // Mock project data - will be replaced with real data later
-  const mockProjects: Project[] = [
+  // Mock project data based on actual JSON database schema
+  const mockProjects: UIProject[] = [
     {
-      id: '1',
-      name: 'Animation Pipeline',
-      description: 'Main animation production pipeline with character rigging and scene setup',
-      color: '#CBB7E8',
+      id: 'SWA',
+      name: 'Sky Wars Anthology',
+      description: 'VFX project for Sky Wars Anthology series',
+      color: getProjectColor('SWA'),
       status: 'active',
-      updatedAt: '2024-01-15T10:30:00Z',
-      createdAt: '2024-01-01T09:00:00Z',
-      ownerId: 'user-1',
       memberCount: 8,
-      taskCount: 24
+      taskCount: 156, // Based on actual task count in JSON
+      updatedAt: '2025-08-17T14:13:05.705798',
+      // Database schema fields
+      drive_mapping: {
+        working_files: 'V:',
+        render_outputs: 'W:',
+        media_files: 'E:',
+        cache_files: 'E:',
+        backup_files: 'E:'
+      },
+      path_segments: {
+        middle_path: 'all/scene',
+        version_dir: 'version',
+        work_dir: 'work',
+        publish_dir: 'publish',
+        cache_dir: 'cache'
+      },
+      templates: {
+        working_file: '{drive_working}/{project}/{middle_path}/{episode}/{sequence_clean}/{shot_clean}/{task}/{version_dir}/{filename}',
+        render_output: '{drive_render}/{project}/{middle_path}/{episode}/{sequence_clean}/{shot_clean}/{task}/{version_dir}/v{version}/',
+        media_file: '{drive_media}/{project}/{middle_path}/{episode}/{sequence_clean}/{shot_clean}/{task}/{version_dir}/v{version}/media/',
+        cache_file: '{drive_cache}/{project}/{middle_path}/{episode}/{sequence_clean}/{shot_clean}/{task}/cache/',
+        submission: '{drive_render}/{project}/deliveries/{client}/{episode}/{sequence_clean}/{shot_clean}/{task}/v{client_version}/'
+      },
+      filename_patterns: {
+        maya_scene: '{episode}_{sequence_clean}_{shot_clean}_{task}_master_v{version}.ma',
+        nuke_script: '{episode}_{sequence_clean}_{shot_clean}_{task}_master_v{version}.nk',
+        houdini_scene: '{episode}_{sequence_clean}_{shot_clean}_{task}_master_v{version}.hip',
+        blender_scene: '{episode}_{sequence_clean}_{shot_clean}_{task}_master_v{version}.blend',
+        render_sequence: '{episode}_{sequence_clean}_{shot_clean}_{task}_v{version}.{frame}.{ext}',
+        playblast: '{episode}_{sequence_clean}_{shot_clean}_{task}_v{version}_playblast.mov',
+        thumbnail: '{episode}_{sequence_clean}_{shot_clean}_{task}_v{version}_thumb.jpg'
+      },
+      name_cleaning_rules: {
+        sequence_pattern: '^SWA_Ep[0-9]+_(.+)$',
+        sequence_replacement: '\\1',
+        shot_pattern: '^SWA_Ep[0-9]+_(.+)$',
+        shot_replacement: '\\1',
+        episode_pattern: '^(Ep[0-9]+)$',
+        episode_replacement: '\\1'
+      },
+      version_settings: {
+        padding: 3,
+        start_version: 1,
+        increment: 1,
+        format: 'v{version:03d}'
+      },
+      task_settings: {
+        default_file_extensions: {
+          lighting: '.ma',
+          comp: '.nk',
+          modeling: '.ma',
+          rigging: '.ma',
+          animation: '.ma',
+          fx: '.hip',
+          lookdev: '.ma',
+          layout: '.ma'
+        },
+        render_formats: {
+          lighting: ['exr', 'jpg'],
+          comp: ['exr', 'mov', 'jpg'],
+          fx: ['exr', 'mov'],
+          lookdev: ['exr', 'jpg']
+        }
+      },
+      milestones: ['not_started', 'single_frame', 'low_quality', 'final_render', 'final_comp', 'approved'],
+      task_types: ['modeling', 'rigging', 'animation', 'layout', 'lighting', 'comp', 'fx', 'lookdev'],
+      priority_levels: ['low', 'medium', 'high', 'urgent'],
+      client_settings: {
+        version_reset: true,
+        default_client: 'SWA_Client',
+        delivery_formats: ['mov', 'mp4'],
+        approval_required: true
+      },
+      platform_settings: {
+        windows: {
+          working_root: 'V:/SWA',
+          render_root: 'W:/SWA',
+          media_root: 'J:/SWA'
+        },
+        linux: {
+          working_root: '/mnt/projects/SWA',
+          render_root: '/mnt/renders/SWA',
+          media_root: '/mnt/media/SWA'
+        }
+      },
+      frame_settings: {
+        padding: 4,
+        default_start: 1001,
+        default_fps: 24
+      },
+      _created_at: '2025-08-03T16:45:00.000000',
+      _updated_at: '2025-08-03T16:45:00.000000'
     },
     {
-      id: '2',
-      name: 'Character Design',
-      description: 'Character design and modeling for main characters',
-      color: '#B7D3F2',
+      id: 'RGD',
+      name: 'Relic the Guardian of Dream',
+      description: 'Animation project for Relic the Guardian of Dream',
+      color: getProjectColor('RGD'),
       status: 'active',
-      updatedAt: '2024-01-14T16:45:00Z',
-      createdAt: '2024-01-02T11:30:00Z',
-      ownerId: 'user-2',
       memberCount: 5,
-      taskCount: 18
-    },
-    {
-      id: '3',
-      name: 'Environment Art',
-      description: 'Environment and background art creation',
-      color: '#F4C6D7',
-      status: 'inactive',
-      updatedAt: '2024-01-10T14:20:00Z',
-      createdAt: '2023-12-15T08:15:00Z',
-      ownerId: 'user-1',
-      memberCount: 3,
-      taskCount: 12
-    },
-    {
-      id: '4',
-      name: 'VFX Development',
-      description: 'Visual effects and compositing pipeline',
-      color: '#CDE8D6',
-      status: 'active',
-      updatedAt: '2024-01-13T12:10:00Z',
-      createdAt: '2024-01-05T13:45:00Z',
-      ownerId: 'user-3',
-      memberCount: 6,
-      taskCount: 31
+      taskCount: 42,
+      updatedAt: '2025-08-06T23:32:03.180796',
+      // Abbreviated database fields for brevity
+      drive_mapping: {
+        working_files: 'V:',
+        render_outputs: 'W:',
+        media_files: 'E:',
+        cache_files: 'E:',
+        backup_files: 'E:'
+      },
+      path_segments: {
+        middle_path: 'all/scene',
+        version_dir: 'version',
+        work_dir: 'work',
+        publish_dir: 'publish',
+        cache_dir: 'cache'
+      },
+      templates: {
+        working_file: '{drive_working}/{project}/{middle_path}/{episode}/{sequence_clean}/{shot_clean}/{task}/{version_dir}/{filename}',
+        render_output: '{drive_render}/{project}/{middle_path}/{episode}/{sequence_clean}/{shot_clean}/{task}/{version_dir}/v{version}/',
+        media_file: '{drive_media}/{project}/{middle_path}/{episode}/{sequence_clean}/{shot_clean}/{task}/{version_dir}/v{version}/media/',
+        cache_file: '{drive_cache}/{project}/{middle_path}/{episode}/{sequence_clean}/{shot_clean}/{task}/cache/',
+        submission: '{drive_render}/{project}/deliveries/{client}/{episode}/{sequence_clean}/{shot_clean}/{task}/v{client_version}/'
+      },
+      filename_patterns: {
+        maya_scene: '{episode}_{sequence_clean}_{shot_clean}_{task}_master_v{version}.ma',
+        nuke_script: '{episode}_{sequence_clean}_{shot_clean}_{task}_master_v{version}.nk',
+        houdini_scene: '{episode}_{sequence_clean}_{shot_clean}_{task}_master_v{version}.hip',
+        blender_scene: '{episode}_{sequence_clean}_{shot_clean}_{task}_master_v{version}.blend',
+        render_sequence: '{episode}_{sequence_clean}_{shot_clean}_{task}_v{version}.{frame}.{ext}',
+        playblast: '{episode}_{sequence_clean}_{shot_clean}_{task}_v{version}_playblast.mov',
+        thumbnail: '{episode}_{sequence_clean}_{shot_clean}_{task}_v{version}_thumb.jpg'
+      },
+      name_cleaning_rules: {
+        sequence_pattern: '^RGD_Ep[0-9]+_(.+)$',
+        sequence_replacement: '\\1',
+        shot_pattern: '^RGD_Ep[0-9]+_(.+)$',
+        shot_replacement: '\\1',
+        episode_pattern: '^(Ep[0-9]+)$',
+        episode_replacement: '\\1'
+      },
+      version_settings: {
+        padding: 3,
+        start_version: 1,
+        increment: 1,
+        format: 'v{version:03d}'
+      },
+      task_settings: {
+        default_file_extensions: {
+          animation: '.ma',
+          comp: '.nk',
+          fx: '.hip',
+          layout: '.ma',
+          lighting: '.ma',
+          lookdev: '.ma',
+          modeling: '.ma',
+          rigging: '.ma'
+        },
+        render_formats: {
+          animation: ['mov', 'jpg'],
+          comp: ['exr', 'mov', 'jpg'],
+          fx: ['exr', 'mov'],
+          layout: ['mov', 'jpg'],
+          lighting: ['exr', 'jpg'],
+          lookdev: ['exr', 'jpg'],
+          modeling: ['jpg', 'png'],
+          rigging: ['jpg', 'png']
+        }
+      },
+      milestones: ['not_started', 'single_frame', 'low_quality', 'final_render', 'final_comp', 'approved'],
+      task_types: ['modeling', 'rigging', 'animation', 'layout', 'lighting', 'comp', 'fx', 'lookdev'],
+      priority_levels: ['low', 'medium', 'high', 'urgent'],
+      client_settings: {
+        version_reset: true,
+        default_client: 'RGD_Client',
+        delivery_formats: ['mov', 'mp4'],
+        approval_required: true
+      },
+      platform_settings: {
+        windows: {
+          working_root: 'V:/RGD',
+          render_root: 'W:/RGD',
+          media_root: 'E:/RGD'
+        },
+        linux: {
+          working_root: '/mnt/projects/RGD',
+          render_root: '/mnt/renders/RGD',
+          media_root: '/mnt/media/RGD'
+        }
+      },
+      frame_settings: {
+        padding: 4,
+        default_start: 1001,
+        default_fps: 24
+      },
+      project_budget: {
+        allocated_mandays: 0,
+        remaining_mandays: 100.0,
+        total_mandays: 100.0
+      },
+      project_timeline: {
+        start_date: '2025-08-06',
+        end_date: '2026-02-06'
+      },
+      _created_at: '2025-08-06T09:25:38.807298',
+      _updated_at: '2025-08-06T23:32:03.180796'
     }
   ]
 

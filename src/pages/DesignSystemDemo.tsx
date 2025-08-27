@@ -5,9 +5,10 @@ import { Container, Grid, Stack } from '@/components/layout'
 
 const DesignSystemDemo: React.FC = () => {
   return (
-    <Container size="lg" padding>
-      <Stack direction="vertical" gap="xl">
-        <h1 className="text-h1">Design System Components</h1>
+    <div className="design-system-demo">
+      <Container size="lg" padding>
+        <Stack direction="vertical" gap="xl">
+          <h1 className="text-h1">Design System Components</h1>
       
         {/* Buttons */}
         <Card padding="lg">
@@ -109,8 +110,9 @@ const DesignSystemDemo: React.FC = () => {
             </Card>
           </Grid>
         </Stack>
-      </Stack>
-    </Container>
+        </Stack>
+      </Container>
+    </div>
   )
 }
 
