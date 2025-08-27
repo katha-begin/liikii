@@ -2,6 +2,7 @@ import React from 'react'
 import { Search, Plus, Settings, Sun, Moon, Bell, User, Menu } from 'lucide-react'
 import { useTheme } from './ThemeProvider'
 import { Input } from '@/components/ui'
+import Breadcrumbs from './navigation/Breadcrumbs'
 
 interface HeaderProps {
   isMobile?: boolean
@@ -23,11 +24,7 @@ const Header: React.FC<HeaderProps> = ({ isMobile, onToggleSidebar }) => {
             <Menu size={16} />
           </button>
         )}
-        <div className="breadcrumb">
-          <span className="workspace-name">Workspace</span>
-          <span className="separator">»</span>
-          <span className="page-name">Projects</span>
-        </div>
+        <Breadcrumbs />
       </div>
 
       <div className="header-center">

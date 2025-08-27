@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { NavigationProvider } from '@/contexts/NavigationContext'
 import Header from './Header'
-import Sidebar from './Sidebar'
+import NavigationSidebar from './navigation/NavigationSidebar'
 import ProjectsPage from '@/pages/ProjectsPage'
+import InboxPage from '@/pages/InboxPage'
+import MyTasksPage from '@/pages/MyTasksPage'
 import DesignSystemDemo from '@/pages/DesignSystemDemo'
 
 const AppShell: React.FC = () => {
@@ -32,34 +35,39 @@ const AppShell: React.FC = () => {
 
   return (
     <Router>
-      <div className="app-shell">
-        <Header
-          isMobile={isMobile}
-          onToggleSidebar={toggleSidebar}
-        />
-        <div className="app-body">
-          <Sidebar
+      <NavigationProvider>
+        <div className="app-shell">
+          <Header
             isMobile={isMobile}
-            isOpen={sidebarOpen}
-            onClose={closeSidebar}
+            onToggleSidebar={toggleSidebar}
           />
-          {isMobile && sidebarOpen && (
-            <div
-              className="sidebar-overlay"
-              onClick={closeSidebar}
+          <div className="app-body">
+            <NavigationSidebar
+              isMobile={isMobile}
+              isOpen={sidebarOpen}
+              onClose={closeSidebar}
             />
-          )}
-          <main className="main-content">
-            <Routes>
-              <Route path="/" element={<ProjectsPage />} />
-              <Route path="/projects" element={<ProjectsPage />} />
-              <Route path="/projects/:id" element={<ProjectsPage />} />
-              <Route path="/design-system" element={<DesignSystemDemo />} />
-              {/* Add more routes as needed */}
-            </Routes>
-          </main>
+            {isMobile && sidebarOpen && (
+              <div
+                className="sidebar-overlay"
+                onClick={closeSidebar}
+              />
+            )}
+            <main className="main-content">
+              <Routes>
+                <Route path="/" element={<ProjectsPage />} />
+                <Route path="/inbox" element={<InboxPage />} />
+                <Route path="/my-tasks" element={<MyTasksPage />} />
+                <Route path="/projects" element={<ProjectsPage />} />
+                <Route path="/projects/:id" element={<ProjectsPage />} />
+                <Route path="/views" element={<div>Views Page - Coming Soon</div>} />
+                <Route path="/design-system" element={<DesignSystemDemo />} />
+                {/* Add more routes as needed */}
+              </Routes>
+            </main>
+          </div>
         </div>
-      </div>
+      </NavigationProvider>
     </Router>
   )
 }
