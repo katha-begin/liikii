@@ -23,6 +23,15 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
   const shouldShowExpanded = isMobile ? isOpen : isNavigationExpanded
   const shouldShowSidebar = isMobile ? isOpen : true
 
+  // Debug logging
+  console.log('NavigationSidebar render:', {
+    isMobile,
+    isOpen,
+    isNavigationExpanded,
+    shouldShowExpanded,
+    shouldShowSidebar
+  })
+
   const tryItems = [
     { id: 'importCsv', label: 'Import tasks (CSV)', icon: Upload },
     { id: 'invite', label: 'Invite people', icon: UserPlus },
@@ -127,9 +136,12 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
 
       {/* Toggle button - only show on desktop */}
       {!isMobile && (
-        <button 
+        <button
           className="sidebar-toggle"
-          onClick={() => setNavigationExpanded(!isNavigationExpanded)}
+          onClick={() => {
+            console.log('Toggle clicked! Current state:', isNavigationExpanded)
+            setNavigationExpanded(!isNavigationExpanded)
+          }}
           title={isNavigationExpanded ? 'Collapse sidebar' : 'Expand sidebar'}
         >
           <MoreHorizontal size={16} />

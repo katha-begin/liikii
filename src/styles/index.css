@@ -300,6 +300,17 @@ html, body {
   opacity: 0.8;
 }
 
+/* Mobile Menu Button */
+.mobile-menu-button {
+  background-color: transparent !important;
+  border: 1px solid transparent !important;
+}
+
+.mobile-menu-button:hover {
+  background-color: var(--bg-surface-2) !important;
+  border-color: var(--border-line) !important;
+}
+
 /* Sidebar Styles */
 .sidebar {
   display: flex;
@@ -420,10 +431,40 @@ html, body {
   color: var(--icon-quieter);
   cursor: pointer;
   transition: color 0.2s ease;
+  z-index: 10;
 }
 
 .sidebar-toggle:hover {
   color: var(--text-primary);
+}
+
+/* Navigation Sidebar Toggle - specific positioning */
+.navigation-sidebar .sidebar-toggle {
+  position: absolute;
+  bottom: var(--space-4);
+  right: var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background-color: var(--bg-surface-2);
+  border: 1px solid var(--border-line);
+  border-radius: var(--radius-input);
+  color: var(--icon-quieter);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.navigation-sidebar .sidebar-toggle:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-surface-1);
+  border-color: var(--accent-blue);
+}
+
+.navigation-sidebar.collapsed .sidebar-toggle {
+  right: var(--space-3);
 }
 
 /* Projects Page Styles */
@@ -1486,15 +1527,45 @@ html, body {
   border-right: 1px solid var(--border-line);
   transition: width 0.2s ease;
   position: relative;
+  height: 100%;
 }
 
 .navigation-sidebar.expanded {
   width: 240px;
 }
 
+.navigation-sidebar .sidebar-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-bottom: 60px; /* Make room for toggle button */
+  overflow-y: auto;
+}
+
 .project-switcher-section {
   padding: var(--space-4) var(--space-4) var(--space-3) var(--space-4);
   border-bottom: 1px solid var(--border-line);
+  flex-shrink: 0;
+}
+
+.navigation-sidebar .nav-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  flex: 1;
+}
+
+.navigation-sidebar .try-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: 0 var(--space-4);
+}
+
+.navigation-sidebar .help-section {
+  margin-top: auto;
+  padding: 0 var(--space-4) var(--space-4) var(--space-4);
 }
 
 .nav-badge {
