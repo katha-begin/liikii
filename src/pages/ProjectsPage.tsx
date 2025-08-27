@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Plus, Download, Filter, LayoutGrid, List, Calendar, Users, MoreHorizontal } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { Plus, Download, Filter, LayoutGrid, List, Calendar, Users, MoreHorizontal, TrendingUp, Clock } from 'lucide-react'
 import { PageWrapper, Stack, Grid, ScrollToTop } from '@/components/layout'
 import { Button, Badge, Card } from '@/components/ui'
 // import { UIProject } from '@/types/database'
@@ -24,6 +25,7 @@ interface ProjectTab {
 }
 
 const ProjectsPage: React.FC = () => {
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('projects')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'inactive'>('all')
@@ -218,52 +220,129 @@ const ProjectsPage: React.FC = () => {
           <div className={`projects-container ${viewMode}`}>
             {viewMode === 'grid' ? (
               <Grid cols={1} gap="lg" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))' }}>
-                {filteredProjects.map((project) => (
-                  <Card 
-                    key={project.id} 
-                    className={`project-card ${selectedProjects.includes(project.id) ? 'selected' : ''}`}
-                    onClick={() => toggleProjectSelection(project.id)}
-                  >
-                    <div className="project-card-header">
-                      <div className="project-info">
-                        <div 
-                          className="project-color" 
-                          style={{ backgroundColor: project.color }}
-                        />
-                        <div>
-                          <h3 className="project-name">{project.name}</h3>
-                          <p className="project-description">{project.description}</p>
+                {filteredProjects.map((project) => {
+                  const completedTasks = Math.floor(project.taskCount * 0.65) // Mock completion rate
+                  const progressPercentage = project.taskCount > 0 ? (completedTasks / project.taskCount) * 100 : 0
+
+                  return (
+                    <Card
+                      key={project.id}
+                      className={`project-card ${selectedProjects.includes(project.id) ? 'selected' : ''}`}
+                      onClick={() => toggleProjectSelection(project.id)}
+                    >
+                      {/* Project Header */}
+                      <div className="project-card-header">
+                        <div className="project-info">
+                          <div
+                            className="project-color-indicator"
+                            style={{ backgroundColor: project.color }}
+                          />
+                          <div className="project-title-section">
+                            <h3 className="project-name">{project.name}</h3>
+                            <p className="project-description">{project.description}</p>
+                          </div>
+                        </div>
+                        <button className="project-menu-btn" onClick={(e) => e.stopPropagation()}>
+                          <MoreHorizontal size={16} />
+                        </button>
+                      </div>
+
+                      {/* Project Progress */}
+                      <div className="project-progress-section">
+                        <div className="progress-header">
+                          <span className="progress-label">Progress</span>
+                          <span className="progress-percentage">{Math.round(progressPercentage)}%</span>
+                        </div>
+                        <div className="progress-bar">
+                          <div
+                            className="progress-fill"
+                            style={{ width: `${progressPercentage}%` }}
+                          />
+                        </div>
+                        <div className="progress-stats">
+                          <span className="completed-tasks">{completedTasks} of {project.taskCount} tasks completed</span>
                         </div>
                       </div>
-                      <button className="project-menu-btn">
-                        <MoreHorizontal size={16} />
-                      </button>
-                    </div>
-                    
-                    <div className="project-stats">
-                      <div className="stat-item">
-                        <Calendar size={14} />
-                        <span>{formatDate(project.updatedAt)}</span>
+
+                      {/* Project Stats */}
+                      <div className="project-stats-grid">
+                        <div className="stat-item">
+                          <div className="stat-icon">
+                            <Calendar size={14} />
+                          </div>
+                          <div className="stat-content">
+                            <span className="stat-label">Updated</span>
+                            <span className="stat-value">{formatDate(project.updatedAt)}</span>
+                          </div>
+                        </div>
+                        <div className="stat-item">
+                          <div className="stat-icon">
+                            <Users size={14} />
+                          </div>
+                          <div className="stat-content">
+                            <span className="stat-label">Team</span>
+                            <span className="stat-value">{project.memberCount} member{project.memberCount !== 1 ? 's' : ''}</span>
+                          </div>
+                        </div>
+                        <div className="stat-item">
+                          <div className="stat-icon">
+                            <TrendingUp size={14} />
+                          </div>
+                          <div className="stat-content">
+                            <span className="stat-label">Tasks</span>
+                            <span className="stat-value">{project.taskCount} total</span>
+                          </div>
+                        </div>
+                        <div className="stat-item">
+                          <div className="stat-icon">
+                            <Clock size={14} />
+                          </div>
+                          <div className="stat-content">
+                            <span className="stat-label">Status</span>
+                            <Badge
+                              variant={project.status === 'active' ? 'success' : 'default'}
+                              size="sm"
+                            >
+                              {project.status}
+                            </Badge>
+                          </div>
+                        </div>
                       </div>
-                      <div className="stat-item">
-                        <Users size={14} />
-                        <span>{project.memberCount} member{project.memberCount !== 1 ? 's' : ''}</span>
+
+                      {/* Project Footer */}
+                      <div className="project-card-footer">
+                        <div className="project-members">
+                          {/* Mock member avatars */}
+                          <div className="member-avatars">
+                            {Array.from({ length: Math.min(project.memberCount, 4) }).map((_, index) => (
+                              <div key={index} className="member-avatar" style={{
+                                backgroundColor: `hsl(${(index * 60) % 360}, 60%, 70%)`,
+                                zIndex: 4 - index
+                              }}>
+                                {String.fromCharCode(65 + index)}
+                              </div>
+                            ))}
+                            {project.memberCount > 4 && (
+                              <div className="member-avatar member-overflow">
+                                +{project.memberCount - 4}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            navigate(`/projects/${project.id}`)
+                          }}
+                        >
+                          View Details
+                        </Button>
                       </div>
-                    </div>
-                    
-                    <div className="project-footer">
-                      <Badge 
-                        variant={project.status === 'active' ? 'success' : 'default'}
-                        size="sm"
-                      >
-                        {project.status}
-                      </Badge>
-                      <span className="task-count">
-                        {project.taskCount} task{project.taskCount !== 1 ? 's' : ''}
-                      </span>
-                    </div>
-                  </Card>
-                ))}
+                    </Card>
+                  )
+                })}
               </Grid>
             ) : (
               <div className="projects-list">

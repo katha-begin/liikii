@@ -9,6 +9,7 @@ import InboxPage from '@/pages/InboxPage'
 import MyTasksPage from '@/pages/MyTasksPage'
 import DesignSystemDemo from '@/pages/DesignSystemDemo'
 import TemplateSystemDemo from '@/pages/TemplateSystemDemo'
+import ProjectDetailsPage from '@/pages/ProjectDetailsPage'
 
 const AppShell: React.FC = () => {
   const [isMobile, setIsMobile] = useState(false)
@@ -62,7 +63,7 @@ const AppShell: React.FC = () => {
                 <Route path="/inbox" element={<InboxPage />} />
                 <Route path="/my-tasks" element={<MyTasksPage />} />
                 <Route path="/projects" element={<ProjectsPage />} />
-                <Route path="/projects/:id" element={<ProjectsPage />} />
+                <Route path="/projects/:projectId" element={<ProjectDetailsPage />} />
                 <Route path="/views" element={<div>Views Page - Coming Soon</div>} />
                 <Route path="/design-system" element={<DesignSystemDemo />} />
                 <Route path="/templates" element={<TemplateSystemDemo />} />
