@@ -1,5 +1,6 @@
 // Data Service Layer - JSON Database Integration
 import { Version, UIProject, UITask, Notification } from '@/types/database'
+import { mockDataService } from './MockDataService'
 
 export interface DataServiceConfig {
   baseUrl?: string
@@ -253,27 +254,8 @@ export class DataService {
   }
 }
 
-// Global data service instance
-export const dataService = new DataService()
-
 // Development mode - use mock service
 const isDevelopment = process.env.NODE_ENV === 'development'
 
-if (isDevelopment) {
-  // Import and use mock service in development
-  import('./MockDataService').then(({ mockDataService }) => {
-    // Replace methods with mock implementations
-    Object.assign(dataService, {
-      getProjects: mockDataService.getProjects.bind(mockDataService),
-      getProject: mockDataService.getProject.bind(mockDataService),
-      createProject: mockDataService.createProject.bind(mockDataService),
-      updateProject: mockDataService.updateProject.bind(mockDataService),
-      getTasks: mockDataService.getTasks.bind(mockDataService),
-      getTask: mockDataService.getTask.bind(mockDataService),
-      updateTask: mockDataService.updateTask.bind(mockDataService),
-      getNotifications: mockDataService.getNotifications.bind(mockDataService),
-      markNotificationRead: mockDataService.markNotificationRead.bind(mockDataService),
-      search: mockDataService.search.bind(mockDataService)
-    })
-  })
-}
+// Create and export the appropriate service instance
+export const dataService = isDevelopment ? mockDataService : new DataService()

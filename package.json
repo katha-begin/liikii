@@ -4,9 +4,10 @@
   "description": "Linear-style desktop UI template for project management",
   "main": "dist/main/main.js",
   "scripts": {
-    "dev": "concurrently \"npm run dev:vite\" \"npm run dev:electron\"",
+    "dev": "npm run dev:clean && concurrently \"npm run dev:vite\" \"npm run dev:electron\"",
+    "dev:clean": "npx kill-port 5173 || echo 'Port 5173 was not in use'",
     "dev:vite": "vite",
-    "dev:electron": "wait-on http://localhost:5173 && electron .",
+    "dev:electron": "wait-on http://localhost:5173 -t 15000 && electron .",
     "build": "npm run build:vite && npm run build:electron",
     "build:vite": "vite build",
     "build:electron": "tsc -p tsconfig.main.json",
@@ -40,17 +41,18 @@
     "eslint": "^8.55.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "kill-port": "^2.0.1",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
     "vitest": "^1.0.4",
     "wait-on": "^7.2.0"
   },
   "dependencies": {
+    "clsx": "^2.0.0",
+    "lucide-react": "^0.294.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.1",
-    "zustand": "^4.4.7",
-    "lucide-react": "^0.294.0",
-    "clsx": "^2.0.0"
+    "zustand": "^4.4.7"
   }
 }

@@ -7,6 +7,15 @@ import { isDev } from './utils'
 let mainWindow: BrowserWindow | null = null
 let tray: Tray | null = null
 
+// Add isQuiting property to app
+declare global {
+  namespace Electron {
+    interface App {
+      isQuiting?: boolean
+    }
+  }
+}
+
 // Window state management
 interface WindowState {
   width: number
@@ -65,7 +74,7 @@ const saveWindowState = (): void => {
   }
 }
 
-const createWindow = (): void => {
+const createWindow = async (): Promise<void> => {
   // Load previous window state
   const windowState = loadWindowState()
 
@@ -90,8 +99,30 @@ const createWindow = (): void => {
 
   // Load the app
   if (isDev) {
-    mainWindow.loadURL('http://localhost:5173')
-    mainWindow.webContents.openDevTools()
+    const devPort = process.env.VITE_DEV_PORT || '5173'
+    const devUrl = `http://localhost:${devPort}`
+    console.log(`Loading development URL: ${devUrl}`)
+
+    try {
+      await mainWindow.loadURL(devUrl)
+      mainWindow.webContents.openDevTools()
+    } catch (error) {
+      console.error('Failed to load development URL:', error)
+      // Try alternative ports
+      const altPorts = ['5174', '5175', '5176']
+      for (const port of altPorts) {
+        try {
+          const altUrl = `http://localhost:${port}`
+          console.log(`Trying alternative URL: ${altUrl}`)
+          await mainWindow.loadURL(altUrl)
+          console.log(`Successfully loaded from port ${port}`)
+          mainWindow.webContents.openDevTools()
+          break
+        } catch (altError) {
+          console.log(`Port ${port} failed, trying next...`)
+        }
+      }
+    }
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
@@ -163,7 +194,7 @@ const createWindow = (): void => {
 
 const createTray = (): void => {
   // Create tray icon - use a simple icon for now
-  let icon: nativeImage
+  let icon: Electron.NativeImage
   try {
     // Try to load app icon, fallback to empty icon
     const iconPath = join(__dirname, '../assets/tray-icon.png')
@@ -497,15 +528,15 @@ const registerGlobalShortcuts = (): void => {
 }
 
 // App event handlers
-app.whenReady().then(() => {
-  createWindow()
+app.whenReady().then(async () => {
+  await createWindow()
   createMenu()
   createTray()
   registerGlobalShortcuts()
 
-  app.on('activate', () => {
+  app.on('activate', async () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow()
+      await createWindow()
     } else {
       mainWindow?.show()
       mainWindow?.focus()

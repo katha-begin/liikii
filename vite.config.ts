@@ -24,5 +24,7 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    strictPort: true, // Force this port, fail if not available
+    host: true, // Allow external connections
   },
 })
