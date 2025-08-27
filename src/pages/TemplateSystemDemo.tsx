@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Container, Stack, Grid } from '@/components/layout'
+import { PageWrapper, Stack, Grid, ScrollToTop } from '@/components/layout'
 import { Button, Card } from '@/components/ui'
 import { Settings, Download } from 'lucide-react'
 import TemplateSelector from '@/components/templates/TemplateSelector'
@@ -73,7 +73,8 @@ const TemplateSystemDemo: React.FC = () => {
     if (!selectedTemplate) return null
 
     return (
-      <Container size="xl" padding>
+      <>
+        <PageWrapper maxWidth="xl" padding scrollable>
         <Stack direction="vertical" gap="lg">
           {/* Template Header */}
           <Stack direction="horizontal" justify="between" align="center">
@@ -191,16 +192,21 @@ const TemplateSystemDemo: React.FC = () => {
             </Stack>
           </Card>
         </Stack>
-      </Container>
+        </PageWrapper>
+        <ScrollToTop />
+      </>
     )
   }
 
   if (showSelector) {
     return (
-      <TemplateSelector
-        onSelect={handleTemplateSelect}
-        onCreateNew={() => alert('Template creation coming soon!')}
-      />
+      <>
+        <TemplateSelector
+          onSelect={handleTemplateSelect}
+          onCreateNew={() => alert('Template creation coming soon!')}
+        />
+        <ScrollToTop />
+      </>
     )
   }
 

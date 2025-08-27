@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Plus, Download, Filter, LayoutGrid, List, Calendar, Users, MoreHorizontal } from 'lucide-react'
-import { Container, Stack, Grid } from '@/components/layout'
+import { PageWrapper, Stack, Grid, ScrollToTop } from '@/components/layout'
 import { Button, Badge, Card } from '@/components/ui'
 import { UIProject } from '@/types/database'
 
@@ -280,8 +280,9 @@ const ProjectsPage: React.FC = () => {
   }
 
   return (
-    <Container size="xl" padding>
-      <Stack direction="vertical" gap="lg">
+    <>
+      <PageWrapper maxWidth="xl" padding>
+        <Stack direction="vertical" gap="lg">
         {/* Header */}
         <Stack direction="horizontal" justify="between" align="center">
           <div>
@@ -542,8 +543,10 @@ const ProjectsPage: React.FC = () => {
             )}
           </div>
         )}
-      </Stack>
-    </Container>
+        </Stack>
+      </PageWrapper>
+      {filteredProjects.length > 6 && <ScrollToTop />}
+    </>
   )
 }
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Container, Stack } from '@/components/layout'
+import { PageWrapper, Stack } from '@/components/layout'
 import { Button, Badge, Card, Input } from '@/components/ui'
 import { Search, Plus, Eye, Download } from 'lucide-react'
 import { LayoutTemplate, templateEngine } from '@/systems/TemplateSystem'
@@ -43,7 +43,7 @@ const TemplateSelector: React.FC<TemplateSelectorProps> = ({
   }
 
   return (
-    <Container size="xl" padding>
+    <PageWrapper maxWidth="xl" padding scrollable>
       <Stack direction="vertical" gap="lg">
         {/* Header */}
         <Stack direction="horizontal" justify="between" align="center">
@@ -189,7 +189,7 @@ const TemplateSelector: React.FC<TemplateSelectorProps> = ({
           </div>
         )}
       </Stack>
-    </Container>
+    </PageWrapper>
   )
 }
 

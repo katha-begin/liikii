@@ -1,12 +1,12 @@
 import React from 'react'
 import { Plus, Search, Settings, Download, Heart } from 'lucide-react'
 import { Button, Input, Card, Badge } from '@/components/ui'
-import { Container, Grid, Stack } from '@/components/layout'
+import { PageWrapper, Grid, Stack, ScrollToTop } from '@/components/layout'
 
 const DesignSystemDemo: React.FC = () => {
   return (
-    <div className="design-system-demo">
-      <Container size="lg" padding>
+    <>
+      <PageWrapper maxWidth="lg" padding scrollable>
         <Stack direction="vertical" gap="xl">
           <h1 className="text-h1">Design System Components</h1>
       
@@ -111,8 +111,9 @@ const DesignSystemDemo: React.FC = () => {
           </Grid>
         </Stack>
         </Stack>
-      </Container>
-    </div>
+      </PageWrapper>
+      <ScrollToTop />
+    </>
   )
 }
 

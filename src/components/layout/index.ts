@@ -7,3 +7,8 @@ export type { GridProps } from './Grid'
 
 export { default as Stack } from './Stack'
 export type { StackProps } from './Stack'
+
+export { default as PageWrapper } from './PageWrapper'
+export type { PageWrapperProps } from './PageWrapper'
+
+export { default as ScrollToTop } from './ScrollToTop'

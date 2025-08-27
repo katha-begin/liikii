@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Stack, Grid } from '@/components/layout'
+import { PageWrapper, Stack, Grid } from '@/components/layout'
 import { Card, Badge, Button } from '@/components/ui'
 import { Calendar, Clock, Flag, Play, Film } from 'lucide-react'
 import { UITask } from '@/types/database'
@@ -195,7 +195,7 @@ const MyTasksPage: React.FC = () => {
   }
 
   return (
-    <Container size="lg" padding>
+    <PageWrapper maxWidth="lg" padding>
       <Stack direction="vertical" gap="lg">
         <div>
           <h1 className="text-h1">My Tasks</h1>
@@ -274,7 +274,7 @@ const MyTasksPage: React.FC = () => {
           ))}
         </Grid>
       </Stack>
-    </Container>
+    </PageWrapper>
   )
 }
 

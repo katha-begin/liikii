@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Stack } from '@/components/layout'
+import { PageWrapper, Stack } from '@/components/layout'
 import { Card, Badge } from '@/components/ui'
 import { Mail, Clock, User, FileText, GitBranch } from 'lucide-react'
 import { Notification } from '@/types/database'
@@ -102,7 +102,7 @@ const InboxPage: React.FC = () => {
   }
 
   return (
-    <Container size="lg" padding>
+    <PageWrapper maxWidth="lg" padding>
       <Stack direction="vertical" gap="lg">
         <div>
           <h1 className="text-h1">Inbox</h1>
@@ -155,7 +155,7 @@ const InboxPage: React.FC = () => {
           ))}
         </Stack>
       </Stack>
-    </Container>
+    </PageWrapper>
   )
 }
 
