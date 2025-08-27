@@ -1,81 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { PageWrapper, Stack } from '@/components/layout'
-import { Card, Badge } from '@/components/ui'
-import { Mail, Clock, User, FileText, GitBranch } from 'lucide-react'
-import { Notification } from '@/types/database'
+import { Card, Badge, Button } from '@/components/ui'
+import { Mail, User, FileText, GitBranch, Filter, CheckCircle } from 'lucide-react'
+import { useNotifications } from '@/hooks/useData'
 
 const InboxPage: React.FC = () => {
-  // Mock notifications based on actual database schema
-  const inboxItems: Notification[] = [
-    {
-      id: 'notif_001',
-      type: 'assignment',
-      title: 'New task assigned: "ep00_sq0010_sh0020_lighting"',
-      description: 'You have been assigned to work on lighting for SWA Ep00 SQ0010 SH0020',
-      userId: 'current_user',
-      relatedId: 'ep00_sq0010_sh0020_lighting',
-      relatedType: 'task',
-      isRead: false,
-      createdAt: '2025-08-17T14:10:00.000Z',
-      metadata: {
-        project: 'SWA',
-        episode: 'Ep00',
-        sequence: 'sq0010',
-        shot: 'SH0020',
-        task: 'lighting',
-        priority: 'medium'
-      }
-    },
-    {
-      id: 'notif_002',
-      type: 'version',
-      title: 'New version published: "ep00_sq0010_sh0020_lighting_v005"',
-      description: 'Version v005 has been published for lighting task',
-      userId: 'current_user',
-      relatedId: 'ep00_sq0010_sh0020_lighting_v005',
-      relatedType: 'version',
-      isRead: false,
-      createdAt: '2025-08-17T13:45:00.000Z',
-      metadata: {
-        project: 'SWA',
-        version: 'v005',
-        author: 'test_publisher',
-        status: 'published'
-      }
-    },
-    {
-      id: 'notif_003',
-      type: 'update',
-      title: 'Project "SWA" configuration updated',
-      description: 'Drive mappings and templates have been updated for Sky Wars Anthology',
-      userId: 'current_user',
-      relatedId: 'SWA',
-      relatedType: 'project',
-      isRead: true,
-      createdAt: '2025-08-17T12:30:00.000Z',
-      metadata: {
-        project: 'SWA',
-        updatedFields: ['drive_mapping', 'templates'],
-        updatedBy: 'admin_user'
-      }
-    },
-    {
-      id: 'notif_004',
-      type: 'mention',
-      title: 'You were mentioned in task comments',
-      description: 'Sarah mentioned you in comments for RGD animation task',
-      userId: 'current_user',
-      relatedId: 'rgd_ep01_sq0001_sh0010_animation',
-      relatedType: 'task',
-      isRead: true,
-      createdAt: '2025-08-17T11:15:00.000Z',
-      metadata: {
-        project: 'RGD',
-        mentionedBy: 'sarah_animator',
-        commentId: 'comment_123'
-      }
-    }
-  ]
+  const [filterRead, setFilterRead] = useState<'all' | 'unread' | 'read'>('all')
+  
+  // Use data management hooks
+  const { notifications, unreadCount, loading, error, refresh, markAsRead } = useNotifications('current_user')
+
+  // Filter notifications based on read status
+  const filteredNotifications = notifications.filter(notification => {
+    if (filterRead === 'all') return true
+    if (filterRead === 'unread') return !notification.isRead
+    if (filterRead === 'read') return notification.isRead
+    return true
+  })
 
   const getNotificationIcon = (type: string) => {
     switch (type) {
@@ -83,11 +24,21 @@ const InboxPage: React.FC = () => {
       case 'version': return <GitBranch size={16} />
       case 'update': return <FileText size={16} />
       case 'mention': return <Mail size={16} />
-      default: return <Clock size={16} />
+      default: return <Mail size={16} />
     }
   }
 
-  const formatTime = (dateString: string) => {
+  const getNotificationColor = (type: string) => {
+    switch (type) {
+      case 'assignment': return 'primary'
+      case 'version': return 'success'
+      case 'update': return 'warning'
+      case 'mention': return 'secondary'
+      default: return 'default'
+    }
+  }
+
+  const formatTimeAgo = (dateString: string) => {
     const date = new Date(dateString)
     const now = new Date()
     const diffTime = Math.abs(now.getTime() - date.getTime())
@@ -95,65 +46,162 @@ const InboxPage: React.FC = () => {
     const diffHours = Math.ceil(diffTime / (1000 * 60 * 60))
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
 
-    if (diffMinutes < 60) return `${diffMinutes} minutes ago`
-    if (diffHours < 24) return `${diffHours} hours ago`
-    if (diffDays < 7) return `${diffDays} days ago`
+    if (diffMinutes < 60) return `${diffMinutes} minute${diffMinutes !== 1 ? 's' : ''} ago`
+    if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`
+    if (diffDays < 7) return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`
     return date.toLocaleDateString()
+  }
+
+  const handleMarkAsRead = async (notificationId: string) => {
+    try {
+      await markAsRead(notificationId)
+    } catch (error) {
+      console.error('Failed to mark notification as read:', error)
+    }
+  }
+
+  const handleMarkAllAsRead = async () => {
+    try {
+      const unreadNotifications = notifications.filter(n => !n.isRead)
+      await Promise.all(unreadNotifications.map(n => markAsRead(n.id)))
+    } catch (error) {
+      console.error('Failed to mark all notifications as read:', error)
+    }
+  }
+
+  // Show loading state
+  if (loading && notifications.length === 0) {
+    return (
+      <PageWrapper maxWidth="lg" padding>
+        <Stack direction="vertical" gap="lg" align="center" style={{ paddingTop: '4rem' }}>
+          <div className="loading-spinner">Loading notifications...</div>
+        </Stack>
+      </PageWrapper>
+    )
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <PageWrapper maxWidth="lg" padding>
+        <Stack direction="vertical" gap="lg" align="center" style={{ paddingTop: '4rem' }}>
+          <div className="error-message">
+            <h2 className="text-h2">Error loading notifications</h2>
+            <p className="text-body text-secondary">{error}</p>
+            <Button variant="primary" onClick={refresh}>
+              Try Again
+            </Button>
+          </div>
+        </Stack>
+      </PageWrapper>
+    )
   }
 
   return (
     <PageWrapper maxWidth="lg" padding>
       <Stack direction="vertical" gap="lg">
-        <div>
-          <h1 className="text-h1">Inbox</h1>
-          <p className="text-body text-secondary">
-            Stay up to date with mentions, assignments, and project updates
-          </p>
-        </div>
+        {/* Header */}
+        <Stack direction="horizontal" justify="between" align="center">
+          <div>
+            <h1 className="text-h1">Inbox</h1>
+            <p className="text-body text-secondary">
+              Stay updated with notifications and messages
+              {unreadCount > 0 && (
+                <Badge variant="primary" size="sm" style={{ marginLeft: 'var(--space-2)' }}>
+                  {unreadCount} unread
+                </Badge>
+              )}
+            </p>
+          </div>
+          <Stack direction="horizontal" gap="sm">
+            {unreadCount > 0 && (
+              <Button variant="secondary" leftIcon={<CheckCircle size={16} />} onClick={handleMarkAllAsRead}>
+                Mark all read
+              </Button>
+            )}
+            <Button variant="secondary" leftIcon={<Filter size={16} />}>
+              Filter
+            </Button>
+          </Stack>
+        </Stack>
 
-        <Stack direction="vertical" gap="md">
-          {inboxItems.map((item) => (
-            <Card key={item.id} variant="outlined" padding="md">
-              <Stack direction="horizontal" gap="md" align="start">
-                <div className="inbox-icon">
-                  {getNotificationIcon(item.type)}
-                </div>
+        {/* Filter Row */}
+        <Stack direction="horizontal" gap="sm" align="center">
+          <select 
+            value={filterRead} 
+            onChange={(e) => setFilterRead(e.target.value as any)}
+            className="filter-select"
+          >
+            <option value="all">All notifications</option>
+            <option value="unread">Unread only</option>
+            <option value="read">Read only</option>
+          </select>
+          <span className="text-caption text-secondary">
+            {filteredNotifications.length} notification{filteredNotifications.length !== 1 ? 's' : ''}
+          </span>
+        </Stack>
 
-                <Stack direction="vertical" gap="sm" style={{ flex: 1 }}>
-                  <Stack direction="horizontal" gap="sm" align="center">
-                    <h3 className="text-h2">{item.title}</h3>
-                    {!item.isRead && (
-                      <Badge variant="primary" size="sm">New</Badge>
-                    )}
-                    {item.metadata?.priority && (
-                      <Badge
-                        variant={item.metadata.priority === 'high' ? 'danger' : 'default'}
-                        size="sm"
-                      >
-                        {item.metadata.priority}
-                      </Badge>
-                    )}
-                  </Stack>
-
-                  <p className="text-body text-secondary">
-                    {item.description}
-                  </p>
-
-                  <Stack direction="horizontal" gap="md" align="center">
-                    <span className="text-caption text-secondary">
-                      {formatTime(item.createdAt)}
-                    </span>
-                    {item.metadata?.project && (
-                      <Badge variant="default" size="sm">
-                        {item.metadata.project}
-                      </Badge>
+        {/* Notifications List */}
+        {filteredNotifications.length === 0 ? (
+          <div className="empty-state">
+            <div className="empty-state-content">
+              <h3 className="text-h3">No notifications found</h3>
+              <p className="text-body text-secondary">
+                {filterRead === 'all' 
+                  ? "You don't have any notifications yet."
+                  : `No ${filterRead} notifications found.`
+                }
+              </p>
+            </div>
+          </div>
+        ) : (
+          <Stack direction="vertical" gap="sm">
+            {filteredNotifications.map((notification) => (
+              <Card 
+                key={notification.id} 
+                className={`notification-card ${!notification.isRead ? 'unread' : ''}`}
+                onClick={() => !notification.isRead && handleMarkAsRead(notification.id)}
+              >
+                <Stack direction="horizontal" gap="md" align="start">
+                  <div className={`notification-icon ${getNotificationColor(notification.type)}`}>
+                    {getNotificationIcon(notification.type)}
+                  </div>
+                  
+                  <Stack direction="vertical" gap="xs" style={{ flex: 1 }}>
+                    <Stack direction="horizontal" justify="between" align="start">
+                      <h3 className="text-h3">{notification.title}</h3>
+                      <Stack direction="horizontal" gap="sm" align="center">
+                        <span className="text-caption text-secondary">
+                          {formatTimeAgo(notification.createdAt)}
+                        </span>
+                        {!notification.isRead && (
+                          <div className="unread-indicator" />
+                        )}
+                      </Stack>
+                    </Stack>
+                    
+                    <p className="text-body text-secondary">{notification.description}</p>
+                    
+                    {notification.metadata && (
+                      <Stack direction="horizontal" gap="sm" align="center">
+                        {notification.metadata.project && (
+                          <Badge variant="default" size="sm">
+                            {notification.metadata.project}
+                          </Badge>
+                        )}
+                        {notification.metadata.priority && (
+                          <Badge variant={notification.metadata.priority === 'high' ? 'danger' : 'default'} size="sm">
+                            {notification.metadata.priority}
+                          </Badge>
+                        )}
+                      </Stack>
                     )}
                   </Stack>
                 </Stack>
-              </Stack>
-            </Card>
-          ))}
-        </Stack>
+              </Card>
+            ))}
+          </Stack>
+        )}
       </Stack>
     </PageWrapper>
   )
