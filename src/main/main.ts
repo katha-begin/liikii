@@ -1,6 +1,6 @@
 import { app, BrowserWindow, Menu, shell, ipcMain, Tray, nativeImage, Notification, dialog, globalShortcut } from 'electron'
 import { join } from 'path'
-import { readFileSync, writeFileSync, existsSync } from 'fs'
+import { writeFileSync, existsSync } from 'fs'
 import { isDev } from './utils'
 
 // Keep a global reference of the window object
@@ -26,31 +26,31 @@ interface WindowState {
   isFullScreen: boolean
 }
 
-const defaultWindowState: WindowState = {
-  width: 1200,
-  height: 800,
-  isMaximized: false,
-  isFullScreen: false
-}
+// const defaultWindowState: WindowState = {
+//   width: 1200,
+//   height: 800,
+//   isMaximized: false,
+//   isFullScreen: false
+// }
 
 // Get window state file path
 const getWindowStateFilePath = (): string => {
   return join(app.getPath('userData'), 'window-state.json')
 }
 
-// Load window state from file
-const loadWindowState = (): WindowState => {
-  try {
-    const filePath = getWindowStateFilePath()
-    if (existsSync(filePath)) {
-      const data = readFileSync(filePath, 'utf8')
-      return { ...defaultWindowState, ...JSON.parse(data) }
-    }
-  } catch (error) {
-    console.warn('Failed to load window state:', error)
-  }
-  return defaultWindowState
-}
+// Load window state from file (currently unused in development)
+// const loadWindowState = (): WindowState => {
+//   try {
+//     const filePath = getWindowStateFilePath()
+//     if (existsSync(filePath)) {
+//       const data = readFileSync(filePath, 'utf8')
+//       return { ...defaultWindowState, ...JSON.parse(data) }
+//     }
+//   } catch (error) {
+//     console.warn('Failed to load window state:', error)
+//   }
+//   return defaultWindowState
+// }
 
 // Save window state to file
 const saveWindowState = (): void => {
@@ -75,15 +75,10 @@ const saveWindowState = (): void => {
 }
 
 const createWindow = async (): Promise<void> => {
-  // Load previous window state
-  const windowState = loadWindowState()
-
-  // Create the browser window
+  // Create the browser window with simple defaults
   mainWindow = new BrowserWindow({
-    width: windowState.width,
-    height: windowState.height,
-    x: windowState.x,
-    y: windowState.y,
+    width: 1200,
+    height: 800,
     minWidth: 1120, // As specified in PRD
     minHeight: 600,
     webPreferences: {
@@ -93,9 +88,11 @@ const createWindow = async (): Promise<void> => {
       webSecurity: !isDev, // Allow local resources in dev
     },
     titleBarStyle: 'default', // Can be changed to 'hidden' for frameless
-    show: false, // Don't show until ready
+    show: true, // Show immediately
     icon: isDev ? undefined : join(__dirname, '../assets/icon.png'), // App icon
   })
+
+  console.log('Window created and should be visible')
 
   // Load the app
   if (isDev) {
@@ -127,23 +124,26 @@ const createWindow = async (): Promise<void> => {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
 
-  // Restore window state
-  if (windowState.isMaximized) {
-    mainWindow.maximize()
-  }
-  if (windowState.isFullScreen) {
-    mainWindow.setFullScreen(true)
-  }
+  // Window is already shown, no need for state restoration in development
 
   // Show window when ready to prevent visual flash
   mainWindow.once('ready-to-show', () => {
-    mainWindow?.show()
-
-    // Focus window on first show
-    if (process.platform === 'darwin') {
-      mainWindow?.focus()
+    console.log('Window ready-to-show event fired')
+    if (mainWindow) {
+      mainWindow.show()
+      mainWindow.focus()
+      console.log('Window shown and focused')
     }
   })
+
+  // Fallback: Show window after a timeout if ready-to-show doesn't fire
+  setTimeout(() => {
+    if (mainWindow && !mainWindow.isVisible()) {
+      console.log('Fallback: Showing window after timeout')
+      mainWindow.show()
+      mainWindow.focus()
+    }
+  }, 3000)
 
   // Save window state on resize/move
   mainWindow.on('resize', saveWindowState)
