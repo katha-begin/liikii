@@ -1,14 +1,28 @@
 import React from 'react'
-import { Search, Plus, Settings, Sun, Moon, Bell, User } from 'lucide-react'
+import { Search, Plus, Settings, Sun, Moon, Bell, User, Menu } from 'lucide-react'
 import { useTheme } from './ThemeProvider'
 import { Input } from '@/components/ui'
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  isMobile?: boolean
+  onToggleSidebar?: () => void
+}
+
+const Header: React.FC<HeaderProps> = ({ isMobile, onToggleSidebar }) => {
   const { theme, toggleTheme } = useTheme()
 
   return (
     <header className="header">
       <div className="header-left">
+        {isMobile && (
+          <button
+            className="header-button mobile-menu-button"
+            onClick={onToggleSidebar}
+            title="Toggle menu"
+          >
+            <Menu size={16} />
+          </button>
+        )}
         <div className="breadcrumb">
           <span className="workspace-name">Workspace</span>
           <span className="separator">»</span>
