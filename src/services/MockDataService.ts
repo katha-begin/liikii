@@ -1,5 +1,15 @@
 // Mock Data Service - Simulates API calls with JSON database data
-import { UIProject, UITask, Notification, TaskComment } from '@/types/database'
+import {
+  UIProject,
+  UITask,
+  Notification,
+  EnhancedNotification,
+  Message,
+  TaskComment,
+  InboxFilters,
+  InboxStats,
+  BulkOperation
+} from '@/types/database'
 import { DataResponse, QueryOptions } from './DataService'
 
 // Mock data based on our JSON database
@@ -353,7 +363,212 @@ const mockTasks: UITask[] = [
     episode_clean: 'Ep00',
     _created_at: '2025-08-04T11:48:47.186584',
     _updated_at: '2025-08-17T14:13:05.705798',
-    updated_at: '2025-08-17T14:13:05.705798'
+    updated_at: '2025-08-17T14:13:05.705798',
+
+    // Linear-compatible extensions
+    task_type: 'shot',
+    assignees: ['current_user'],
+    labels: ['urgent', 'client-review'],
+    linked_task_ids: ['ep00_sq0010_sh0020_comp'],
+    start_date: '2025-08-15T09:00:00.000Z',
+    status_history: [
+      { status: 'not_started', changed_at: '2025-08-04T11:48:47.186584', changed_by: 'current_user' },
+      { status: 'in_progress', changed_at: '2025-08-15T09:00:00.000Z', changed_by: 'current_user', note: 'Started lighting setup' }
+    ],
+    displayAssignees: ['Current User'],
+    displayLabels: [
+      { id: 'urgent', name: 'Urgent', color: 'var(--semantic-danger)' },
+      { id: 'client-review', name: 'Client Review', color: 'var(--accent-blue)' }
+    ],
+    linkedTasks: [
+      { id: 'ep00_sq0010_sh0020_comp', title: 'Compositing - Ep00 SQ0010 SH0020', status: 'not_started' }
+    ],
+
+    // Enhanced version control (FR specifications)
+    version_history: [
+      {
+        version: 'v001',
+        owner: 'current_user',
+        created_at: '2025-08-15T09:00:00.000Z',
+        is_published: false,
+        media_ids: ['media_001'],
+        farm_status: 'completed',
+        issues: [],
+        notes: 'Initial lighting setup'
+      },
+      {
+        version: 'v002',
+        owner: 'current_user',
+        created_at: '2025-08-16T14:00:00.000Z',
+        is_published: true,
+        published_at: '2025-08-16T16:00:00.000Z',
+        published_by: 'supervisor_user',
+        media_ids: ['media_002', 'media_003'],
+        farm_status: 'completed',
+        issues: [],
+        notes: 'Approved version with client feedback'
+      },
+      {
+        version: 'v003',
+        owner: 'current_user',
+        created_at: '2025-08-17T10:00:00.000Z',
+        is_published: false,
+        media_ids: ['media_004'],
+        farm_status: 'in_progress',
+        issues: ['Color temperature needs adjustment'],
+        notes: 'Work in progress - addressing feedback'
+      }
+    ],
+
+    // Media records
+    media_records: [
+      {
+        _id: 'media_001',
+        linked_task_id: 'ep00_sq0010_sh0020_lighting',
+        linked_version: 'v001',
+        author: 'current_user',
+        file_name: 'ep00_sq0010_sh0020_lighting_v001.exr',
+        media_type: 'image',
+        file_extension: '.exr',
+        storage_key: '/renders/ep00_sq0010_sh0020_lighting_v001.exr',
+        storage_url: '/renders/ep00_sq0010_sh0020_lighting_v001.exr',
+        thumbnail_key: '/thumbs/ep00_sq0010_sh0020_lighting_v001.jpg',
+        description: 'Initial lighting render',
+        tags: ['lighting', 'render'],
+        metadata: {
+          file_size: 15728640,
+          mime_type: 'image/x-exr',
+          width: 1920,
+          height: 1080,
+          color_space: 'ACES',
+          creation_date: '2025-08-15T09:30:00.000Z',
+          modification_date: '2025-08-15T09:30:00.000Z',
+          checksum: 'abc123'
+        },
+        upload_time: '2025-08-15T09:30:00.000Z',
+        status: 'active',
+        review_selected: false,
+        approval_status: 'pending',
+        _created_at: '2025-08-15T09:30:00.000Z',
+        _updated_at: '2025-08-15T09:30:00.000Z'
+      },
+      {
+        _id: 'media_002',
+        linked_task_id: 'ep00_sq0010_sh0020_lighting',
+        linked_version: 'v002',
+        author: 'current_user',
+        file_name: 'ep00_sq0010_sh0020_lighting_v002.exr',
+        media_type: 'image',
+        file_extension: '.exr',
+        storage_key: '/renders/ep00_sq0010_sh0020_lighting_v002.exr',
+        storage_url: '/renders/ep00_sq0010_sh0020_lighting_v002.exr',
+        thumbnail_key: '/thumbs/ep00_sq0010_sh0020_lighting_v002.jpg',
+        description: 'Approved lighting render',
+        tags: ['lighting', 'render', 'approved'],
+        metadata: {
+          file_size: 16777216,
+          mime_type: 'image/x-exr',
+          width: 1920,
+          height: 1080,
+          color_space: 'ACES',
+          creation_date: '2025-08-16T14:30:00.000Z',
+          modification_date: '2025-08-16T14:30:00.000Z',
+          checksum: 'def456'
+        },
+        upload_time: '2025-08-16T14:30:00.000Z',
+        status: 'active',
+        review_selected: true,
+        approval_status: 'approved',
+        reviewer: 'supervisor_user',
+        review_notes: 'Looks great, approved for final',
+        review_date: '2025-08-16T16:00:00.000Z',
+        _created_at: '2025-08-16T14:30:00.000Z',
+        _updated_at: '2025-08-16T16:00:00.000Z'
+      }
+    ],
+
+    // Sub-task states
+    sub_task_states: [
+      {
+        id: 'state_1',
+        name: 'Key Light Setup',
+        order: 1,
+        allocated_hours: 6.0,
+        actual_hours: 5.5,
+        status: 'completed',
+        start_date: '2025-08-15T09:00:00.000Z',
+        completion_date: '2025-08-15T15:30:00.000Z',
+        assignee: 'current_user',
+        notes: 'Primary lighting setup complete'
+      },
+      {
+        id: 'state_2',
+        name: 'Fill & Rim Lighting',
+        order: 2,
+        allocated_hours: 8.0,
+        actual_hours: 3.0,
+        status: 'in_progress',
+        start_date: '2025-08-16T09:00:00.000Z',
+        assignee: 'current_user',
+        notes: 'Working on secondary lighting'
+      },
+      {
+        id: 'state_3',
+        name: 'Final Render',
+        order: 3,
+        allocated_hours: 10.0,
+        actual_hours: 0.0,
+        status: 'not_started',
+        assignee: 'current_user',
+        notes: 'Render optimization and final output'
+      }
+    ],
+
+    // Applied template
+    task_state_template: {
+      template_id: 'lighting_standard',
+      template_name: 'Lighting Standard',
+      task_type: 'lighting',
+      states: [
+        { name: 'Key Light Setup', percentage: 25 },
+        { name: 'Fill & Rim', percentage: 35 },
+        { name: 'Final Render', percentage: 40 }
+      ]
+    },
+
+    // Time entries for additive time logging
+    time_entries: [
+      {
+        id: 'time_001',
+        task_id: 'ep00_sq0010_sh0020_lighting',
+        user_id: 'current_user',
+        duration_hours: 3.5,
+        date: '2025-08-15',
+        notes: 'Initial key light setup and basic scene lighting',
+        created_at: '2025-08-15T12:30:00.000Z',
+        updated_at: '2025-08-15T12:30:00.000Z'
+      },
+      {
+        id: 'time_002',
+        task_id: 'ep00_sq0010_sh0020_lighting',
+        user_id: 'current_user',
+        duration_hours: 2.0,
+        date: '2025-08-16',
+        notes: 'Adjusted fill lighting and rim light positioning',
+        created_at: '2025-08-16T10:15:00.000Z',
+        updated_at: '2025-08-16T10:15:00.000Z'
+      },
+      {
+        id: 'time_003',
+        task_id: 'ep00_sq0010_sh0020_lighting',
+        user_id: 'current_user',
+        duration_hours: 1.5,
+        date: '2025-08-17',
+        notes: 'Fine-tuning shadow details',
+        created_at: '2025-08-17T14:45:00.000Z',
+        updated_at: '2025-08-17T14:45:00.000Z'
+      }
+    ]
   },
   {
     id: 'ep00_sq0010_sh0020_comp',
@@ -393,7 +608,84 @@ const mockTasks: UITask[] = [
     episode_clean: 'Ep00',
     _created_at: '2025-08-04T11:48:47.186584',
     _updated_at: '2025-08-15T23:39:32.464518',
-    updated_at: '2025-08-15T23:39:32.464518'
+    updated_at: '2025-08-15T23:39:32.464518',
+
+    // Linear-compatible extensions
+    task_type: 'shot',
+    assignees: ['current_user'],
+    labels: ['waiting'],
+    linked_task_ids: ['ep00_sq0010_sh0020_lighting'],
+    start_date: null,
+    status_history: [
+      { status: 'not_started', changed_at: '2025-08-04T11:48:47.186584', changed_by: 'current_user' }
+    ],
+    displayAssignees: ['Current User'],
+    displayLabels: [
+      { id: 'waiting', name: 'Waiting', color: 'var(--semantic-warning)' }
+    ],
+    linkedTasks: [
+      { id: 'ep00_sq0010_sh0020_lighting', title: 'Lighting - Ep00 SQ0010 SH0020', status: 'in_progress' }
+    ]
+  },
+  {
+    id: 'swa_character_hero_modeling',
+    title: 'Hero Character - Modeling',
+    project: 'SWA',
+    projectName: 'Sky Wars Anthology',
+    type: 'asset',
+    episode: '',
+    sequence: '',
+    shot: '',
+    task: 'modeling',
+    artist: 'current_user',
+    assignee: 'current_user',
+    status: 'in_progress',
+    milestone: 'low_quality',
+    milestone_note: 'Base mesh complete, working on detail pass',
+    frame_range: { start: 0, end: 0 },
+    priority: 'high',
+    start_time: '2025-08-12T09:00:00.000Z',
+    deadline: '2025-08-22T17:00:00.000Z',
+    dueDate: '2025-08-22T17:00:00.000Z',
+    actual_time_logged: 18.5,
+    estimated_duration_hours: 32.0,
+    versions: ['v001', 'v002', 'v003', 'v004'],
+    client_submission_history: [],
+    current_version: 'v004',
+    published_version: 'v003',
+    file_extension: '.ma',
+    master_file: true,
+    working_file_path: 'V:/SWA/all/asset/character/hero/modeling/version/',
+    render_output_path: 'W:/SWA/all/asset/character/hero/modeling/version/v004/',
+    media_file_path: 'E:/SWA/all/asset/character/hero/modeling/version/v004/media/',
+    cache_file_path: 'E:/SWA/all/asset/character/hero/modeling/cache/',
+    filename: 'SWA_character_hero_modeling_master_v004.ma',
+    sequence_clean: '',
+    shot_clean: '',
+    episode_clean: '',
+    _created_at: '2025-08-01T09:00:00.000000',
+    _updated_at: '2025-08-17T16:30:00.000000',
+    updated_at: '2025-08-17T16:30:00.000000',
+
+    // Linear-compatible extensions
+    task_type: 'asset',
+    asset_category: 'character',
+    assignees: ['current_user'],
+    labels: ['hero-asset', 'priority'],
+    linked_task_ids: ['swa_character_hero_texturing'],
+    start_date: '2025-08-12T09:00:00.000Z',
+    status_history: [
+      { status: 'not_started', changed_at: '2025-08-01T09:00:00.000000', changed_by: 'current_user' },
+      { status: 'in_progress', changed_at: '2025-08-12T09:00:00.000Z', changed_by: 'current_user', note: 'Started base mesh' }
+    ],
+    displayAssignees: ['Current User'],
+    displayLabels: [
+      { id: 'hero-asset', name: 'Hero Asset', color: 'var(--accent-mint)' },
+      { id: 'priority', name: 'Priority', color: 'var(--semantic-warning)' }
+    ],
+    linkedTasks: [
+      { id: 'swa_character_hero_texturing', title: 'Hero Character - Texturing', status: 'not_started' }
+    ]
   },
   {
     id: 'rgd_ep01_sq0001_sh0010_animation',
@@ -437,7 +729,7 @@ const mockTasks: UITask[] = [
   }
 ]
 
-const mockNotifications: Notification[] = [
+const mockEnhancedNotifications: EnhancedNotification[] = [
   {
     id: 'notif_001',
     type: 'assignment',
@@ -448,13 +740,22 @@ const mockNotifications: Notification[] = [
     relatedType: 'task',
     isRead: false,
     createdAt: '2025-08-17T14:10:00.000Z',
+    priority: 'high',
+    projectId: 'SWA',
+    projectName: 'Sky Wars Anthology',
+    projectColor: '#CBB7E8',
+    canReply: true,
+    hasReplies: false,
+    replyCount: 0,
+    actionUrl: '/projects/SWA/tasks/ep00_sq0010_sh0020_lighting',
     metadata: {
       project: 'SWA',
       episode: 'Ep00',
       sequence: 'sq0010',
       shot: 'SH0020',
       task: 'lighting',
-      priority: 'medium'
+      priority: 'high',
+      assignedBy: 'supervisor_user'
     }
   },
   {
@@ -467,6 +768,15 @@ const mockNotifications: Notification[] = [
     relatedType: 'version',
     isRead: false,
     createdAt: '2025-08-17T13:45:00.000Z',
+    priority: 'medium',
+    projectId: 'SWA',
+    projectName: 'Sky Wars Anthology',
+    projectColor: '#CBB7E8',
+    canReply: true,
+    hasReplies: true,
+    replyCount: 2,
+    lastReplyAt: '2025-08-17T14:00:00.000Z',
+    actionUrl: '/projects/SWA/versions/ep00_sq0010_sh0020_lighting_v005',
     metadata: {
       project: 'SWA',
       version: 'v005',
@@ -484,6 +794,14 @@ const mockNotifications: Notification[] = [
     relatedType: 'project',
     isRead: false,
     createdAt: '2025-08-17T12:30:00.000Z',
+    priority: 'low',
+    projectId: 'SWA',
+    projectName: 'Sky Wars Anthology',
+    projectColor: '#CBB7E8',
+    canReply: false,
+    hasReplies: false,
+    replyCount: 0,
+    actionUrl: '/projects/SWA/settings',
     metadata: {
       project: 'SWA',
       updatedFields: ['drive_mapping', 'templates'],
@@ -500,10 +818,159 @@ const mockNotifications: Notification[] = [
     relatedType: 'task',
     isRead: true,
     createdAt: '2025-08-17T11:15:00.000Z',
+    priority: 'medium',
+    projectId: 'RGD',
+    projectName: 'Relic: Guardian of Dreams',
+    projectColor: '#E8B7CB',
+    canReply: true,
+    hasReplies: false,
+    replyCount: 0,
+    actionUrl: '/projects/RGD/tasks/rgd_ep01_sq0001_sh0010_animation',
     metadata: {
       project: 'RGD',
       mentionedBy: 'sarah_animator',
       commentId: 'comment_123'
+    }
+  },
+  {
+    id: 'notif_005',
+    type: 'comment',
+    title: 'New comment on your task',
+    description: 'Mike added a comment to your compositing task: "Great work on the color grading!"',
+    userId: 'current_user',
+    relatedId: 'swa_ep01_sq0020_sh0030_comp',
+    relatedType: 'task',
+    isRead: false,
+    createdAt: '2025-08-17T10:30:00.000Z',
+    priority: 'medium',
+    projectId: 'SWA',
+    projectName: 'Sky Wars Anthology',
+    projectColor: '#CBB7E8',
+    canReply: true,
+    hasReplies: true,
+    replyCount: 1,
+    lastReplyAt: '2025-08-17T11:00:00.000Z',
+    actionUrl: '/projects/SWA/tasks/swa_ep01_sq0020_sh0030_comp',
+    metadata: {
+      project: 'SWA',
+      commentBy: 'mike_supervisor',
+      commentId: 'comment_456'
+    }
+  },
+  {
+    id: 'notif_006',
+    type: 'assignment',
+    title: 'Task reassigned: "rgd_ep01_sq0005_sh0010_fx"',
+    description: 'You have been reassigned to work on FX for RGD Ep01 SQ0005 SH0010',
+    userId: 'current_user',
+    relatedId: 'rgd_ep01_sq0005_sh0010_fx',
+    relatedType: 'task',
+    isRead: false,
+    createdAt: '2025-08-17T09:15:00.000Z',
+    priority: 'urgent',
+    projectId: 'RGD',
+    projectName: 'Relic: Guardian of Dreams',
+    projectColor: '#E8B7CB',
+    canReply: true,
+    hasReplies: false,
+    replyCount: 0,
+    actionUrl: '/projects/RGD/tasks/rgd_ep01_sq0005_sh0010_fx',
+    metadata: {
+      project: 'RGD',
+      episode: 'Ep01',
+      sequence: 'sq0005',
+      shot: 'SH0010',
+      task: 'fx',
+      priority: 'urgent',
+      reassignedBy: 'producer_user',
+      previousAssignee: 'other_artist'
+    }
+  }
+]
+
+// Mock messages for direct communication
+const mockMessages: Message[] = [
+  {
+    id: 'msg_001',
+    type: 'direct',
+    subject: 'Question about lighting setup',
+    content: 'Hi! I have a question about the lighting setup for the space battle scene. Could you help me understand the key light positioning?',
+    fromUserId: 'artist_user',
+    fromUserName: 'Alex Artist',
+    toUserIds: ['current_user'],
+    toUserNames: ['Current User'],
+    relatedTaskId: 'ep00_sq0010_sh0020_lighting',
+    relatedProjectId: 'SWA',
+    relatedProjectName: 'Sky Wars Anthology',
+    isRead: false,
+    createdAt: '2025-08-17T15:30:00.000Z',
+    threadId: 'thread_001',
+    metadata: {
+      priority: 'medium',
+      category: 'question'
+    }
+  },
+  {
+    id: 'msg_002',
+    type: 'reply',
+    subject: 'Re: Question about lighting setup',
+    content: 'Sure! For the space battle scene, we want the key light coming from the upper right to simulate the star light. I\'ll send you the reference images.',
+    fromUserId: 'current_user',
+    fromUserName: 'Current User',
+    toUserIds: ['artist_user'],
+    toUserNames: ['Alex Artist'],
+    relatedTaskId: 'ep00_sq0010_sh0020_lighting',
+    relatedProjectId: 'SWA',
+    relatedProjectName: 'Sky Wars Anthology',
+    isRead: true,
+    createdAt: '2025-08-17T15:45:00.000Z',
+    parentMessageId: 'msg_001',
+    threadId: 'thread_001',
+    metadata: {
+      priority: 'medium',
+      category: 'answer'
+    }
+  },
+  {
+    id: 'msg_003',
+    type: 'cc',
+    subject: 'Weekly progress update - RGD Animation',
+    content: 'Hi team, here\'s the weekly progress update for RGD animation tasks. We\'re on track for the milestone delivery.',
+    fromUserId: 'supervisor_user',
+    fromUserName: 'Sarah Supervisor',
+    toUserIds: ['current_user', 'artist_user'],
+    toUserNames: ['Current User', 'Alex Artist'],
+    ccUserIds: ['producer_user', 'coordinator_user'],
+    ccUserNames: ['Mike Producer', 'Lisa Coordinator'],
+    relatedProjectId: 'RGD',
+    relatedProjectName: 'Relic: Guardian of Dreams',
+    isRead: false,
+    createdAt: '2025-08-17T14:00:00.000Z',
+    threadId: 'thread_002',
+    metadata: {
+      priority: 'low',
+      category: 'update',
+      isWeeklyUpdate: true
+    }
+  },
+  {
+    id: 'msg_004',
+    type: 'direct',
+    subject: 'Urgent: Render farm issue',
+    content: 'The render farm is experiencing issues with the SWA project renders. Can you check the render queue and restart if needed?',
+    fromUserId: 'tech_user',
+    fromUserName: 'Tech Support',
+    toUserIds: ['current_user'],
+    toUserNames: ['Current User'],
+    relatedProjectId: 'SWA',
+    relatedProjectName: 'Sky Wars Anthology',
+    isRead: false,
+    createdAt: '2025-08-17T13:15:00.000Z',
+    threadId: 'thread_003',
+    metadata: {
+      priority: 'urgent',
+      category: 'technical',
+      isSystemIssue: true
     }
   }
 ]
@@ -827,28 +1294,156 @@ export class MockDataService {
     return updatedTask
   }
 
-  // Notifications API
-  async getNotifications(userId: string, options: QueryOptions = {}): Promise<DataResponse<Notification>> {
+  // Enhanced Notifications API
+  async getEnhancedNotifications(userId: string, filters?: InboxFilters, options: QueryOptions = {}): Promise<DataResponse<EnhancedNotification>> {
     await this.delay(300)
 
-    let userNotifications = mockNotifications.filter(n => n.userId === userId)
+    let userNotifications = mockEnhancedNotifications.filter(n => n.userId === userId)
 
-    if (options.filters?.isRead !== undefined) {
-      userNotifications = userNotifications.filter(n => n.isRead === options.filters!.isRead)
+    // Apply filters
+    if (filters) {
+      if (filters.projectId) {
+        userNotifications = userNotifications.filter(n => n.projectId === filters.projectId)
+      }
+      if (filters.type && filters.type !== 'all') {
+        userNotifications = userNotifications.filter(n => n.type === filters.type)
+      }
+      if (filters.priority && filters.priority !== 'all') {
+        userNotifications = userNotifications.filter(n => n.priority === filters.priority)
+      }
+      if (filters.readStatus !== 'all') {
+        userNotifications = userNotifications.filter(n =>
+          filters.readStatus === 'read' ? n.isRead : !n.isRead
+        )
+      }
+      if (filters.searchQuery) {
+        const query = filters.searchQuery.toLowerCase()
+        userNotifications = userNotifications.filter(n =>
+          n.title.toLowerCase().includes(query) ||
+          n.description.toLowerCase().includes(query) ||
+          n.projectName.toLowerCase().includes(query)
+        )
+      }
     }
 
-    // Sort by creation date, newest first
-    userNotifications = this.sortItems(userNotifications, 'createdAt', 'desc')
+    // Apply sorting
+    const sortBy = filters?.sortBy || 'date'
+    const sortOrder = filters?.sortOrder || 'desc'
+
+    switch (sortBy) {
+      case 'project':
+        userNotifications = this.sortItems(userNotifications, 'projectName', sortOrder)
+        break
+      case 'priority':
+        const priorityOrder = { urgent: 4, high: 3, medium: 2, low: 1 }
+        userNotifications.sort((a, b) => {
+          const aVal = priorityOrder[a.priority as keyof typeof priorityOrder] || 0
+          const bVal = priorityOrder[b.priority as keyof typeof priorityOrder] || 0
+          return sortOrder === 'desc' ? bVal - aVal : aVal - bVal
+        })
+        break
+      case 'type':
+        userNotifications = this.sortItems(userNotifications, 'type', sortOrder)
+        break
+      default:
+        userNotifications = this.sortItems(userNotifications, 'createdAt', sortOrder)
+    }
 
     return this.paginate(userNotifications, options.limit, options.offset)
+  }
+
+  async getInboxStats(userId: string): Promise<InboxStats> {
+    await this.delay(200)
+
+    const userNotifications = mockEnhancedNotifications.filter(n => n.userId === userId)
+    const unreadNotifications = userNotifications.filter(n => !n.isRead)
+
+    const byProject: Record<string, { total: number; unread: number }> = {}
+    const byType: Record<string, { total: number; unread: number }> = {}
+    const byPriority: Record<string, { total: number; unread: number }> = {}
+
+    userNotifications.forEach(notification => {
+      // By project
+      if (!byProject[notification.projectId]) {
+        byProject[notification.projectId] = { total: 0, unread: 0 }
+      }
+      byProject[notification.projectId].total++
+      if (!notification.isRead) byProject[notification.projectId].unread++
+
+      // By type
+      if (!byType[notification.type]) {
+        byType[notification.type] = { total: 0, unread: 0 }
+      }
+      byType[notification.type].total++
+      if (!notification.isRead) byType[notification.type].unread++
+
+      // By priority
+      if (!byPriority[notification.priority]) {
+        byPriority[notification.priority] = { total: 0, unread: 0 }
+      }
+      byPriority[notification.priority].total++
+      if (!notification.isRead) byPriority[notification.priority].unread++
+    })
+
+    return {
+      total: userNotifications.length,
+      unread: unreadNotifications.length,
+      byProject,
+      byType,
+      byPriority
+    }
   }
 
   async markNotificationRead(notificationId: string): Promise<void> {
     await this.delay(200)
 
-    const notification = mockNotifications.find(n => n.id === notificationId)
+    const notification = mockEnhancedNotifications.find(n => n.id === notificationId)
     if (notification) {
       notification.isRead = true
+    }
+  }
+
+  async bulkMarkNotificationsRead(notificationIds: string[]): Promise<void> {
+    await this.delay(300)
+
+    notificationIds.forEach(id => {
+      const notification = mockEnhancedNotifications.find(n => n.id === id)
+      if (notification) {
+        notification.isRead = true
+      }
+    })
+  }
+
+  async bulkDeleteNotifications(notificationIds: string[]): Promise<void> {
+    await this.delay(300)
+
+    notificationIds.forEach(id => {
+      const index = mockEnhancedNotifications.findIndex(n => n.id === id)
+      if (index !== -1) {
+        mockEnhancedNotifications.splice(index, 1)
+      }
+    })
+  }
+
+  async performBulkOperation(operation: BulkOperation, notificationIds: string[]): Promise<void> {
+    await this.delay(400)
+
+    switch (operation) {
+      case 'markAsRead':
+        return this.bulkMarkNotificationsRead(notificationIds)
+      case 'markAsUnread':
+        notificationIds.forEach(id => {
+          const notification = mockEnhancedNotifications.find(n => n.id === id)
+          if (notification) {
+            notification.isRead = false
+          }
+        })
+        break
+      case 'delete':
+        return this.bulkDeleteNotifications(notificationIds)
+      case 'archive':
+        // For now, archive is the same as mark as read
+        return this.bulkMarkNotificationsRead(notificationIds)
     }
   }
 
@@ -884,6 +1479,115 @@ export class MockDataService {
     }
 
     return { projects, tasks }
+  }
+
+  // Legacy Notifications API (for backward compatibility)
+  async getNotifications(userId: string, options: QueryOptions = {}): Promise<DataResponse<Notification>> {
+    await this.delay(300)
+
+    // Convert enhanced notifications to basic notifications for backward compatibility
+    let userNotifications = mockEnhancedNotifications
+      .filter(n => n.userId === userId)
+      .map(n => ({
+        id: n.id,
+        type: n.type,
+        title: n.title,
+        description: n.description,
+        userId: n.userId,
+        relatedId: n.relatedId,
+        relatedType: n.relatedType,
+        isRead: n.isRead,
+        createdAt: n.createdAt,
+        metadata: n.metadata
+      } as Notification))
+
+    if (options.filters?.isRead !== undefined) {
+      userNotifications = userNotifications.filter(n => n.isRead === options.filters!.isRead)
+    }
+
+    // Sort by creation date, newest first
+    userNotifications = this.sortItems(userNotifications, 'createdAt', 'desc')
+
+    return this.paginate(userNotifications, options.limit, options.offset)
+  }
+
+  // Messages API
+  async getMessages(userId: string, options: QueryOptions = {}): Promise<DataResponse<Message>> {
+    await this.delay(300)
+
+    let userMessages = mockMessages.filter(m =>
+      m.toUserIds.includes(userId) ||
+      m.fromUserId === userId ||
+      (m.ccUserIds && m.ccUserIds.includes(userId))
+    )
+
+    // Sort by creation date, newest first
+    userMessages = this.sortItems(userMessages, 'createdAt', 'desc')
+
+    return this.paginate(userMessages, options.limit, options.offset)
+  }
+
+  async sendMessage(message: Omit<Message, 'id' | 'createdAt'>): Promise<Message> {
+    await this.delay(500)
+
+    const newMessage: Message = {
+      ...message,
+      id: `msg_${Date.now()}`,
+      createdAt: new Date().toISOString()
+    }
+
+    mockMessages.unshift(newMessage)
+    return newMessage
+  }
+
+  async replyToMessage(parentMessageId: string, reply: Omit<Message, 'id' | 'createdAt' | 'parentMessageId' | 'threadId'>): Promise<Message> {
+    await this.delay(500)
+
+    const parentMessage = mockMessages.find(m => m.id === parentMessageId)
+    if (!parentMessage) {
+      throw new Error('Parent message not found')
+    }
+
+    const newReply: Message = {
+      ...reply,
+      id: `msg_${Date.now()}`,
+      createdAt: new Date().toISOString(),
+      parentMessageId,
+      threadId: parentMessage.threadId || parentMessage.id,
+      type: 'reply'
+    }
+
+    mockMessages.unshift(newReply)
+
+    // Update parent message reply count if it's an enhanced notification
+    const relatedNotification = mockEnhancedNotifications.find(n =>
+      n.relatedId === parentMessage.relatedTaskId || n.relatedId === parentMessage.relatedProjectId
+    )
+    if (relatedNotification) {
+      relatedNotification.hasReplies = true
+      relatedNotification.replyCount = (relatedNotification.replyCount || 0) + 1
+      relatedNotification.lastReplyAt = newReply.createdAt
+    }
+
+    return newReply
+  }
+
+  async getMessageThread(threadId: string): Promise<Message[]> {
+    await this.delay(200)
+
+    return mockMessages
+      .filter(m => m.threadId === threadId || m.id === threadId)
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+  }
+
+  async markMessageRead(messageId: string): Promise<void> {
+    await this.delay(200)
+
+    const message = mockMessages.find(m => m.id === messageId)
+    if (message) {
+      message.isRead = true
+      message.updatedAt = new Date().toISOString()
+    }
   }
 
   // Task Comments methods

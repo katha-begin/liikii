@@ -20,13 +20,19 @@
 ## 👤 User Stories
 
 **Primary User Story**:
-As a VFX Supervisor, I want to quickly search for any task across all projects so that I can find specific shots without remembering which project they're in or navigating through multiple project pages.
+As a VFX Supervisor, I want to quickly search for any task across all projects so that I can find specific shots ,lates status update without remembering which project they're in or navigating through multiple project pages.
 
 **Secondary User Story**:
-As a Compositor, I want to see breadcrumbs showing my current location so that I can easily navigate back to the project overview or switch between related tasks without losing my place.
+As a Compositor, I want to see to launch working  files directly from my task details of task card.
 
 **Tertiary User Story**:
 As a Producer, I want quick access to recently viewed items so that I can jump between the 5-6 tasks I'm actively monitoring without having to navigate through the full project hierarchy each time.
+
+As a Producer, I want create new project with fill project information before project start. ex. start date, end date, project scope
+
+As a Producer, I want to see production progress by department and task type so that I can make informed decisions about resource allocation and task prioritization.
+
+As a Producer, I want to see production progress by sequences, department and task type so that I can make informed decisions about resource allocation and task prioritization.
 
 **Edge Case Story**:
 As a Department Lead, I want to access common actions (create task, bulk operations, filters) from anywhere in the application so that I can perform administrative tasks without interrupting my current workflow.

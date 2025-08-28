@@ -1,0 +1,205 @@
+
+```markdown
+# Feature Request: [inbox_enhancement]
+
+## 🎯 Purpose & Goals
+**Primary Goal**: [to improve the inbox visibility and organization ]
+**User Value**: [User will spen less time in inbox and more time in task and more orgaize inbox, quickly reply the message, comments]
+**Business Impact**: [Good comunication and stay on track]
+**Success Metrics**: [Spend less time in inbox, better comunication]
+
+## 👤 User Stories
+Write 2-4 user stories covering different user types and scenarios:
+
+**Primary User Story**:
+As a [SuperVisor], I want [fillter inbox] so that [I can focus can see what is update to every task].
+
+As a [SuperVisor], I want [select project in inbox] so that [I can focus can see what is update to every task].
+
+As a [SuperVisor], I want [direct massage to artist and cc who in the loops] so that [have more visibility to the team].
+
+As a [artist], I want [sort lates comments] so that [quick reply ang jump to task].
+
+As a [artist], I want [fillter read and unread] so that [I will never lose the track].
+
+As a [artist, coordinator], I want [set the status of the message] so that [I can quickly set the status of the task faster].
+
+As a [producer], I want [sort inbox by project] so that [I can focus on project].
+
+As a [producer,Artist], I want [jump to task from inbox] so that [I can see more details of that task].
+
+**Secondary User Story**:
+As a [different user type], I want [related functionality] so that [different benefit].
+
+**Edge Case Story**:
+As a [edge case user], I want [specific need] so that [edge case benefit].
+
+### Acceptance Criteria
+- [ ] Given [inbox layout], when [click on the mail], then [show mail information]
+- [ ] Given [check box], when [tick on the check box], then [show selection or multiple selections]
+- [ ] Given [bulk actions], when [multi selections are selected], then [user can perform bulk actions like delete, archive, mark as read, etc.]
+
+## 🔄 User Workflow
+
+### Happy Path
+1. **Entry Point**: [selected inbox on the side bar]
+2. **Step 1**: [selected the mail to inspect]
+3. **Step 2**: [read the mail and reply]
+4. **Step 3**: [user can jump to paticular task]
+5. **Success State**: [success reply mails, jump to task]
+
+### Error Scenarios
+- **Scenario 1**: [No recived emails] → [notifications]
+- **Scenario 2**: [set stutus] → [fall back to previous status]
+- **Scenario 3**: [cc other user] → [notifications]
+
+
+## 🎨 Design Requirements
+
+### Visual Style
+- **Design System**: Should match Linear-inspired design system, saperate section clean and clear
+- **Component Reuse**: please inspect and decide
+- **New Components**: please suggest
+- **Color Scheme**: follow the design system and make sure we have project visibility 
+
+### Layout & Placement
+- **Primary Location**: On the sidebar
+- **Secondary Locations**: May be notifications on the top right
+- **Navigation**: click inbox on the side bar
+
+### Responsive Behavior
+- **Desktop**: Work normally, you can suggest
+- **Mobile**: Work normally, you can suggest
+- **Tablet**: Work normally, you can suggest
+
+### Accessibility
+- **Keyboard Navigation**: please suggest
+- **Screen Reader**: please suggest
+- **Color Contrast**: please suggest, follow the design system
+
+## 🔧 Technical Requirements
+
+### Data Integration
+- **Data Sources**: please suggest
+- **Data Format**: please suggest
+- **Data Volume**: please suggest
+- **Real-time Updates**: yes
+
+### Performance Requirements
+- **Response Time**: please suggest
+- **Concurrent Users**: please suggest
+- **Data Loading**: please suggest
+
+### Integration Points
+- **Existing Components**: side bar, inbox
+  - TaskDetailPanel: yes, directjump to task
+  - ProjectDetailsPage: no, please suggest
+  - MyTasksPage: yes, and please suggest
+  - DataContext: yes, future need to integrate chat bot ex. rocket chat and slack
+
+### State Management
+- **New Context**: please suggest
+- **Existing Context**: please suggest
+- **Persistence**: please suggest
+
+## 📱 Platform Considerations
+
+### Desktop-Specific
+- **Electron Features**: please suggest
+- **System Integration**: please suggest
+- **Keyboard Shortcuts**: please suggest
+
+### Cross-Platform
+- **Windows**: same each platform
+- **macOS**: same each platform
+- **Linux**: same each platform
+
+### Offline Capability
+- **Offline Mode**: No
+- **Data Sync**:suggest  please
+
+## 🔗 Integration Context
+
+### Affected Components
+List all components that will be modified or extended:
+- **Component Name**: [Description of changes needed]
+- **Component Name**: [Description of changes needed]
+
+### Data Flow Changes
+- **MockDataService**: [New methods needed?]
+- **API Endpoints**: [New endpoints required?]
+- **Database Schema**: [Any schema changes?]
+
+### Design System Impact
+- **New Design Tokens**: [Any new colors, spacing, typography?]
+- **Component Extensions**: [Modifications to existing components?]
+- **New Patterns**: [Any new interaction patterns?]
+
+## 📋 Implementation Priority
+
+### Must Have (MVP)
+- UI full function
+- read mails and jump to task
+- reply
+- filter
+- sorting
+- task link
+
+### Should Have
+- jump to task
+
+
+### Could Have
+- launch the application direct to the task
+- attachments
+
+## 📚 References & Examples
+
+### Visual References
+- inbox standart ex. linear inbox, gmail inbox
+
+### Technical References
+
+
+## 🚨 Constraints & Considerations
+
+### Technical Constraints
+- current data mocklup from Json may not support all the fields
+
+
+### Business Constraints
+- start now
+
+### User Constraints
+
+
+## ✅ Definition of Done
+
+### Functional Requirements
+- [ ] All user stories implemented and tested
+- [ ] All acceptance criteria met
+- [ ] Error scenarios handled gracefully
+- [ ] Edge cases addressed
+
+### Technical Requirements
+- [ ] TypeScript compilation passes
+- [ ] All existing tests continue to pass
+- [ ] New functionality has appropriate tests
+- [ ] Performance requirements met
+- [ ] Accessibility requirements satisfied
+
+### Integration Requirements
+- [ ] Integrates seamlessly with existing components
+- [ ] Follows established design patterns
+- [ ] Maintains data consistency
+- [ ] No breaking changes to existing functionality
+
+### Documentation Requirements
+- [ ] Code is properly documented
+- [ ] User-facing changes documented
+- [ ] API changes documented (if applicable)
+
+---
+
+## Notes for Implementation
+This is UX-UI focus but If you need to create the data mockup please follow the format under /LIIKII/data/json_db/ 

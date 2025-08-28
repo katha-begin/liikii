@@ -1,0 +1,229 @@
+/* Inbox Filter Panel Styles */
+
+.inbox-filter-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  background: var(--bg-surface-1);
+  border-right: 1px solid var(--border-line);
+  width: 280px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* Filter Section */
+.filter-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.filter-section-title {
+  font-size: var(--text-caption);
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+/* Search */
+.filter-search {
+  width: 100%;
+}
+
+/* Stats */
+.filter-stats {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-3);
+  background: var(--bg-surface-2);
+  border-radius: var(--radius-sm);
+  flex: 1;
+}
+
+.stat-value {
+  font-size: var(--text-h3);
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: var(--text-caption);
+  color: var(--text-secondary);
+  margin-top: var(--space-1);
+}
+
+/* Filter Chips */
+.filter-chips {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.filter-chip {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  justify-content: flex-start;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.filter-chip:hover {
+  background: var(--bg-surface-2);
+}
+
+.filter-chip.badge--primary {
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
+}
+
+/* Project Chips */
+.project-chip {
+  --project-color: var(--color-primary);
+}
+
+.project-color-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--project-color);
+  flex-shrink: 0;
+}
+
+/* Priority Chips */
+.priority-chip {
+  --priority-color: var(--color-primary);
+}
+
+.priority-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--priority-color);
+  flex-shrink: 0;
+}
+
+/* Type Icons */
+.type-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* Chip Counts */
+.chip-count {
+  margin-left: auto;
+  background: var(--bg-surface-3);
+  color: var(--text-secondary);
+  font-size: var(--text-caption);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  min-width: 20px;
+  text-align: center;
+}
+
+.filter-chip.badge--primary .chip-count {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--color-primary-contrast);
+}
+
+/* Sort Controls */
+.sort-controls {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.sort-select {
+  flex: 1;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-line);
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface-1);
+  color: var(--text-primary);
+  font-size: var(--text-body);
+  cursor: pointer;
+}
+
+.sort-select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-alpha);
+}
+
+.sort-order-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Clear Filters */
+.clear-filters-btn {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .inbox-filter-panel {
+    width: 100%;
+    height: auto;
+    max-height: 50vh;
+    border-right: none;
+    border-bottom: 1px solid var(--border-line);
+  }
+
+  .filter-stats {
+    justify-content: space-around;
+  }
+
+  .stat-item {
+    min-width: 60px;
+  }
+}
+
+/* Scrollbar Styling */
+.inbox-filter-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.inbox-filter-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.inbox-filter-panel::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+.inbox-filter-panel::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-tertiary);
+}
+
+/* Dark Theme Adjustments */
+@media (prefers-color-scheme: dark) {
+  .stat-item {
+    background: var(--bg-surface-3);
+  }
+  
+  .sort-select {
+    background: var(--bg-surface-2);
+  }
+}

@@ -5,6 +5,7 @@ import { PageWrapper, Stack, Grid } from '@/components/layout'
 import { Button, Badge, Card, Input } from '@/components/ui'
 import { useProject, useProjectTasks } from '@/hooks/useData'
 import { useTaskDetail } from '@/contexts/TaskDetailContext'
+import { TaskTypeIndicator } from '@/components/task-properties'
 
 // Department configuration with icons and colors
 const DEPARTMENTS = {
@@ -258,7 +259,10 @@ const ProjectDetailsPage: React.FC = () => {
                         <Stack direction="vertical" gap="sm">
                           <Stack direction="horizontal" justify="between" align="start">
                             <div>
-                              <h3 className="task-title">{task.title}</h3>
+                              <Stack direction="horizontal" gap="sm" align="center">
+                                <h3 className="task-title">{task.title}</h3>
+                                <TaskTypeIndicator task={task} size="sm" />
+                              </Stack>
                               <p className="task-subtitle">
                                 {task.episode} • {task.sequence} • {task.shot}
                               </p>

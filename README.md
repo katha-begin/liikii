@@ -1,4 +1,4 @@
-# Liikii Desktop
+tnthe # Liikii Desktop
 
 A Linear-style desktop UI template for project management, built with Electron, React, and TypeScript.
 
@@ -126,8 +126,7 @@ The application follows a design token approach with:
 
 ## Contributing
 
-This project follows the PRD specifications for a Linear-style desktop UI template. Please refer to `PRD.md` for detailed requirements and acceptance criteria.
-
+i fa
 ## License
 
 MIT

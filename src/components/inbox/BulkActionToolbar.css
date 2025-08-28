@@ -1,0 +1,222 @@
+/* Bulk Action Toolbar Styles */
+
+.bulk-action-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-surface-1);
+  border-bottom: 1px solid var(--border-line);
+  padding: var(--space-4) var(--space-6);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-elev1);
+}
+
+.bulk-toolbar-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  max-width: 100%;
+}
+
+/* Selection Info */
+.selection-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.selection-count {
+  font-size: var(--text-body);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.select-all-btn {
+  font-size: var(--text-caption);
+  padding: var(--space-1) var(--space-2);
+  height: auto;
+}
+
+/* Action Buttons */
+.bulk-action-btn {
+  white-space: nowrap;
+}
+
+.bulk-action-btn.btn--danger {
+  background: var(--color-danger);
+  color: var(--color-danger-contrast);
+  border-color: var(--color-danger);
+}
+
+.bulk-action-btn.btn--danger:hover {
+  background: var(--color-danger-hover);
+}
+
+/* More Actions */
+.more-actions-container {
+  position: relative;
+}
+
+.more-actions-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+}
+
+.more-actions-dropdown {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-elev2);
+  z-index: 100;
+  min-width: 160px;
+  overflow: hidden;
+}
+
+.more-action-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: var(--text-body);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.more-action-item:hover {
+  background: var(--bg-surface-2);
+}
+
+.more-action-item:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.more-action-item:disabled:hover {
+  background: none;
+}
+
+/* Close Button */
+.close-selection-btn {
+  padding: var(--space-2);
+  width: 32px;
+  height: 32px;
+}
+
+/* Loading State */
+.bulk-operation-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(var(--bg-surface-1-rgb), 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  color: var(--text-secondary);
+  font-size: var(--text-body);
+  backdrop-filter: blur(2px);
+}
+
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--color-border);
+  border-top: 2px solid var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .bulk-action-toolbar {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .bulk-toolbar-content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+  }
+
+  .selection-info {
+    justify-content: space-between;
+  }
+
+  .bulk-action-btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .more-actions-dropdown {
+    right: auto;
+    left: 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .bulk-toolbar-content {
+    gap: var(--space-2);
+  }
+
+  .bulk-action-btn .btn__text {
+    display: none;
+  }
+
+  .bulk-action-btn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .more-actions-btn .btn__text {
+    display: none;
+  }
+
+  .selection-count {
+    font-size: var(--text-caption);
+  }
+}
+
+/* Animation */
+.bulk-action-toolbar {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Dark Theme Adjustments */
+@media (prefers-color-scheme: dark) {
+  .bulk-operation-loading {
+    background: rgba(var(--bg-surface-1-rgb), 0.95);
+  }
+}

@@ -5,6 +5,7 @@ import { Calendar, Clock, Flag, Play, Film, Filter, MoreHorizontal } from 'lucid
 // import { UITask } from '@/types/database'
 import { useMyTasks } from '@/hooks/useData'
 import { useTaskDetail } from '@/contexts/TaskDetailContext'
+import { TaskTypeIndicator } from '@/components/task-properties'
 
 const MyTasksPage: React.FC = () => {
   const { openTaskDetail } = useTaskDetail()
@@ -160,7 +161,10 @@ const MyTasksPage: React.FC = () => {
                     <Stack direction="horizontal" gap="sm" align="center">
                       {getTaskIcon(task.task)}
                       <div>
-                        <h3 className="text-h3">{task.title}</h3>
+                        <Stack direction="horizontal" gap="sm" align="center">
+                          <h3 className="text-h3">{task.title}</h3>
+                          <TaskTypeIndicator task={task} size="sm" />
+                        </Stack>
                         <p className="text-caption text-secondary">
                           {task.projectName} • {task.episode} {task.sequence} {task.shot}
                         </p>
