@@ -294,7 +294,7 @@ html, body {
 
 .user-avatar {
   background-color: var(--accent-lilac);
-  color: var(--bg-base);
+  color: #0F141A;
 }
 
 .user-avatar:hover {
@@ -412,7 +412,7 @@ html, body {
 
 .nav-item.active {
   background-color: var(--accent-lilac);
-  color: var(--bg-base);
+  color: #0F141A;
 }
 
 .nav-label {
@@ -685,7 +685,7 @@ html, body {
   gap: var(--space-2);
   padding: var(--space-3) var(--space-4);
   background-color: var(--accent-lilac);
-  color: var(--bg-base);
+  color: #0F141A;
   border: none;
   border-radius: var(--radius-input);
   font-size: var(--text-body);
@@ -747,7 +747,7 @@ html, body {
 /* Button Variants */
 .btn--primary {
   background-color: var(--accent-lilac);
-  color: var(--bg-base);
+  color: #0F141A;
   border: 1px solid var(--accent-lilac);
 }
 
@@ -1027,27 +1027,27 @@ html, body {
 
 .badge--primary {
   background-color: var(--accent-lilac);
-  color: var(--bg-base);
+  color: #0F141A;
 }
 
 .badge--success {
   background-color: var(--semantic-success);
-  color: var(--bg-base);
+  color: #0F141A;
 }
 
 .badge--warning {
   background-color: var(--semantic-warning);
-  color: var(--bg-base);
+  color: #0F141A;
 }
 
 .badge--danger {
   background-color: var(--semantic-danger);
-  color: var(--bg-base);
+  color: #0F141A;
 }
 
 .badge--info {
   background-color: var(--semantic-info);
-  color: var(--bg-base);
+  color: #0F141A;
 }
 
 /* Removable Badge */
@@ -1594,12 +1594,12 @@ html, body {
 
 .project-item.active {
   background-color: var(--accent-lilac);
-  color: var(--bg-base);
+  color: #0F141A;
 }
 
 .project-item.active .project-name,
 .project-item.active .project-description {
-  color: var(--bg-base);
+  color: #0F141A;
 }
 
 .project-details {
@@ -1842,7 +1842,7 @@ html, body {
 
 .project-tab.create-new:hover {
   background-color: var(--accent-blue);
-  color: var(--bg-base);
+  color: #0F141A;
 }
 
 .tab-count {
@@ -2383,17 +2383,17 @@ code {
 
 .window-control-button.close:hover {
   background-color: var(--semantic-danger);
-  color: var(--bg-base);
+  color: #0F141A;
 }
 
 .window-control-button.minimize:hover {
   background-color: var(--semantic-warning);
-  color: var(--bg-base);
+  color: #0F141A;
 }
 
 .window-control-button.maximize:hover {
   background-color: var(--semantic-success);
-  color: var(--bg-base);
+  color: #0F141A;
 }
 
 /* Notification System */
