@@ -754,7 +754,7 @@ html, body {
 .btn--primary:hover:not(.btn--disabled) {
   opacity: 0.9;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(203, 183, 232, 0.3);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-lilac) 30%, transparent);
 }
 
 .btn--secondary {
@@ -883,7 +883,7 @@ html, body {
 .input:focus {
   outline: none;
   border-color: var(--accent-blue);
-  box-shadow: 0 0 0 3px rgba(183, 211, 242, 0.1);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-blue) 10%, transparent);
 }
 
 .input::placeholder {
@@ -941,7 +941,7 @@ html, body {
 
 .input-container--error .input:focus {
   border-color: var(--semantic-danger);
-  box-shadow: 0 0 0 3px rgba(242, 166, 166, 0.1);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--semantic-danger) 10%, transparent);
 }
 
 .input-error {
@@ -1074,7 +1074,7 @@ html, body {
 
 .badge__remove:hover {
   opacity: 1;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: color-mix(in srgb, var(--text-primary) 10%, transparent);
 }
 
 .badge--primary .badge__remove:hover,
@@ -1082,7 +1082,7 @@ html, body {
 .badge--warning .badge__remove:hover,
 .badge--danger .badge__remove:hover,
 .badge--info .badge__remove:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: color-mix(in srgb, var(--bg-base) 20%, transparent);
 }
 
 /* Accent Color Utilities */
@@ -1197,13 +1197,13 @@ html, body {
   bottom: var(--space-6);
   right: var(--space-6);
   z-index: 100;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--text-primary) 15%, transparent);
   transition: all 0.3s ease;
 }
 
 .scroll-to-top:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--text-primary) 20%, transparent);
 }
 
 @media (max-width: 768px) {
@@ -1467,7 +1467,7 @@ html, body {
   .sidebar-overlay {
     position: fixed;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: color-mix(in srgb, var(--text-primary) 50%, transparent);
     z-index: 40;
     top: 56px;
   }
@@ -1886,7 +1886,7 @@ html, body {
 .project-card:hover {
   border-color: var(--border-line);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--text-primary) 10%, transparent);
 }
 
 .project-card.selected {
@@ -2177,7 +2177,7 @@ html, body {
 .task-card:hover {
   border-color: var(--border-line);
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--text-primary) 10%, transparent);
 }
 
 .task-card.clickable {
@@ -2186,14 +2186,14 @@ html, body {
 }
 
 .task-card.clickable:hover {
-  border-color: var(--color-primary);
+  border-color: var(--accent-blue);
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--text-primary) 15%, transparent);
 }
 
 .task-card.clickable:active {
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--text-primary) 10%, transparent);
 }
 
 /* Task Menu Button - Match Project Menu Button Style */
@@ -2382,18 +2382,18 @@ code {
 }
 
 .window-control-button.close:hover {
-  background-color: #e53e3e;
-  color: white;
+  background-color: var(--semantic-danger);
+  color: var(--bg-base);
 }
 
 .window-control-button.minimize:hover {
-  background-color: #fbb040;
-  color: white;
+  background-color: var(--semantic-warning);
+  color: var(--bg-base);
 }
 
 .window-control-button.maximize:hover {
-  background-color: #38a169;
-  color: white;
+  background-color: var(--semantic-success);
+  color: var(--bg-base);
 }
 
 /* Notification System */
@@ -2417,7 +2417,7 @@ code {
   background-color: var(--bg-base);
   border: 1px solid var(--border-line);
   border-radius: var(--radius-lg);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--text-primary) 12%, transparent);
   backdrop-filter: blur(8px);
   pointer-events: auto;
   animation: slideInRight 0.3s ease-out;
@@ -2626,7 +2626,7 @@ code {
   background-color: var(--bg-base);
   border: 1px solid var(--border-line);
   border-radius: var(--radius-lg);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--text-primary) 12%, transparent);
   backdrop-filter: blur(8px);
   z-index: 1000;
   overflow: hidden;
@@ -3058,7 +3058,7 @@ code {
 
 .template-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--text-primary) 12%, transparent);
 }
 
 .template-preview {
