@@ -5,6 +5,7 @@ import { PageWrapper, Stack, Grid, ScrollToTop } from '@/components/layout'
 import { Button, Badge, Card } from '@/components/ui'
 // import { UIProject } from '@/types/database'
 import { useProjects, useSelection } from '@/hooks/useData'
+import { CreateProjectModal } from '@/components/project/CreateProjectModal'
 
 // Project color mapping
 const getProjectColor = (projectId: string): string => {
@@ -29,6 +30,7 @@ const ProjectsPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('projects')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'inactive'>('all')
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
 
   // Use data management hooks
   const { projects, loading, error, refresh, createProject } = useProjects()
@@ -47,15 +49,20 @@ const ProjectsPage: React.FC = () => {
     { id: 'new-view', label: 'New view', isCreateNew: true }
   ]
 
-  const handleCreateProject = async () => {
+  const handleCreateProject = () => {
+    setIsCreateModalOpen(true)
+  }
+
+  const handleCreateProjectSubmit = async (projectData: any) => {
     try {
       await createProject({
-        name: 'New Project',
-        description: 'A new project created from the interface',
-        color: getProjectColor('NEW'),
+        name: projectData.name,
+        description: projectData.description,
+        color: getProjectColor(projectData._id || 'NEW'),
         status: 'active'
       })
       refresh() // Refresh the projects list
+      setIsCreateModalOpen(false)
     } catch (error) {
       console.error('Failed to create project:', error)
       alert('Failed to create project. Please try again.')
@@ -395,6 +402,12 @@ const ProjectsPage: React.FC = () => {
         </Stack>
       </PageWrapper>
       {filteredProjects.length > 6 && <ScrollToTop />}
+
+      <CreateProjectModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSubmit={handleCreateProjectSubmit}
+      />
     </>
   )
 }
