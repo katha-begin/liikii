@@ -5119,6 +5119,85 @@ code {
   margin-top: var(--space-2);
 }
 
+/* Login Divider */
+.login-divider {
+  display: flex;
+  align-items: center;
+  margin: var(--space-6) 0 var(--space-5) 0;
+}
+
+.login-divider__line {
+  flex: 1;
+  height: 1px;
+  background: var(--border-line);
+}
+
+.login-divider__text {
+  padding: 0 var(--space-4);
+  font-size: var(--text-caption);
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Google Login Button */
+.google-login-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-surface-1);
+  color: var(--text-primary);
+  border: 1px solid var(--border-line);
+  border-radius: var(--radius-input);
+  font-size: var(--text-body);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  height: 40px; /* Match login submit button height */
+}
+
+.google-login-button:hover:not(:disabled) {
+  background: var(--bg-surface-2);
+  border-color: var(--text-secondary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.google-login-button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.google-login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.google-login-button:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+/* Google Icon */
+.google-icon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+}
+
+/* Google Login Section */
+.google-login-section {
+  margin-bottom: var(--space-4);
+}
+
 /* Login Footer */
 .login-footer {
   margin-top: var(--space-6);
@@ -5247,6 +5326,19 @@ code {
     rgba(183, 211, 242, 0.05) 35%,
     transparent 70%
   );
+}
+
+/* Light theme Google button adjustments */
+[data-theme="light"] .google-login-button {
+  background: #ffffff;
+  border-color: #dadce0;
+  color: #3c4043;
+}
+
+[data-theme="light"] .google-login-button:hover:not(:disabled) {
+  background: #f8f9fa;
+  border-color: #dadce0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* ===== HEADER USER MENU STYLES ===== */

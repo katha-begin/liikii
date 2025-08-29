@@ -1,6 +1,8 @@
-# Montu Manager REST API Specification v2.0
+# Montu Manager REST API Specification v2.1
 
 **Complete API Specification for Frontend Application Development**
+**Updated**: August 30, 2025
+**Status**: ✅ **IMPLEMENTED** - Firebase Backend Active
 
 ---
 
@@ -8,17 +10,80 @@
 
 This specification defines the complete REST API for Montu Manager, enabling React/Electron frontend applications to fully replace the existing Qt-based applications (Project Launcher, Ra Task Creator, DCC Integration Suite, and Review Application) with 100% feature parity and enhanced collaboration capabilities.
 
-**Base URL**: `http://localhost:8080/api/v1`  
-**Authentication**: Bearer JWT tokens with Firebase Auth integration  
+**Base URL**: `http://localhost:8080/api/v1`
+**Database**: Firebase Firestore (migrated from MongoDB)
+**Authentication**: ⚠️ **PLANNED** - Bearer JWT tokens with Firebase Auth integration
 **Content-Type**: `application/json` (except file uploads: `multipart/form-data`)
+
+## 🚀 **Current Implementation Status**
+
+### ✅ **IMPLEMENTED & WORKING:**
+- **Core API Server**: FastAPI with Firebase Firestore backend
+- **Database**: 93 documents migrated to Firebase (65 tasks, 2 projects, 15 media records)
+- **Basic CRUD Operations**: Tasks, Projects, Media records
+- **Health Check & Stats**: System monitoring endpoints
+- **Interactive Documentation**: Swagger UI at `/docs`
+- **Bulk Operations**: Bulk task updates and field additions
+- **Data Validation**: Pydantic models with Firebase data compatibility
+
+### ⚠️ **PLANNED/NOT IMPLEMENTED:**
+- **Authentication System**: JWT tokens, user management
+- **File Upload/Download**: Media file handling
+- **WebSocket Real-time**: Live collaboration features
+- **Annotations System**: Review and markup functionality
+- **Path Builder Integration**: File path generation
+- **CSV Import**: Task import from CSV files
 
 ---
 
-## 🔐 **Authentication & Authorization**
+## 🧪 **Quick Start - Test Current API**
 
-### Authentication Endpoints
+### **Interactive Documentation**
+- **Swagger UI**: http://localhost:8080/docs
+- **ReDoc**: http://localhost:8080/redoc
 
-#### POST `/auth/login`
+### **Working Endpoints to Test**
+```bash
+# Health check
+curl http://localhost:8080/health
+
+# Get database stats
+curl http://localhost:8080/api/v1/stats
+
+# List all projects (2 projects)
+curl http://localhost:8080/api/v1/projects
+
+# List all tasks (65 tasks)
+curl http://localhost:8080/api/v1/tasks
+
+# List all media records (15 records)
+curl http://localhost:8080/api/v1/media
+
+# Get specific task
+curl http://localhost:8080/api/v1/tasks/ep00_sq0010_sh0020_comp
+
+# Get specific project
+curl http://localhost:8080/api/v1/projects/SWA
+```
+
+### **Current Data Structure**
+Your Firebase database contains:
+- **Projects**: 2 documents (SWA, etc.)
+- **Tasks**: 65 documents (migrated from CSV)
+- **Media Records**: 15 documents
+- **Annotations**: 1 document
+- **Directory Operations**: 6 documents
+- **Versions**: 4 documents
+
+---
+
+## 🔐 **Authentication & Authorization** ⚠️ **PLANNED**
+
+> **Status**: Not yet implemented. Currently API runs without authentication for development.
+
+### Authentication Endpoints (Planned)
+
+#### POST `/auth/login` ⚠️ **PLANNED**
 **Purpose**: Authenticate user and obtain access token
 
 **Request Body**:
@@ -43,65 +108,40 @@ This specification defines the complete REST API for Montu Manager, enabling Rea
 }
 ```
 
-#### POST `/auth/refresh`
+#### POST `/auth/refresh` ⚠️ **PLANNED**
 **Purpose**: Refresh expired access token
 
-**Request Body**:
-```json
-{
-  "refresh_token": "refresh_token_here"
-}
-```
-
-#### GET `/auth/me`
+#### GET `/auth/me` ⚠️ **PLANNED**
 **Purpose**: Get current user information
 
-**Headers**: `Authorization: Bearer <token>`
-
-**Response** (200):
-```json
-{
-  "user_id": "user_123",
-  "email": "john@studio.com",
-  "display_name": "John Doe",
-  "project_id": "SWA",
-  "permissions": ["read", "write"],
-  "profile": {
-    "department": "Lighting",
-    "role": "Senior Artist",
-    "avatar_url": "https://..."
-  },
-  "last_login": "2025-08-29T10:30:00Z"
-}
-```
-
-#### POST `/auth/logout`
+#### POST `/auth/logout` ⚠️ **PLANNED**
 **Purpose**: Invalidate current session
 
 ---
 
-## 🏗️ **Project Management API**
+## 🏗️ **Project Management API** ✅ **IMPLEMENTED**
 
 ### Project Endpoints
 
-#### GET `/projects`
+#### GET `/projects` ✅ **WORKING**
 **Purpose**: List all accessible projects with pagination
 
-**Query Parameters**:
-- `page` (int, default: 1): Page number
-- `page_size` (int, default: 50, max: 100): Items per page
-- `search` (string): Search in project name/description
-- `status` (string): Filter by status (active, archived, completed)
+**Current Implementation**: Returns all projects from Firebase Firestore
 
-**Response** (200):
+**Query Parameters**:
+- ⚠️ `page` (int, default: 1): Page number - **PLANNED**
+- ⚠️ `page_size` (int, default: 50, max: 100): Items per page - **PLANNED**
+- ⚠️ `search` (string): Search in project name/description - **PLANNED**
+- ⚠️ `status` (string): Filter by status (active, archived, completed) - **PLANNED**
+
+**Current Response** (200) - **Actual Firebase Data**:
 ```json
-{
-  "projects": [
-    {
-      "id": "SWA",
-      "name": "Sky Wars Anthology",
-      "description": "VFX project for Sky Wars Anthology series",
-      "status": "active",
+[
+  {
+    "id": "SWA",
+    "name": "Sky Wars Anthology",
+    "description": "VFX project for Sky Wars Anthology series",
+    "status": "active",
       "drive_mapping": {
         "working_files": "V:",
         "render_outputs": "W:",
@@ -132,18 +172,17 @@ This specification defines the complete REST API for Montu Manager, enabling Rea
       "created_at": "2025-08-29T10:00:00Z",
       "updated_at": "2025-08-29T10:00:00Z"
     }
-  ],
-  "total": 5,
-  "page": 1,
-  "page_size": 50,
-  "total_pages": 1
-}
+  ]
+]
 ```
 
-#### GET `/projects/{project_id}`
+**Note**: Current implementation returns a simple array. Pagination wrapper will be added later.
+```
+
+#### GET `/projects/{project_id}` ✅ **WORKING**
 **Purpose**: Get detailed project configuration
 
-#### POST `/projects`
+#### POST `/projects` ✅ **WORKING**
 **Purpose**: Create new project
 
 **Request Body**:
@@ -178,13 +217,13 @@ This specification defines the complete REST API for Montu Manager, enabling Rea
 }
 ```
 
-#### PUT `/projects/{project_id}`
+#### PATCH `/projects/{project_id}` ✅ **WORKING**
 **Purpose**: Update project configuration
 
-#### DELETE `/projects/{project_id}`
+#### DELETE `/projects/{project_id}` ✅ **WORKING**
 **Purpose**: Archive project (soft delete)
 
-#### GET `/projects/{project_id}/stats`
+#### GET `/projects/{project_id}/stats` ⚠️ **PLANNED**
 **Purpose**: Get project statistics
 
 **Response** (200):
@@ -212,83 +251,143 @@ This specification defines the complete REST API for Montu Manager, enabling Rea
 
 ---
 
-## 📋 **Task Management API**
+## 📋 **Task Management API** ✅ **IMPLEMENTED**
 
 ### Task Endpoints
 
-#### GET `/tasks`
+#### GET `/tasks` ✅ **WORKING**
 **Purpose**: List tasks with comprehensive filtering and pagination
 
+**Current Implementation**: Returns all tasks from Firebase with basic filtering
+
 **Query Parameters**:
-- `page` (int): Page number
-- `page_size` (int): Items per page
-- `project_id` (string): Filter by project
-- `episode` (string): Filter by episode
-- `sequence` (string): Filter by sequence
-- `shot` (string): Filter by shot
-- `task_type` (string): Filter by task type
-- `artist` (string): Filter by assigned artist
-- `status` (string): Filter by status
-- `priority` (string): Filter by priority
-- `search` (string): Search in task names/descriptions
-- `sort` (string): Sort field (created_at, updated_at, priority, deadline)
-- `order` (string): Sort order (asc, desc)
+- ✅ `page` (int): Page number - **WORKING**
+- ✅ `page_size` (int): Items per page - **WORKING**
+- ⚠️ `project_id` (string): Filter by project - **PLANNED**
+- ⚠️ `episode` (string): Filter by episode - **PLANNED**
+- ⚠️ `sequence` (string): Filter by sequence - **PLANNED**
+- ⚠️ `shot` (string): Filter by shot - **PLANNED**
+- ⚠️ `task_type` (string): Filter by task type - **PLANNED**
+- ⚠️ `artist` (string): Filter by assigned artist - **PLANNED**
+- ⚠️ `status` (string): Filter by status - **PLANNED**
+- ⚠️ `priority` (string): Filter by priority - **PLANNED**
+- ⚠️ `search` (string): Search in task names/descriptions - **PLANNED**
+- ⚠️ `sort` (string): Sort field (created_at, updated_at, priority, deadline) - **PLANNED**
+- ⚠️ `order` (string): Sort order (asc, desc) - **PLANNED**
+
+**Current Response** (200) - **Actual Firebase Data**:
+```json
+[
+  {
+    "id": "ep00_sq0010_sh0020_comp",
+    "project": "SWA",
+    "project_id": "SWA",
+    "type": "shot",
+    "episode": "Ep00",
+    "sequence": "sq0010",
+    "shot": "SH0020",
+    "task": "comp",
+    "artist": "Unassigned",
+    "status": "not_started",
+    "priority": "medium",
+    "milestone": "not_started",
+    "milestone_note": "Imported from CSV",
+    "frame_range": {
+      "start": 1001,
+      "end": 1153
+    },
+    "start_time": null,
+    "deadline": null,
+    "estimated_duration_hours": 24.0,
+    "actual_time_logged": 0.0,
+    "versions": [],
+    "current_version": "v001",
+    "published_version": "v000",
+    "file_extension": ".nk",
+    "master_file": true,
+    "working_file_path": "",
+    "render_output_path": "",
+    "media_file_path": "",
+    "cache_file_path": "",
+    "filename": "",
+    "sequence_clean": "",
+    "shot_clean": "",
+    "episode_clean": "",
+    "client_submission_history": [],
+    "_created_at": "2025-08-04T11:48:47.211160",
+    "_updated_at": "2025-08-04T15:02:10.234821",
+    "migrated_at": "2025-08-29T16:50:33.314000+00:00",
+    "migration_version": "1.0.0",
+    "created_at": "2025-08-29T16:50:33.314000+00:00",
+    "updated_at": "2025-08-29T16:50:33.314000+00:00"
+  }
+]
+```
+
+**Note**: Current implementation returns a simple array. Pagination wrapper and filtering will be added later.
+```
+
+#### GET `/tasks/{task_id}` ✅ **WORKING**
+**Purpose**: Get detailed task information
+
+#### POST `/tasks` ✅ **WORKING**
+**Purpose**: Create new task
+
+#### PATCH `/tasks/{task_id}` ✅ **WORKING**
+**Purpose**: Update task
+
+#### DELETE `/tasks/{task_id}` ✅ **WORKING**
+**Purpose**: Archive task
+
+#### PATCH `/tasks/bulk-update` ✅ **NEW - IMPLEMENTED**
+**Purpose**: Perform bulk operations on multiple tasks
+
+**Request Body**:
+```json
+[
+  {
+    "task_id": "ep00_sq0010_sh0020_comp",
+    "updates": {
+      "status": "in_progress",
+      "artist": "john_doe",
+      "custom_field": "new_value"
+    }
+  },
+  {
+    "task_id": "ep00_sq0010_sh0020_lighting",
+    "updates": {
+      "priority": "high",
+      "milestone": "final_render"
+    }
+  }
+]
+```
 
 **Response** (200):
 ```json
 {
-  "tasks": [
-    {
-      "id": "ep00_sq0010_sh0020_lighting",
-      "project_id": "SWA",
-      "type": "shot",
-      "episode": "Ep00",
-      "sequence": "sq0010",
-      "shot": "SH0020",
-      "task": "lighting",
-      "artist": "john_doe",
-      "status": "in_progress",
-      "priority": "medium",
-      "milestone": "scene_building",
-      "milestone_note": "Setting up lighting rig",
-      "frame_range": {
-        "start": 1001,
-        "end": 1153
-      },
-      "start_time": "2025-08-25T09:00:00Z",
-      "deadline": "2025-09-01T17:00:00Z",
-      "estimated_duration_hours": 40.0,
-      "file_extension": ".ma",
-      "master_file": true,
-      "created_at": "2025-08-29T10:00:00Z",
-      "updated_at": "2025-08-29T14:30:00Z"
-    }
-  ],
-  "total": 1250,
-  "page": 1,
-  "page_size": 50,
-  "total_pages": 25,
-  "filters_applied": {
-    "project_id": "SWA",
-    "status": "in_progress"
-  }
+  "message": "Successfully updated 2 tasks",
+  "updated_count": 2
 }
 ```
 
-#### GET `/tasks/{task_id}`
-**Purpose**: Get detailed task information
+#### POST `/tasks/{task_id}/add-field` ✅ **NEW - IMPLEMENTED**
+**Purpose**: Add new fields to a specific task
 
-#### POST `/tasks`
-**Purpose**: Create new task
+**Request Body**:
+```json
+{
+  "frontend_metadata": {
+    "ui_color": "#ff6b6b",
+    "priority_weight": 5
+  },
+  "custom_notes": "Updated from frontend",
+  "workflow_status": "pending_review"
+}
+```
 
-#### PUT `/tasks/{task_id}`
-**Purpose**: Update task
-
-#### DELETE `/tasks/{task_id}`
-**Purpose**: Archive task
-
-#### POST `/tasks/bulk`
-**Purpose**: Perform bulk operations on multiple tasks
+#### POST `/tasks/bulk` ⚠️ **PLANNED - LEGACY FORMAT**
+**Purpose**: Perform bulk operations on multiple tasks (original format)
 
 **Request Body**:
 ```json
@@ -317,7 +416,7 @@ This specification defines the complete REST API for Montu Manager, enabling Rea
 }
 ```
 
-#### POST `/tasks/import-csv`
+#### POST `/tasks/import-csv` ⚠️ **PLANNED**
 **Purpose**: Import tasks from CSV file
 
 **Request**: `multipart/form-data`
@@ -353,26 +452,29 @@ This specification defines the complete REST API for Montu Manager, enabling Rea
 
 ---
 
-## 🎬 **Media Management API**
+## 🎬 **Media Management API** ✅ **PARTIALLY IMPLEMENTED**
 
 ### Media Endpoints
 
-#### GET `/media`
+#### GET `/media` ✅ **WORKING**
 **Purpose**: List media files with filtering
 
-**Query Parameters**:
-- `page`, `page_size`: Pagination
-- `task_id`: Filter by linked task
-- `media_type`: Filter by type (image, video, audio)
-- `author`: Filter by author
-- `approval_status`: Filter by approval status
-- `tags`: Filter by tags (comma-separated)
-- `version`: Filter by version
+**Current Implementation**: Returns media records from Firebase with basic filtering
 
-#### GET `/media/{media_id}`
+**Query Parameters**:
+- ✅ `page`, `page_size`: Pagination - **WORKING**
+- ✅ `task_id`: Filter by linked task - **WORKING**
+- ✅ `file_type`: Filter by file type - **WORKING**
+- ⚠️ `media_type`: Filter by type (image, video, audio) - **PLANNED**
+- ⚠️ `author`: Filter by author - **PLANNED**
+- ⚠️ `approval_status`: Filter by approval status - **PLANNED**
+- ⚠️ `tags`: Filter by tags (comma-separated) - **PLANNED**
+- ⚠️ `version`: Filter by version - **PLANNED**
+
+#### GET `/media/{media_id}` ⚠️ **PLANNED**
 **Purpose**: Get media details and metadata
 
-#### POST `/media`
+#### POST `/media` ⚠️ **PLANNED**
 **Purpose**: Upload new media file
 
 **Request**: `multipart/form-data`
@@ -590,54 +692,44 @@ This specification defines the complete REST API for Montu Manager, enabling Rea
 
 ---
 
-## 📊 **System & Monitoring API**
+## 📊 **System & Monitoring API** ✅ **IMPLEMENTED**
 
 ### System Endpoints
 
-#### GET `/health`
+#### GET `/health` ✅ **WORKING**
 **Purpose**: Health check
 
-**Response** (200):
+**Current Response** (200):
 ```json
 {
   "status": "healthy",
-  "timestamp": "2025-08-29T10:00:00Z",
-  "database": {
-    "status": "connected",
-    "type": "firestore",
-    "response_time_ms": 45
-  },
-  "version": "2.0.0",
-  "uptime_seconds": 86400
+  "timestamp": "2025-08-30T10:00:00Z"
 }
 ```
 
-#### GET `/stats`
+#### GET `/api/v1/stats` ✅ **WORKING**
 **Purpose**: System statistics
 
-**Response** (200):
+**Current Response** (200):
 ```json
 {
   "database": {
-    "total_documents": 15000,
+    "total_documents": 93,
     "collections": {
-      "projects": 5,
-      "tasks": 12500,
-      "media_records": 2000,
-      "annotations": 500
+      "projects": 2,
+      "tasks": 65,
+      "media_records": 15,
+      "annotations": 1,
+      "directory_operations": 6,
+      "system_logs": 0,
+      "user_sessions": 0,
+      "versions": 4
     }
-  },
-  "system": {
-    "memory_usage_mb": 512,
-    "cpu_usage_percent": 25.5,
-    "disk_usage_gb": 1024.5
-  },
-  "api": {
-    "requests_per_minute": 150,
-    "average_response_time_ms": 85,
-    "error_rate_percent": 0.1
   }
 }
+```
+
+**Note**: System metrics (memory, CPU, API stats) will be added later.
 ```
 
 ---
@@ -1413,4 +1505,66 @@ class APIValidator {
 
 ---
 
-This comprehensive specification provides complete API coverage for replacing all Qt-based Montu Manager applications with modern React/Electron frontends while maintaining full feature parity and adding enhanced collaboration capabilities, offline support, and production-ready security features.
+## 📊 **Implementation Status Summary**
+
+### ✅ **FULLY IMPLEMENTED & WORKING**
+| Endpoint | Method | Status | Notes |
+|----------|--------|--------|-------|
+| `/health` | GET | ✅ Working | Basic health check |
+| `/api/v1/stats` | GET | ✅ Working | Database statistics |
+| `/api/v1/projects` | GET | ✅ Working | List all projects |
+| `/api/v1/projects/{id}` | GET | ✅ Working | Get specific project |
+| `/api/v1/projects` | POST | ✅ Working | Create project |
+| `/api/v1/projects/{id}` | PATCH | ✅ Working | Update project |
+| `/api/v1/projects/{id}` | DELETE | ✅ Working | Delete project |
+| `/api/v1/tasks` | GET | ✅ Working | List all tasks |
+| `/api/v1/tasks/{id}` | GET | ✅ Working | Get specific task |
+| `/api/v1/tasks` | POST | ✅ Working | Create task |
+| `/api/v1/tasks/{id}` | PATCH | ✅ Working | Update task |
+| `/api/v1/tasks/{id}` | DELETE | ✅ Working | Delete task |
+| `/api/v1/tasks/bulk-update` | PATCH | ✅ Working | **NEW** - Bulk updates |
+| `/api/v1/tasks/{id}/add-field` | POST | ✅ Working | **NEW** - Add fields |
+| `/api/v1/media` | GET | ✅ Working | List media records |
+
+### ⚠️ **PLANNED - NOT YET IMPLEMENTED**
+- **Authentication**: JWT tokens, user management, permissions
+- **File Upload/Download**: Media file handling, thumbnails
+- **Advanced Filtering**: Search, sorting, complex filters
+- **WebSocket Real-time**: Live collaboration, notifications
+- **Annotations**: Review system, markup tools
+- **Path Builder**: File path generation
+- **CSV Import**: Task import from CSV files
+- **Pagination**: Proper pagination wrappers
+- **Project Stats**: Detailed project statistics
+
+### 🔄 **KEY DIFFERENCES FROM SPECIFICATION**
+
+#### **Response Format Changes**
+- **Current**: Simple arrays `[{...}, {...}]`
+- **Planned**: Paginated objects `{"items": [...], "total": 100, "page": 1}`
+
+#### **New Endpoints Added**
+- `PATCH /api/v1/tasks/bulk-update` - Bulk task updates
+- `POST /api/v1/tasks/{id}/add-field` - Dynamic field addition
+
+#### **Database Migration Changes**
+- **Backend**: MongoDB → Firebase Firestore
+- **Field Mapping**: Some fields renamed during migration (e.g., `project` → `project_id`)
+- **Data Types**: Datetime objects converted to ISO strings
+- **Extra Fields**: Migration added `migrated_at`, `migration_version` fields
+
+#### **Authentication Status**
+- **Current**: No authentication (development mode)
+- **Planned**: Firebase Auth with JWT tokens
+
+### 🎯 **Next Implementation Priorities**
+1. **Authentication System** - Firebase Auth integration
+2. **File Upload/Download** - Media file handling
+3. **Advanced Filtering** - Search and filter capabilities
+4. **Pagination Wrappers** - Proper API response format
+5. **CSV Import** - Task import functionality
+6. **WebSocket Real-time** - Live collaboration features
+
+---
+
+This specification reflects the current implementation status as of August 30, 2025. The API provides a solid foundation for frontend development with core CRUD operations working reliably on Firebase Firestore backend.

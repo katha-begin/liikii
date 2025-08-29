@@ -29,6 +29,11 @@ export interface LoginCredentials {
   projectId?: string
 }
 
+export interface GoogleLoginCredentials {
+  googleToken: string
+  projectId?: string
+}
+
 // Actions
 type AuthAction =
   | { type: 'AUTH_START' }
@@ -100,6 +105,7 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
 interface AuthContextType {
   state: AuthState
   login: (credentials: LoginCredentials) => Promise<void>
+  loginWithGoogle: (credentials: GoogleLoginCredentials) => Promise<void>
   logout: () => void
   clearError: () => void
   checkAuthStatus: () => Promise<void>
@@ -120,7 +126,7 @@ const mockAuthService = {
   async login(credentials: LoginCredentials): Promise<{ user: User; token: string }> {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1000))
-    
+
     // Mock validation
     if (credentials.email === 'demo@studio.com' && credentials.password === 'demo123') {
       const user: User = {
@@ -136,13 +142,40 @@ const mockAuthService = {
         },
         lastLogin: new Date().toISOString(),
       }
-      
+
       const token = 'mock_jwt_token_' + Date.now()
-      
+
       return { user, token }
     } else {
       throw new Error('Invalid email or password')
     }
+  },
+
+  async loginWithGoogle(credentials: GoogleLoginCredentials): Promise<{ user: User; token: string }> {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 1500))
+
+    // In real implementation, this would call your Firebase backend
+    // which verifies the Google token and returns user data
+
+    // Mock Google user data (replace with actual Firebase response)
+    const user: User = {
+      id: 'google_user_' + Date.now(),
+      email: 'user@gmail.com', // Would come from Google token
+      displayName: 'Google User', // Would come from Google token
+      projectId: credentials.projectId || 'SWA',
+      permissions: ['read', 'write'],
+      profile: {
+        department: 'General',
+        role: 'Artist',
+        avatarUrl: 'https://lh3.googleusercontent.com/a/default-user', // Google profile picture
+      },
+      lastLogin: new Date().toISOString(),
+    }
+
+    const token = 'google_jwt_token_' + Date.now()
+
+    return { user, token }
   },
 
   async validateToken(token: string): Promise<User> {
@@ -211,22 +244,45 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // Login function
   const login = useCallback(async (credentials: LoginCredentials) => {
     dispatch({ type: 'AUTH_START' })
-    
+
     try {
       const { user, token } = await mockAuthService.login(credentials)
-      
+
       // Store auth data
       storage.setAuthData(user, token)
-      
-      dispatch({ 
-        type: 'AUTH_SUCCESS', 
-        payload: { user, token } 
+
+      dispatch({
+        type: 'AUTH_SUCCESS',
+        payload: { user, token }
       })
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Authentication failed'
-      dispatch({ 
-        type: 'AUTH_ERROR', 
-        payload: errorMessage 
+      dispatch({
+        type: 'AUTH_ERROR',
+        payload: errorMessage
+      })
+    }
+  }, [])
+
+  // Google login function
+  const loginWithGoogle = useCallback(async (credentials: GoogleLoginCredentials) => {
+    dispatch({ type: 'AUTH_START' })
+
+    try {
+      const { user, token } = await mockAuthService.loginWithGoogle(credentials)
+
+      // Store auth data
+      storage.setAuthData(user, token)
+
+      dispatch({
+        type: 'AUTH_SUCCESS',
+        payload: { user, token }
+      })
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Google authentication failed'
+      dispatch({
+        type: 'AUTH_ERROR',
+        payload: errorMessage
       })
     }
   }, [])
@@ -270,6 +326,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const contextValue: AuthContextType = {
     state,
     login,
+    loginWithGoogle,
     logout,
     clearError,
     checkAuthStatus,

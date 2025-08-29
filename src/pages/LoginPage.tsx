@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom'
 import { Mail, Lock, Eye, EyeOff, Loader2 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { Button, Input, Card } from '@/components/ui'
+import GoogleLoginButton from '@/components/auth/GoogleLoginButton'
 import { useTheme } from '@/components/ThemeProvider'
 
 const LoginPage: React.FC = () => {
@@ -55,6 +56,16 @@ const LoginPage: React.FC = () => {
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
+  }
+
+  const handleGoogleSuccess = () => {
+    console.log('Google login successful')
+    // Navigation will be handled automatically by the auth context
+  }
+
+  const handleGoogleError = (error: string) => {
+    console.error('Google login error:', error)
+    // Error will be displayed through the auth context error state
   }
 
   return (
@@ -190,6 +201,23 @@ const LoginPage: React.FC = () => {
                 )}
               </Button>
             </form>
+
+            {/* Divider */}
+            <div className="login-divider">
+              <div className="login-divider__line"></div>
+              <span className="login-divider__text">or</span>
+              <div className="login-divider__line"></div>
+            </div>
+
+            {/* Google Login */}
+            <div className="google-login-section">
+              <GoogleLoginButton
+                onSuccess={handleGoogleSuccess}
+                onError={handleGoogleError}
+                disabled={state.isLoading}
+                projectId={formData.projectId}
+              />
+            </div>
 
             {/* Footer */}
             <div className="login-footer">
