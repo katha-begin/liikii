@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Search, Plus, Settings, Sun, Moon, Bell, User, Menu, LogOut, ChevronDown } from 'lucide-react'
 import { useTheme } from './ThemeProvider'
 import { useAuth } from '@/contexts/AuthContext'
-import { Input } from '@/components/ui'
+import { Input, Avatar } from '@/components/ui'
 import Breadcrumbs from './navigation/Breadcrumbs'
 import BuildChannelSelector from './desktop/BuildChannelSelector'
 
@@ -75,13 +75,13 @@ const Header: React.FC<HeaderProps> = ({ isMobile, onToggleSidebar }) => {
             title="User menu"
           >
             <div className="user-info">
-              <div className="user-avatar">
-                {state.user?.profile.avatarUrl ? (
-                  <img src={state.user.profile.avatarUrl} alt={state.user.displayName} />
-                ) : (
-                  <User size={16} />
-                )}
-              </div>
+              <Avatar
+                src={state.user?.profile.avatarUrl}
+                alt={state.user?.displayName}
+                fallback={state.user?.displayName || 'User'}
+                size="sm"
+                variant="circle"
+              />
               <div className="user-details">
                 <span className="user-name">{state.user?.displayName}</span>
                 <span className="user-project">{state.user?.projectId}</span>
