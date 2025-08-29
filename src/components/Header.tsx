@@ -1,6 +1,7 @@
-import React from 'react'
-import { Search, Plus, Settings, Sun, Moon, Bell, User, Menu } from 'lucide-react'
+import React, { useState } from 'react'
+import { Search, Plus, Settings, Sun, Moon, Bell, User, Menu, LogOut, ChevronDown } from 'lucide-react'
 import { useTheme } from './ThemeProvider'
+import { useAuth } from '@/contexts/AuthContext'
 import { Input } from '@/components/ui'
 import Breadcrumbs from './navigation/Breadcrumbs'
 import BuildChannelSelector from './desktop/BuildChannelSelector'
@@ -12,6 +13,13 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ isMobile, onToggleSidebar }) => {
   const { theme, toggleTheme } = useTheme()
+  const { state, logout } = useAuth()
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
+
+  const handleLogout = () => {
+    setUserMenuOpen(false)
+    logout()
+  }
 
   return (
     <header className="header">
@@ -59,9 +67,58 @@ const Header: React.FC<HeaderProps> = ({ isMobile, onToggleSidebar }) => {
           <Bell size={16} />
         </button>
 
-        <button className="header-button user-avatar" title="User menu">
-          <User size={16} />
-        </button>
+        {/* User Menu */}
+        <div className="user-menu-container">
+          <button
+            className="header-button user-menu-trigger"
+            onClick={() => setUserMenuOpen(!userMenuOpen)}
+            title="User menu"
+          >
+            <div className="user-info">
+              <div className="user-avatar">
+                {state.user?.profile.avatarUrl ? (
+                  <img src={state.user.profile.avatarUrl} alt={state.user.displayName} />
+                ) : (
+                  <User size={16} />
+                )}
+              </div>
+              <div className="user-details">
+                <span className="user-name">{state.user?.displayName}</span>
+                <span className="user-project">{state.user?.projectId}</span>
+              </div>
+              <ChevronDown size={14} className={`chevron ${userMenuOpen ? 'open' : ''}`} />
+            </div>
+          </button>
+
+          {userMenuOpen && (
+            <>
+              <div
+                className="user-menu-overlay"
+                onClick={() => setUserMenuOpen(false)}
+              />
+              <div className="user-menu-dropdown">
+                <div className="user-menu-header">
+                  <div className="user-menu-info">
+                    <strong>{state.user?.displayName}</strong>
+                    <span>{state.user?.email}</span>
+                    <span className="user-role">{state.user?.profile.role} • {state.user?.profile.department}</span>
+                  </div>
+                </div>
+                <div className="user-menu-divider" />
+                <div className="user-menu-actions">
+                  <button className="user-menu-item" onClick={() => setUserMenuOpen(false)}>
+                    <Settings size={16} />
+                    Settings
+                  </button>
+                  <button className="user-menu-item logout" onClick={handleLogout}>
+                    <LogOut size={16} />
+                    Sign Out
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </header>
   )
