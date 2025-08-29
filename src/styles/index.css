@@ -5353,7 +5353,7 @@ code {
 }
 
 .user-menu-trigger {
-  padding: 2px var(--space-2) !important;
+  padding: 4px var(--space-2) !important;
   border-radius: var(--radius-input) !important;
   background: var(--bg-surface-2) !important;
   border: 1px solid var(--border-line) !important;
@@ -5363,6 +5363,7 @@ code {
   height: 28px;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
 }
 
 .user-menu-trigger:hover {
@@ -5378,7 +5379,15 @@ code {
   overflow: hidden;
 }
 
-/* User avatar now uses design system Avatar component */
+/* Custom avatar sizing for header user menu */
+.user-menu-trigger .avatar {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.user-menu-trigger .avatar__initials {
+  font-size: 9px !important;
+}
 
 .user-details {
   display: flex;
@@ -5529,10 +5538,11 @@ code {
   }
 
   .user-menu-trigger {
-    padding: 0 !important;
+    padding: 4px !important;
     min-width: 28px;
     max-width: 28px;
     height: 28px;
+    justify-content: center;
   }
 
   .user-info {
@@ -5551,9 +5561,10 @@ code {
   }
 
   .user-menu-trigger {
-    padding: 2px !important;
+    padding: 4px !important;
     min-width: 28px;
     max-width: 28px;
     height: 28px;
+    justify-content: center;
   }
 }
