@@ -4953,6 +4953,8 @@ code {
     0 2px 4px -1px rgba(0, 0, 0, 0.06),
     0 0 0 1px rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(8px);
+  position: relative;
+  z-index: 10;
 }
 
 /* Login Header */
@@ -4994,10 +4996,23 @@ code {
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
+  position: relative;
+  z-index: 10;
 }
 
 .login-form .input-group {
   margin-bottom: 0;
+}
+
+.login-form input,
+.login-form select,
+.login-form button {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.login-form input {
+  cursor: text;
 }
 
 /* Project Select */

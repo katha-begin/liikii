@@ -29,6 +29,7 @@ const LoginPage: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
+    console.log('Input changed:', name, value)
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -37,11 +38,14 @@ const LoginPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+    console.log('Login form submitted:', formData)
+
     if (!formData.email || !formData.password) {
+      console.log('Missing email or password')
       return
     }
 
+    console.log('Attempting login...')
     await login({
       email: formData.email,
       password: formData.password,

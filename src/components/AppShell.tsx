@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { NavigationProvider } from '@/contexts/NavigationContext'
 import { DataProvider } from '@/contexts/DataContext'
 import { TaskDetailProvider } from '@/contexts/TaskDetailContext'
-import { AuthProvider } from '@/contexts/AuthContext'
+
 import { NotificationProvider } from './desktop/NotificationSystem'
 import DesktopIntegration from './desktop/DesktopIntegration'
 import { TaskDetailPanel } from './task-detail/TaskDetailPanel'
@@ -46,64 +46,62 @@ const AppShell: React.FC = () => {
 
   return (
     <Router>
-      <AuthProvider>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/login" element={<LoginPage />} />
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/login" element={<LoginPage />} />
 
-          {/* Protected Routes */}
-          <Route path="/*" element={
-            <ProtectedRoute>
-              <NavigationProvider>
-                <DataProvider>
-                  <TaskDetailProvider>
-                    <NotificationProvider>
-                      <DesktopIntegration
+        {/* Protected Routes */}
+        <Route path="/*" element={
+          <ProtectedRoute>
+            <NavigationProvider>
+              <DataProvider>
+                <TaskDetailProvider>
+                  <NotificationProvider>
+                    <DesktopIntegration
+                      onToggleSidebar={toggleSidebar}
+                    />
+                    <div className="app-shell">
+                      <Header
+                        isMobile={isMobile}
                         onToggleSidebar={toggleSidebar}
                       />
-                      <div className="app-shell">
-                        <Header
+                      <div className="app-body">
+                        <NavigationSidebar
                           isMobile={isMobile}
-                          onToggleSidebar={toggleSidebar}
+                          isOpen={sidebarOpen}
+                          onClose={closeSidebar}
                         />
-                        <div className="app-body">
-                          <NavigationSidebar
-                            isMobile={isMobile}
-                            isOpen={sidebarOpen}
-                            onClose={closeSidebar}
+                        {isMobile && sidebarOpen && (
+                          <div
+                            className="sidebar-overlay"
+                            onClick={closeSidebar}
                           />
-                          {isMobile && sidebarOpen && (
-                            <div
-                              className="sidebar-overlay"
-                              onClick={closeSidebar}
-                            />
-                          )}
-                          <main className="main-content">
-                            <Routes>
-                              <Route path="/" element={<ProjectsPage />} />
-                              <Route path="/inbox" element={<InboxPage />} />
-                              <Route path="/my-tasks" element={<MyTasksPage />} />
-                              <Route path="/projects" element={<ProjectsPage />} />
-                              <Route path="/projects/:projectId" element={<ProjectDetailsPage />} />
-                              <Route path="/views" element={<div>Views Page - Coming Soon</div>} />
-                              <Route path="/design-system" element={<DesignSystemDemo />} />
-                              <Route path="/design-system/timeline" element={<TimelineDemo />} />
-                              <Route path="/templates" element={<TemplateSystemDemo />} />
-                            </Routes>
-                          </main>
-                        </div>
+                        )}
+                        <main className="main-content">
+                          <Routes>
+                            <Route path="/" element={<ProjectsPage />} />
+                            <Route path="/inbox" element={<InboxPage />} />
+                            <Route path="/my-tasks" element={<MyTasksPage />} />
+                            <Route path="/projects" element={<ProjectsPage />} />
+                            <Route path="/projects/:projectId" element={<ProjectDetailsPage />} />
+                            <Route path="/views" element={<div>Views Page - Coming Soon</div>} />
+                            <Route path="/design-system" element={<DesignSystemDemo />} />
+                            <Route path="/design-system/timeline" element={<TimelineDemo />} />
+                            <Route path="/templates" element={<TemplateSystemDemo />} />
+                          </Routes>
+                        </main>
                       </div>
+                    </div>
 
-                      {/* Task Detail Panel */}
-                      <TaskDetailPanel />
-                    </NotificationProvider>
-                  </TaskDetailProvider>
-                </DataProvider>
-              </NavigationProvider>
-            </ProtectedRoute>
-          } />
-        </Routes>
-      </AuthProvider>
+                    {/* Task Detail Panel */}
+                    <TaskDetailPanel />
+                  </NotificationProvider>
+                </TaskDetailProvider>
+              </DataProvider>
+            </NavigationProvider>
+          </ProtectedRoute>
+        } />
+      </Routes>
     </Router>
   )
 }

@@ -1,10 +1,13 @@
 import { ThemeProvider } from '@/components/ThemeProvider'
+import { AuthProvider } from '@/contexts/AuthContext'
 import AppShell from '@/components/AppShell'
 
 function App() {
   return (
     <ThemeProvider>
-      <AppShell />
+      <AuthProvider>
+        <AppShell />
+      </AuthProvider>
     </ThemeProvider>
   )
 }
