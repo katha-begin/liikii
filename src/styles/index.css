@@ -5353,14 +5353,14 @@ code {
 }
 
 .user-menu-trigger {
-  padding: 4px var(--space-2) !important;
+  padding: 4px var(--space-3) !important;
   border-radius: var(--radius-input) !important;
   background: transparent !important;
   border: none !important;
   transition: all 0.2s ease !important;
   min-width: 0;
-  max-width: 180px;
-  height: 28px;
+  max-width: 220px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -5378,15 +5378,9 @@ code {
   overflow: hidden;
 }
 
-/* Custom avatar sizing for header user menu */
+/* Remove avatar border for clean header appearance */
 .user-menu-trigger .avatar {
-  width: 18px !important;
-  height: 18px !important;
   border: none !important;
-}
-
-.user-menu-trigger .avatar__initials {
-  font-size: 8px !important;
 }
 
 .user-details {
@@ -5539,9 +5533,9 @@ code {
 
   .user-menu-trigger {
     padding: 4px !important;
-    min-width: 28px;
-    max-width: 28px;
-    height: 28px;
+    min-width: 48px;
+    max-width: 48px;
+    height: 48px;
     justify-content: center;
   }
 
@@ -5562,9 +5556,9 @@ code {
 
   .user-menu-trigger {
     padding: 4px !important;
-    min-width: 28px;
-    max-width: 28px;
-    height: 28px;
+    min-width: 48px;
+    max-width: 48px;
+    height: 48px;
     justify-content: center;
   }
 }
