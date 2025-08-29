@@ -105,3 +105,6 @@ export interface BuildInfo {
   date: Date
   changelog?: string
 }
+
+// Re-export design system types
+export * from './designSystem'

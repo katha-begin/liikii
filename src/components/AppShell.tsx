@@ -12,6 +12,7 @@ import ProjectsPage from '@/pages/ProjectsPage'
 import InboxPage from '@/pages/InboxPage'
 import MyTasksPage from '@/pages/MyTasksPage'
 import DesignSystemDemo from '@/pages/DesignSystemDemo'
+import TimelineDemo from '@/pages/TimelineDemo'
 import TemplateSystemDemo from '@/pages/TemplateSystemDemo'
 import ProjectDetailsPage from '@/pages/ProjectDetailsPage'
 
@@ -75,6 +76,7 @@ const AppShell: React.FC = () => {
                 <Route path="/projects/:projectId" element={<ProjectDetailsPage />} />
                 <Route path="/views" element={<div>Views Page - Coming Soon</div>} />
                 <Route path="/design-system" element={<DesignSystemDemo />} />
+                <Route path="/design-system/timeline" element={<TimelineDemo />} />
                 <Route path="/templates" element={<TemplateSystemDemo />} />
                 {/* Add more routes as needed */}
               </Routes>

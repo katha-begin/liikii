@@ -3,7 +3,18 @@ import { PageWrapper, Stack, Grid, ScrollToTop } from '@/components/layout'
 import { Button, Card } from '@/components/ui'
 import { Settings, Download } from 'lucide-react'
 import TemplateSelector from '@/components/templates/TemplateSelector'
-import { CardWidget, ListWidget, TableWidget } from '@/components/widgets'
+import {
+  CardWidget,
+  ListWidget,
+  TableWidget,
+  DropdownWidget,
+  TabsWidget,
+  AvatarWidget,
+  ProgressWidget,
+  IconWidget,
+  // KanbanWidget,
+  // TimelineWidget
+} from '@/components/widgets'
 import { LayoutTemplate } from '@/systems/TemplateSystem'
 
 const TemplateSystemDemo: React.FC = () => {
@@ -139,6 +150,93 @@ const TemplateSystemDemo: React.FC = () => {
                         columns={tableColumns}
                         data={sampleTableData}
                       />
+                    )
+                  case 'dropdown':
+                    return (
+                      <DropdownWidget
+                        key={widget.id}
+                        {...widgetProps}
+                        title={widget.title}
+                        items={[
+                          { id: '1', label: 'Option 1' },
+                          { id: '2', label: 'Option 2' },
+                          { id: '3', label: 'Option 3' }
+                        ]}
+                        triggerText="Select Option"
+                      />
+                    )
+                  case 'tabs':
+                    return (
+                      <TabsWidget
+                        key={widget.id}
+                        {...widgetProps}
+                        title={widget.title}
+                        tabs={[
+                          { id: 'tab1', label: 'Tab 1', content: 'Content for tab 1' },
+                          { id: 'tab2', label: 'Tab 2', content: 'Content for tab 2' },
+                          { id: 'tab3', label: 'Tab 3', content: 'Content for tab 3' }
+                        ]}
+                      />
+                    )
+                  case 'avatar':
+                    return (
+                      <AvatarWidget
+                        key={widget.id}
+                        {...widgetProps}
+                        title={widget.title}
+                        fallback="JD"
+                        showStatus
+                        status="online"
+                      />
+                    )
+                  case 'progress':
+                    return (
+                      <ProgressWidget
+                        key={widget.id}
+                        {...widgetProps}
+                        title={widget.title}
+                        value={sampleProjectData.progress}
+                        showLabel
+                        label="Project Progress"
+                      />
+                    )
+                  case 'icon':
+                    return (
+                      <IconWidget
+                        key={widget.id}
+                        {...widgetProps}
+                        title={widget.title}
+                        name="Settings"
+                        size="lg"
+                      />
+                    )
+                  case 'kanban':
+                    return (
+                      <Card
+                        key={widget.id}
+                        variant="outlined"
+                        padding="md"
+                        style={widgetProps.style}
+                      >
+                        <h3 className="text-h2">{widget.title}</h3>
+                        <p className="text-body text-secondary">
+                          Kanban widget (temporarily disabled for debugging)
+                        </p>
+                      </Card>
+                    )
+                  case 'timeline-advanced':
+                    return (
+                      <Card
+                        key={widget.id}
+                        variant="outlined"
+                        padding="md"
+                        style={widgetProps.style}
+                      >
+                        <h3 className="text-h2">{widget.title}</h3>
+                        <p className="text-body text-secondary">
+                          Timeline widget (temporarily disabled for debugging)
+                        </p>
+                      </Card>
                     )
                   default:
                     return (

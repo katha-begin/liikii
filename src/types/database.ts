@@ -153,6 +153,8 @@ export interface Task {
   // Time logging system - Optional for backward compatibility
   time_entries?: TimeEntry[] // Individual time log entries
 }
+
+export interface VersionInfo {
   media_file_path: string
   cache_file_path: string
   filename: string

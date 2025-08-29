@@ -77,8 +77,24 @@ const MyTasksPage: React.FC = () => {
     return (
       <PageWrapper maxWidth="lg" padding>
         <Stack direction="vertical" gap="lg" align="center" style={{ paddingTop: '4rem' }}>
-          <div className="loading-spinner">Loading tasks...</div>
+          <Stack direction="horizontal" align="center" gap="sm">
+            <div style={{
+              width: '20px',
+              height: '20px',
+              border: '2px solid var(--color-border)',
+              borderTop: '2px solid var(--color-primary)',
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite'
+            }} />
+            <span>Loading tasks...</span>
+          </Stack>
         </Stack>
+        <style>{`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}</style>
       </PageWrapper>
     )
   }

@@ -6,6 +6,16 @@ export { default as TableWidget } from './TableWidget'
 export { default as ChartWidget } from './ChartWidget'
 export { default as FormWidget } from './FormWidget'
 export { default as MediaWidget } from './MediaWidget'
+
+// Design System Widgets
+export { default as DropdownWidget } from './DropdownWidget'
+export { default as TabsWidget } from './TabsWidget'
+export { default as AvatarWidget } from './AvatarWidget'
+export { default as ProgressWidget } from './ProgressWidget'
+export { default as IconWidget } from './IconWidget'
+
+// Advanced Widgets (simplified for debugging)
+export { default as KanbanWidget } from './KanbanWidget'
 export { default as TimelineWidget } from './TimelineWidget'
 
 // Widget type definitions
