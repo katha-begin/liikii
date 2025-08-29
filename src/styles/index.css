@@ -5353,15 +5353,16 @@ code {
 }
 
 .user-menu-trigger {
-  padding: var(--space-2) var(--space-3) !important;
+  padding: 2px var(--space-2) !important;
   border-radius: var(--radius-input) !important;
   background: var(--bg-surface-2) !important;
   border: 1px solid var(--border-line) !important;
   transition: all 0.2s ease !important;
   min-width: 0;
-  max-width: 200px;
-  height: auto;
-  min-height: 40px;
+  max-width: 180px;
+  height: 28px;
+  display: flex;
+  align-items: center;
 }
 
 .user-menu-trigger:hover {
@@ -5372,7 +5373,7 @@ code {
 .user-info {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
   min-width: 0;
   overflow: hidden;
 }
@@ -5528,10 +5529,10 @@ code {
   }
 
   .user-menu-trigger {
-    padding: var(--space-2) !important;
-    min-width: 40px;
-    max-width: 40px;
-    min-height: 40px;
+    padding: 0 !important;
+    min-width: 28px;
+    max-width: 28px;
+    height: 28px;
   }
 
   .user-info {
@@ -5550,9 +5551,9 @@ code {
   }
 
   .user-menu-trigger {
-    padding: var(--space-1) !important;
-    min-width: 36px;
-    max-width: 36px;
-    min-height: 36px;
+    padding: 2px !important;
+    min-width: 28px;
+    max-width: 28px;
+    height: 28px;
   }
 }

@@ -79,7 +79,7 @@ const Header: React.FC<HeaderProps> = ({ isMobile, onToggleSidebar }) => {
                 src={state.user?.profile.avatarUrl}
                 alt={state.user?.displayName}
                 fallback={state.user?.displayName || 'User'}
-                size="sm"
+                size="xs"
                 variant="circle"
               />
               <div className="user-details">
