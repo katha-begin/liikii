@@ -5355,8 +5355,8 @@ code {
 .user-menu-trigger {
   padding: 4px var(--space-2) !important;
   border-radius: var(--radius-input) !important;
-  background: var(--bg-surface-2) !important;
-  border: 1px solid var(--border-line) !important;
+  background: transparent !important;
+  border: none !important;
   transition: all 0.2s ease !important;
   min-width: 0;
   max-width: 180px;
@@ -5367,8 +5367,7 @@ code {
 }
 
 .user-menu-trigger:hover {
-  background: var(--bg-surface-1) !important;
-  border-color: var(--text-secondary) !important;
+  background: var(--bg-surface-2) !important;
 }
 
 .user-info {
@@ -5381,12 +5380,13 @@ code {
 
 /* Custom avatar sizing for header user menu */
 .user-menu-trigger .avatar {
-  width: 20px !important;
-  height: 20px !important;
+  width: 18px !important;
+  height: 18px !important;
+  border: none !important;
 }
 
 .user-menu-trigger .avatar__initials {
-  font-size: 9px !important;
+  font-size: 8px !important;
 }
 
 .user-details {
