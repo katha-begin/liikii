@@ -5353,14 +5353,15 @@ code {
 }
 
 .user-menu-trigger {
-  padding: var(--space-1) var(--space-2) !important;
+  padding: var(--space-2) var(--space-3) !important;
   border-radius: var(--radius-input) !important;
   background: var(--bg-surface-2) !important;
   border: 1px solid var(--border-line) !important;
   transition: all 0.2s ease !important;
   min-width: 0;
-  max-width: 180px;
+  max-width: 200px;
   height: auto;
+  min-height: 40px;
 }
 
 .user-menu-trigger:hover {
@@ -5371,7 +5372,7 @@ code {
 .user-info {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-3);
   min-width: 0;
   overflow: hidden;
 }
@@ -5527,13 +5528,15 @@ code {
   }
 
   .user-menu-trigger {
-    padding: var(--space-1) !important;
-    min-width: auto;
-    max-width: auto;
+    padding: var(--space-2) !important;
+    min-width: 40px;
+    max-width: 40px;
+    min-height: 40px;
   }
 
   .user-info {
     gap: 0;
+    justify-content: center;
   }
 
   .chevron {
@@ -5547,6 +5550,9 @@ code {
   }
 
   .user-menu-trigger {
-    padding: 4px !important;
+    padding: var(--space-1) !important;
+    min-width: 36px;
+    max-width: 36px;
+    min-height: 36px;
   }
 }
