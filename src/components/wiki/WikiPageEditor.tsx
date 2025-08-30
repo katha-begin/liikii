@@ -97,6 +97,23 @@ Brief description of the technical approach and considerations.
 - Maintain consistency with design system
 - Ensure no breaking changes
 
+## Related Links
+
+For more information, see:
+- [[wiki:other-page-id|Related Wiki Page]]
+- [[task:task-123|Related Task]]
+- [[shot:ep00_sq0010_sh0020|Reference Shot]]
+- [[sequence:ep00_sq0010|Sequence Overview]]
+- [[episode:ep00|Episode Information]]
+
+## Reference Table
+
+| Component | Status | Owner | Notes |
+|-----------|--------|-------|-------|
+| Asset A | Complete | Artist 1 | Ready for animation |
+| Asset B | In Progress | Artist 2 | Needs texture work |
+| Asset C | Not Started | TBD | Waiting for approval |
+
 ## Notes
 Additional notes, references, or considerations for this ${currentHierarchy.topic} topic.`
 
@@ -213,7 +230,14 @@ Additional notes, references, or considerations for this ${currentHierarchy.topi
           </Stack>
         ) : (
           <Card variant="outlined" padding="lg">
-            <MarkdownRenderer content={content || sampleContent} />
+            <MarkdownRenderer
+              content={content || sampleContent}
+              projectId={projectId}
+              context={{
+                wikiPages: [], // TODO: Pass actual wiki pages for link resolution
+                tasks: [] // TODO: Pass actual tasks for link resolution
+              }}
+            />
           </Card>
         )}
       </div>

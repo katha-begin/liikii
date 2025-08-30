@@ -4,6 +4,8 @@
 
 This document describes the implementation of the project-scoped wiki system for the Liikii application. The wiki system provides a simple, hierarchical documentation solution that integrates seamlessly with the existing Linear-inspired design system.
 
+**Latest Update**: Enhanced with table support, internal linking system, and optimized navigation layout.
+
 ## Features Implemented
 
 ### Core Functionality
@@ -12,6 +14,12 @@ This document describes the implementation of the project-scoped wiki system for
 - ✅ Simple markdown editing with live preview
 - ✅ Clean, Notion-style content rendering
 - ✅ Integration with existing design system components
+
+### Enhanced Features (Latest Update)
+- ✅ **Table Support**: Full markdown table syntax with design system styling
+- ✅ **Internal Linking**: Link to wiki pages, tasks, shots, sequences, and episodes
+- ✅ **Optimized Layout**: Reduced navigation sidebar width (300px → 240px)
+- ✅ **Enhanced Templates**: Sample content includes tables and internal links
 
 ### Components Created
 
@@ -37,9 +45,11 @@ Markdown editor with preview functionality.
 - Auto-save functionality (ready for implementation)
 
 #### 4. MarkdownRenderer (`src/components/ui/MarkdownRenderer.tsx`)
-Clean markdown rendering component.
+Enhanced markdown rendering component with advanced features.
 - Consistent typography using design system tokens
-- Support for headers, lists, links, code blocks
+- Support for headers, lists, links, code blocks, and **tables**
+- **Internal link processing** with navigation integration
+- **GitHub Flavored Markdown** support via remark-gfm
 - Proper spacing and styling
 - Accessible markup structure
 
@@ -55,11 +65,11 @@ Template system integration widget.
 src/
 ├── components/
 │   ├── ui/
-│   │   └── MarkdownRenderer.tsx          # Markdown rendering component
+│   │   └── MarkdownRenderer.tsx          # Enhanced markdown rendering with tables & links
 │   ├── wiki/
-│   │   ├── WikiPage.tsx                  # Main wiki container
+│   │   ├── WikiPage.tsx                  # Main wiki container (optimized layout)
 │   │   ├── WikiNavigation.tsx            # Hierarchical navigation
-│   │   ├── WikiPageEditor.tsx            # Markdown editor
+│   │   ├── WikiPageEditor.tsx            # Markdown editor with enhanced templates
 │   │   ├── __tests__/
 │   │   │   └── WikiPage.test.tsx         # Basic tests
 │   │   └── index.ts                      # Component exports
@@ -67,8 +77,10 @@ src/
 │       └── WikiWidget.tsx                # Template system widget
 ├── types/
 │   └── wiki.ts                           # TypeScript interfaces
+├── utils/
+│   └── linkResolver.ts                   # Internal link processing utilities
 └── pages/
-    └── WikiDemo.tsx                      # Design system demo page
+    └── WikiDemo.tsx                      # Enhanced design system demo page
 ```
 
 ## Data Structure
@@ -95,8 +107,47 @@ interface WikiPage {
 
 ### Sample Data
 The implementation includes sample wiki pages for the "SWA" (Sky Wars Anthology) project:
-- Animation → Ep00 → Character Rigging Guidelines
-- Lighting → Ep00 → Lighting Standards
+- Animation → Ep00 → Character Rigging Guidelines (with tables and internal links)
+- Lighting → Ep00 → Lighting Standards (with reference tables and cross-links)
+
+## Enhanced Features Detail
+
+### Table Support
+The MarkdownRenderer now supports GitHub Flavored Markdown tables with:
+- Clean styling using design system tokens
+- Responsive table containers with horizontal scroll
+- Proper header styling with background colors
+- Consistent border and spacing patterns
+
+**Example Syntax:**
+```markdown
+| Header 1 | Header 2 | Header 3 |
+|----------|----------|----------|
+| Cell A   | Cell B   | Cell C   |
+| Cell D   | Cell E   | Cell F   |
+```
+
+### Internal Linking System
+A comprehensive linking system allows references to other project elements:
+
+**Supported Link Types:**
+- `[[wiki:page-id|Display Text]]` - Link to other wiki pages
+- `[[task:task-id]]` - Link to specific tasks
+- `[[shot:ep00_sq0010_sh0020]]` - Link to shots (episode_sequence_shot format)
+- `[[sequence:ep00_sq0010]]` - Link to sequences (episode_sequence format)
+- `[[episode:ep00]]` - Link to episodes
+
+**Features:**
+- Automatic link resolution and validation
+- Clickable navigation within the application
+- Fallback display for missing targets
+- Context-aware link processing
+
+### Optimized Navigation Layout
+- Reduced sidebar width from 300px to 240px
+- Better content-to-navigation ratio
+- Maintained usability while maximizing content space
+- Responsive design preserved
 
 ## Integration Points
 
@@ -119,19 +170,23 @@ The implementation includes sample wiki pages for the "SWA" (Sky Wars Anthology)
 ## Dependencies Added
 
 - `react-markdown`: Simple markdown rendering library
+- `remark-gfm`: GitHub Flavored Markdown support (tables, strikethrough, etc.)
 - No additional dependencies required for core functionality
 
 ## Testing
 
 ### Manual Testing Checklist
 - [x] Wiki demo page loads without errors
-- [x] Navigation tree expands/collapses correctly
+- [x] Navigation tree expands/collapses correctly (optimized 240px width)
 - [x] Page selection updates content area
 - [x] Edit mode toggles between edit and preview
-- [x] Markdown rendering displays correctly
+- [x] Markdown rendering displays correctly with tables
+- [x] Internal links render and navigate properly
 - [x] New page creation workflow functions
-- [x] Template content generation works
+- [x] Template content generation works with enhanced features
 - [x] Responsive design maintains layout
+- [x] Table syntax renders with proper styling
+- [x] Link resolution works for different target types
 
 ### Automated Testing
 - Basic component rendering tests included

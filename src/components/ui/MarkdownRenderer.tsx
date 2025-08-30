@@ -1,19 +1,36 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import { clsx } from 'clsx'
+import { useNavigate } from 'react-router-dom'
+import { processInternalLinks } from '@/utils/linkResolver'
 
 export interface MarkdownRendererProps {
   content: string
   className?: string
+  projectId?: string
+  context?: {
+    wikiPages?: any[]
+    tasks?: any[]
+  }
 }
 
-const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ 
-  content, 
-  className 
+const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
+  content,
+  className,
+  projectId,
+  context
 }) => {
+  const navigate = useNavigate()
+
+  // Process internal links if projectId is provided
+  const processedContent = projectId
+    ? processInternalLinks(content, projectId, context)
+    : content
   return (
     <div className={clsx('markdown-content', className)}>
       <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
         components={{
           h1: ({ children }) => (
             <h1 className="text-h1" style={{ marginBottom: 'var(--space-4)' }}>
@@ -97,28 +114,93 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
               </pre>
             )
           },
-          a: ({ children, href }) => (
-            <a 
-              href={href}
-              style={{ 
-                color: 'var(--text-accent)',
-                textDecoration: 'underline'
-              }}
-              target={href?.startsWith('http') ? '_blank' : undefined}
-              rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
-            >
-              {children}
-            </a>
-          ),
+          a: ({ children, href }) => {
+            const isExternal = href?.startsWith('http')
+            const isInternal = href?.startsWith('/projects/')
+
+            return (
+              <a
+                href={href}
+                style={{
+                  color: isInternal ? 'var(--text-accent)' : 'var(--text-accent)',
+                  textDecoration: 'underline',
+                  cursor: 'pointer'
+                }}
+                target={isExternal ? '_blank' : undefined}
+                rel={isExternal ? 'noopener noreferrer' : undefined}
+                onClick={(e) => {
+                  if (isInternal && navigate) {
+                    e.preventDefault()
+                    navigate(href)
+                  }
+                }}
+              >
+                {children}
+              </a>
+            )
+          },
           strong: ({ children }) => (
             <strong style={{ fontWeight: '600' }}>{children}</strong>
           ),
           em: ({ children }) => (
             <em style={{ fontStyle: 'italic' }}>{children}</em>
+          ),
+          table: ({ children }) => (
+            <div style={{
+              overflowX: 'auto',
+              marginBottom: 'var(--space-3)',
+              border: '1px solid var(--border-primary)',
+              borderRadius: 'var(--radius-input)'
+            }}>
+              <table style={{
+                width: '100%',
+                borderCollapse: 'collapse',
+                fontSize: '0.875rem'
+              }}>
+                {children}
+              </table>
+            </div>
+          ),
+          thead: ({ children }) => (
+            <thead style={{
+              backgroundColor: 'var(--bg-surface-2)'
+            }}>
+              {children}
+            </thead>
+          ),
+          tbody: ({ children }) => (
+            <tbody>{children}</tbody>
+          ),
+          tr: ({ children }) => (
+            <tr style={{
+              borderBottom: '1px solid var(--border-primary)'
+            }}>
+              {children}
+            </tr>
+          ),
+          th: ({ children }) => (
+            <th style={{
+              padding: 'var(--space-2) var(--space-3)',
+              textAlign: 'left',
+              fontWeight: '600',
+              color: 'var(--text-primary)',
+              borderRight: '1px solid var(--border-primary)'
+            }}>
+              {children}
+            </th>
+          ),
+          td: ({ children }) => (
+            <td style={{
+              padding: 'var(--space-2) var(--space-3)',
+              borderRight: '1px solid var(--border-primary)',
+              color: 'var(--text-primary)'
+            }}>
+              {children}
+            </td>
           )
         }}
       >
-        {content}
+        {processedContent}
       </ReactMarkdown>
     </div>
   )

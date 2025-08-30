@@ -65,10 +65,68 @@ const WikiDemo: React.FC = () => {
                 <div style={{ flex: 1, minWidth: '250px' }}>
                   <Stack direction="horizontal" gap="sm" align="center" style={{ marginBottom: 'var(--space-2)' }}>
                     <Eye size={20} />
-                    <h3 className="text-h3">Clean Rendering</h3>
+                    <h3 className="text-h3">Enhanced Rendering</h3>
                   </Stack>
                   <p className="text-body text-secondary">
-                    Notion-style content rendering with proper typography and spacing following the design system.
+                    Notion-style content rendering with table support, internal linking, and proper typography following the design system.
+                  </p>
+                </div>
+              </Stack>
+            </Stack>
+          </Card>
+
+          {/* New Features */}
+          <Card variant="outlined" padding="lg">
+            <Stack direction="vertical" gap="lg">
+              <div>
+                <h2 className="text-h2">Enhanced Features</h2>
+                <p className="text-body text-secondary">
+                  Recent enhancements to improve wiki functionality and user experience.
+                </p>
+              </div>
+
+              <Stack direction="horizontal" gap="lg" wrap>
+                <div style={{ flex: 1, minWidth: '300px' }}>
+                  <h3 className="text-h3">Table Support</h3>
+                  <p className="text-body text-secondary" style={{ marginBottom: 'var(--space-2)' }}>
+                    Full markdown table syntax support with clean styling that follows the design system.
+                  </p>
+                  <div style={{
+                    backgroundColor: 'var(--bg-surface-2)',
+                    padding: 'var(--space-2)',
+                    borderRadius: 'var(--radius-sm)',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.75rem'
+                  }}>
+                    | Header 1 | Header 2 |<br/>
+                    |----------|----------|<br/>
+                    | Cell A   | Cell B   |
+                  </div>
+                </div>
+
+                <div style={{ flex: 1, minWidth: '300px' }}>
+                  <h3 className="text-h3">Internal Linking</h3>
+                  <p className="text-body text-secondary" style={{ marginBottom: 'var(--space-2)' }}>
+                    Link to other wiki pages, tasks, shots, sequences, and episodes using simple syntax.
+                  </p>
+                  <div style={{
+                    backgroundColor: 'var(--bg-surface-2)',
+                    padding: 'var(--space-2)',
+                    borderRadius: 'var(--radius-sm)',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.75rem'
+                  }}>
+                    [[wiki:page-id|Display Text]]<br/>
+                    [[task:task-123]]<br/>
+                    [[shot:ep00_sq0010_sh0020]]
+                  </div>
+                </div>
+
+                <div style={{ flex: 1, minWidth: '300px' }}>
+                  <h3 className="text-h3">Optimized Layout</h3>
+                  <p className="text-body text-secondary">
+                    Reduced navigation sidebar width from 300px to 240px for better content space utilization
+                    while maintaining usability.
                   </p>
                 </div>
               </Stack>
@@ -82,16 +140,17 @@ const WikiDemo: React.FC = () => {
               
               <div>
                 <h3 className="text-h3">Components Created</h3>
-                <ul style={{ 
+                <ul style={{
                   marginTop: 'var(--space-2)',
                   paddingLeft: 'var(--space-4)',
                   listStyle: 'disc'
                 }}>
                   <li className="text-body">WikiPage - Main wiki container component</li>
-                  <li className="text-body">WikiNavigation - Hierarchical navigation tree</li>
-                  <li className="text-body">WikiPageEditor - Markdown editor with preview</li>
-                  <li className="text-body">MarkdownRenderer - Clean markdown rendering</li>
+                  <li className="text-body">WikiNavigation - Hierarchical navigation tree (optimized width)</li>
+                  <li className="text-body">WikiPageEditor - Markdown editor with preview and templates</li>
+                  <li className="text-body">MarkdownRenderer - Enhanced rendering with tables and internal links</li>
                   <li className="text-body">WikiWidget - Template system integration</li>
+                  <li className="text-body">LinkResolver - Internal link processing utilities</li>
                 </ul>
               </div>
 
@@ -179,10 +238,26 @@ const WikiDemo: React.FC = () => {
               </div>
 
               <div>
+                <h3 className="text-h3">Advanced Features</h3>
+                <ul style={{
+                  marginTop: 'var(--space-2)',
+                  paddingLeft: 'var(--space-4)',
+                  listStyle: 'disc'
+                }}>
+                  <li className="text-body">Create tables using standard markdown syntax</li>
+                  <li className="text-body">Link to other wiki pages: [[wiki:page-id|Display Text]]</li>
+                  <li className="text-body">Link to tasks: [[task:task-id]]</li>
+                  <li className="text-body">Link to shots: [[shot:ep00_sq0010_sh0020]]</li>
+                  <li className="text-body">Link to sequences: [[sequence:ep00_sq0010]]</li>
+                  <li className="text-body">Link to episodes: [[episode:ep00]]</li>
+                </ul>
+              </div>
+
+              <div>
                 <h3 className="text-h3">Content Structure</h3>
                 <p className="text-body text-secondary">
-                  Pages are designed to include user stories and technical implementation suggestions,
-                  following the requirements for comprehensive project documentation.
+                  Pages are designed to include user stories, technical implementation suggestions,
+                  data tables, and internal links for comprehensive project documentation.
                 </p>
               </div>
             </Stack>

@@ -55,7 +55,25 @@ This document outlines the standard rigging workflow for character assets in the
 - Document any custom attributes or special procedures
 
 ## Notes
-This rigging approach has been tested on Episode 00 characters and should be applied consistently across all future episodes.`,
+This rigging approach has been tested on Episode 00 characters and should be applied consistently across all future episodes.
+
+## Related Links
+
+For more information, see:
+- [[wiki:lighting-standards|Lighting Standards]] for complementary setup
+- [[task:ep00_sq0010_sh0020_lighting|SH0020 Lighting Task]] for practical application
+- [[shot:ep00_sq0010_sh0020|Episode 00 Sequence 10 Shot 20]] for reference footage
+- [[sequence:ep00_sq0010|Episode 00 Sequence 10]] for sequence overview
+
+## Data Tables
+
+| Rig Component | Control Color | Constraint Type | Notes |
+|---------------|---------------|-----------------|-------|
+| Main Body | Blue | Parent | Primary control hierarchy |
+| IK Arms | Red | IK Handle | Arm animation controls |
+| FK Arms | Yellow | Orient | Detailed arm positioning |
+| Spine | Green | Spline IK | Flexible spine movement |
+| Face | Purple | Custom | Facial expression controls |`,
     slug: 'character-rigging-guidelines',
     created_at: '2024-01-15T10:00:00Z',
     updated_at: '2024-01-20T15:30:00Z',
@@ -90,7 +108,23 @@ As a lighting artist, I want consistent lighting setups so that all shots mainta
 - Exterior night: 2800K base
 
 ## Notes
-These standards ensure consistency across all Sky Wars Anthology episodes.`,
+These standards ensure consistency across all Sky Wars Anthology episodes.
+
+## Related Information
+
+See also:
+- [[wiki:character-rigging-guidelines|Character Rigging Guidelines]] for asset preparation
+- [[episode:ep00|Episode 00 Overview]] for project context
+- [[task:ep00_sq0020_sh0100_lighting|SH0100 Lighting Task]] for implementation example
+
+## Lighting Setup Reference
+
+| Scene Type | Key Light | Fill Light | Rim Light | Color Temp |
+|------------|-----------|------------|-----------|------------|
+| Interior Day | 3200K | 3200K | 5600K | Warm |
+| Interior Night | 2800K | 2800K | 3200K | Very Warm |
+| Exterior Day | 5600K | 5600K | 5600K | Cool |
+| Exterior Night | 2800K | 2800K | 4000K | Mixed |`,
     slug: 'lighting-standards',
     created_at: '2024-01-16T09:00:00Z',
     updated_at: '2024-01-16T09:00:00Z',
@@ -209,7 +243,7 @@ const WikiPage: React.FC<WikiPageProps> = ({ projectId, className }) => {
       backgroundColor: 'var(--bg-surface)'
     }}>
       {/* Navigation Sidebar */}
-      <div style={{ width: '300px', flexShrink: 0 }}>
+      <div style={{ width: '240px', flexShrink: 0 }}>
         <WikiNavigation
           projectId={projectId}
           hierarchy={hierarchy}
@@ -276,7 +310,14 @@ const WikiPage: React.FC<WikiPageProps> = ({ projectId, className }) => {
               overflow: 'auto'
             }}>
               <Card variant="outlined" padding="lg">
-                <MarkdownRenderer content={currentPage.content} />
+                <MarkdownRenderer
+                  content={currentPage.content}
+                  projectId={projectId}
+                  context={{
+                    wikiPages: pages,
+                    tasks: [] // TODO: Load actual tasks from data service
+                  }}
+                />
               </Card>
             </div>
           </>
