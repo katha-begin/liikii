@@ -1,346 +1,221 @@
-# Feature Request: Wiki System with Markdown and Media Support
+# Feature Request: Project Wiki System
 
 ## 🎯 Purpose & Goals
-**Primary Goal**: Create a comprehensive wiki system that enables teams to create, organize, and collaborate on documentation with rich markdown editing, media attachments, and seamless integration with the existing VFX production workflow.
+**Primary Goal**: Create a simple wiki system that enables teams to create, organize, and share project knowledge within their project context, organized hierarchically by department → episode → specific topics.
 
-**User Value**: Provides a centralized knowledge base for project documentation, technical notes, meeting minutes, and process documentation with Notion-style editing experience and automatic media management.
+**User Value**: Provides a centralized, project-scoped knowledge base for documenting user stories, technical implementation suggestions, and project-specific information with clean, simple markdown editing.
 
-**Business Impact**: Reduces time spent searching for project information by 70%, improves knowledge retention across teams, and creates a searchable repository of production knowledge that scales with project complexity.
+**Business Impact**: Improves project knowledge retention and sharing, reduces time spent searching for project-specific information, and creates a structured repository of project documentation that integrates seamlessly with existing workflow.
 
 **Success Metrics**:
-- 90% of team members actively use wiki for project documentation within 30 days
-- Average time to find project information reduced from 15 minutes to 2 minutes
-- 80% reduction in duplicate documentation across different tools
-- Zero data loss incidents with automatic S3 backup and versioning
+- Teams actively use wiki for project documentation within 2 weeks
+- Reduced time searching for project-specific information
+- Improved knowledge sharing between team members
+- Zero breaking changes to existing application functionality
 
 ## 👤 User Stories
 
 **Primary User Story**:
-As a VFX Supervisor, I want to create and maintain project documentation with rich markdown formatting and embedded images so that my team has a single source of truth for project requirements, references, and technical specifications.
+As a VFX Supervisor, I want to create project wiki pages organized by department and episode so that my team can easily find and contribute to project-specific documentation with user stories and technical implementation notes.
 
 **Secondary User Story**:
-As a Technical Director, I want to document complex workflows with code blocks, diagrams, and step-by-step instructions so that junior artists can follow established procedures without constant supervision.
+As a Technical Director, I want to document technical implementation suggestions within the project wiki so that the development team has clear guidance on how features should be implemented without breaking existing functionality.
 
 **Tertiary User Story**:
-As a Producer, I want to create meeting notes with action items and embedded reference images so that all stakeholders have access to decisions and can track project evolution over time.
+As a Producer, I want to organize project knowledge hierarchically (department → episode → topics) so that team members can quickly navigate to relevant information and maintain project documentation structure.
 
 **Edge Case Story**:
-As a Remote Artist, I want to access and contribute to project documentation offline so that connectivity issues don't prevent me from documenting important discoveries or accessing critical information.
+As a Team Member, I want to access project wiki pages from within the existing project interface so that I don't need to learn new navigation patterns or leave my current workflow.
 
 ### Acceptance Criteria
-- [ ] Given I'm on any project page, when I click "Create Wiki Page", then I can start writing with a rich markdown editor
-- [ ] Given I'm editing a wiki page, when I drag and drop an image, then it uploads to S3 and embeds automatically with proper CDN delivery
-- [ ] Given I'm viewing a wiki page, when I switch to preview mode, then I see Notion-style rendered content with proper formatting and media
-- [ ] Given I'm searching for information, when I use the wiki search, then I get relevant results from page content, titles, and tags
-- [ ] Given I'm working offline, when I create or edit wiki content, then changes are saved locally and sync when connection is restored
+- [ ] Given I'm on a project page, when I click "Wiki" tab, then I can view and create wiki pages scoped to that project
+- [ ] Given I'm creating a wiki page, when I organize it by department and episode, then it follows the hierarchical structure (project → department → episode → topic)
+- [ ] Given I'm editing a wiki page, when I use simple markdown syntax, then it renders cleanly with Notion-style formatting
+- [ ] Given I'm viewing a wiki page, when I navigate the hierarchy, then I can easily move between departments, episodes, and topics
+- [ ] Given I'm using the wiki system, when I perform any action, then existing application functionality remains unaffected
 
 ## 🔄 User Workflow
 
 ### Happy Path
-1. **Entry Point**: User navigates to project and clicks "Wiki" tab or uses global "Create Wiki Page" button
-2. **Page Creation**: User selects from templates (Documentation, Meeting Notes, Technical Guide) or starts blank
-3. **Content Creation**: User writes in markdown editor with live preview, uses toolbar for formatting shortcuts
-4. **Media Addition**: User drags images directly into editor, system automatically uploads to S3 and inserts markdown links
-5. **Organization**: User adds tags, sets category, and links to related pages or tasks
-6. **Publishing**: User saves page, system generates searchable index and notifies relevant team members
-7. **Success State**: Page is accessible via navigation, search, and direct links with proper permissions
+1. **Entry Point**: User navigates to project page and clicks "Wiki" tab in the project navigation
+2. **Hierarchy Navigation**: User sees organized structure: Departments → Episodes → Topics, clicks to navigate or create new pages
+3. **Page Creation**: User clicks "Create Page" and selects location in hierarchy (department/episode/topic)
+4. **Content Creation**: User writes in simple markdown editor with basic formatting (headers, lists, links, emphasis)
+5. **Content Structure**: User adds comprehensive user stories and technical implementation suggestions as required content
+6. **Save**: User saves page, it appears in the hierarchical navigation within the project context
+7. **Success State**: Page is accessible through project wiki navigation and maintains project scope
 
 ### Error Scenarios
-- **Upload failure**: Show retry dialog with "Image upload failed. Save as draft and retry?" option
-- **Network interruption**: Auto-save to local storage with "Working offline - changes will sync when connected" indicator
-- **Permission denied**: Show clear message "You don't have permission to edit this page" with request access option
-- **Concurrent editing**: Show conflict resolution with "Another user is editing. View their changes or continue editing?" dialog
+- **Save failure**: Show retry dialog with "Failed to save page. Retry?" option
+- **Permission denied**: Show clear message "You don't have permission to create/edit wiki pages in this project"
+- **Navigation error**: If hierarchy is broken, show "Page not found" with option to return to wiki home
 
 ### Edge Cases
-- **Large media files**: Show progress indicator and compress images over 5MB automatically
-- **Broken links**: Highlight broken internal links with "Page not found - create it?" option
-- **Version conflicts**: Provide side-by-side diff view for resolving conflicting edits
-- **Template customization**: Allow users to save custom page templates for team-specific workflows
+- **Deep hierarchy**: Limit nesting to prevent overly complex navigation (max 4 levels: project → department → episode → topic)
+- **Empty content**: Allow saving empty pages as placeholders but show "This page is empty" indicator
+- **Long content**: Handle long markdown content with proper scrolling within the existing interface
 
 ## 🎨 Design Requirements
 
 ### Visual Style
-- **Design System**: Follows Linear-inspired clean interface with focus on content readability
-- **Component Reuse**: Uses existing Button, Input, Card, Modal, Tabs components
-- **New Components**: WikiEditor, WikiRenderer, WikiSidebar, MediaUploader, PageTemplateSelector
-- **Color Scheme**: Neutral content focus with accent colors for interactive elements and syntax highlighting
+- **Design System**: Follows existing Linear-inspired design system with clean, simple interface
+- **Component Reuse**: Uses existing Button, Input, Card, Modal, Tabs, and navigation components
+- **New Components**: WikiPage, WikiEditor (simple markdown), WikiNavigation (hierarchical tree)
+- **Color Scheme**: Consistent with existing application theme, neutral content focus
 
 ### Layout & Placement
-- **Primary Location**: New "Wiki" section in main navigation, accessible from all project contexts
-- **Secondary Locations**: Wiki pages can be linked from tasks, embedded in project details, and accessed via global search
-- **Navigation**: Hierarchical page tree in sidebar, breadcrumb navigation, and contextual page linking
+- **Primary Location**: "Wiki" tab within project pages, integrated with existing project navigation
+- **Secondary Locations**: Accessible only within project context, no global wiki access
+- **Navigation**: Simple hierarchical tree navigation showing department → episode → topic structure
 
 ### Responsive Behavior
-- **Desktop**: Split-pane editor with live preview, collapsible sidebar navigation
-- **Mobile**: Stacked editor with toggle between edit/preview modes, slide-out navigation
-- **Tablet**: Adaptive layout with resizable panes and touch-optimized editing controls
+- **Desktop**: Standard layout with sidebar navigation and main content area
+- **Mobile**: Collapsible navigation with main content area, consistent with existing mobile patterns
+- **Tablet**: Adaptive layout following existing responsive patterns
 
 ### Accessibility
-- **Keyboard Navigation**: Full keyboard support for editing, navigation, and media management
-- **Screen Reader**: Proper ARIA labels for editor controls, content structure, and navigation
-- **Color Contrast**: High contrast mode support, semantic color usage for syntax highlighting
+- **Keyboard Navigation**: Standard keyboard support consistent with existing application
+- **Screen Reader**: Proper ARIA labels following existing accessibility patterns
+- **Color Contrast**: Maintains existing accessibility standards
 
 ## 🔧 Technical Requirements
 
 ### Data Integration
-- **Data Sources**: Wiki pages stored in database with metadata, content in markdown format, media files in S3
-- **Data Format**: WikiPage interface with title, content, metadata, tags, permissions, and version history
-- **Data Volume**: Handle up to 10,000 pages per project with full-text search and media indexing
-- **Real-time Updates**: WebSocket integration for collaborative editing indicators and live updates
+- **Data Sources**: Wiki pages stored using existing JSON configuration approach, consistent with current data structure
+- **Data Format**: Simple WikiPage interface with title, content (markdown string), hierarchy path, and project_id
+- **Data Volume**: Handle reasonable number of pages per project (100-500 pages) with simple navigation
+- **Real-time Updates**: Not required for MVP, standard page refresh patterns
 
 ### Performance Requirements
-- **Response Time**: Page loading under 500ms, search results under 200ms, media upload progress indicators
-- **Concurrent Users**: Support 50+ simultaneous editors with conflict resolution and auto-save
-- **Data Loading**: Lazy loading for large pages, progressive image loading, and content pagination
+- **Response Time**: Standard page loading performance consistent with existing application
+- **Concurrent Users**: Standard single-user editing, no real-time collaboration needed
+- **Data Loading**: Simple loading patterns consistent with existing page navigation
 
 ### Integration Points
 - **Existing Components**:
-  - AppShell: Add wiki routes and navigation integration
-  - ProjectDetailsPage: Add wiki tab and quick access to project documentation
-  - TaskDetailPanel: Add wiki page linking and embedded documentation
-  - DataContext: Extend with wiki data management and search capabilities
+  - ProjectDetailsPage: Add "Wiki" tab to existing tab navigation
+  - AppShell: Extend routing to handle wiki pages within project context
+  - DataContext: Add simple wiki data methods following existing patterns
 
 ### State Management
-- **New Context**: WikiContext for page management, editing state, and search functionality
-- **Existing Context**: Extends DataContext with wiki-specific hooks and data fetching
-- **Persistence**: Auto-save drafts to localStorage, sync to database, version history tracking
+- **New Context**: Simple WikiContext for basic page management within project scope
+- **Existing Context**: Minimal extension to DataContext for wiki data
+- **Persistence**: Standard JSON file persistence following existing template-first approach
 
 ## 📱 Platform Considerations
 
 ### Desktop-Specific
-- **Electron Features**: Native file system integration for bulk media import, system notifications for page updates
-- **System Integration**: Drag-and-drop from file explorer, native context menus, keyboard shortcuts
-- **Keyboard Shortcuts**: Ctrl+K for quick search, Ctrl+N for new page, Ctrl+S for save
+- **Electron Features**: Standard integration consistent with existing application
+- **System Integration**: Basic keyboard shortcuts following existing patterns
+- **Keyboard Shortcuts**: Standard shortcuts (Ctrl+S for save) consistent with existing application
 
 ### Cross-Platform
-- **Windows**: Native file dialogs for media upload, Windows-specific keyboard shortcuts
-- **macOS**: Cmd key support, native drag-and-drop behavior, macOS notification integration
-- **Linux**: GTK file dialogs, Linux-specific keyboard shortcuts and system integration
+- **Windows**: Standard Windows behavior consistent with existing application
+- **macOS**: Standard macOS behavior consistent with existing application
+- **Linux**: Standard Linux behavior consistent with existing application
 
 ### Offline Capability
-- **Offline Mode**: Full offline editing with local storage, automatic sync when online
-- **Data Sync**: Conflict resolution for offline changes, background sync with progress indicators
+- **Offline Mode**: Not required for MVP, standard online functionality
+- **Data Sync**: Standard data persistence following existing patterns
 
 ## 🔗 Integration Context
 
 ### Affected Components
-- **AppShell**: Add wiki routing, navigation menu integration, and global search
-- **ProjectDetailsPage**: Add wiki tab, quick documentation access, and page embedding
-- **TemplateSystem**: Extend with wiki page templates and layout configurations
-- **DesignSystemDemo**: Add wiki components to component library showcase
+- **ProjectDetailsPage**: Add "Wiki" tab to existing tab navigation
+- **AppShell**: Extend routing to handle wiki pages within project context
+- **TemplateSystem**: Integrate with existing template-first JSON configuration approach
 
 ### Data Flow Changes
-- **MockDataService**: Add wiki page CRUD operations, search functionality, and media management
-- **API Endpoints**: Design RESTful endpoints for pages, media, search, and collaboration features
-- **Database Schema**: New tables for wiki_pages, wiki_media, wiki_versions, and wiki_tags
+- **MockDataService**: Add simple wiki page CRUD operations following existing patterns
+- **API Endpoints**: Simple endpoints for basic wiki functionality (future MongoDB migration)
+- **Database Schema**: Simple wiki page structure consistent with existing JSON data approach
 
 ### Design System Impact
-- **New Design Tokens**: Editor-specific colors, syntax highlighting palette, content typography
-- **Component Extensions**: Rich text editor components, media upload widgets, search interfaces
-- **New Patterns**: Split-pane editing, collaborative indicators, version comparison views
+- **New Design Tokens**: Minimal, reuse existing design tokens
+- **Component Extensions**: Simple markdown editor and renderer components
+- **New Patterns**: Basic hierarchical navigation pattern
 
 ## 📋 Implementation Priority
 
 ### Must Have (MVP)
-- Basic wiki page creation and editing with markdown support
-- Notion-style preview rendering with proper formatting
-- Image drag-and-drop upload with S3 integration
-- Page organization with folders and basic search
-- Template system integration for reusable page layouts
+- Basic wiki page creation and editing with simple markdown support
+- Clean preview rendering with basic formatting (headers, lists, emphasis, links)
+- Hierarchical page organization (project → department → episode → topic)
+- Integration with existing project navigation (Wiki tab)
+- Template-first JSON configuration approach
 
 ### Should Have
-- Real-time collaborative editing indicators
-- Advanced search with full-text indexing and filters
-- Version history with diff viewing and rollback
-- Page linking and backlink discovery
-- Offline editing with automatic sync
+- Basic search within project wiki pages
+- Simple page linking between wiki pages
+- Content templates for user stories and technical implementation suggestions
 
 ### Could Have
-- Advanced media management with thumbnails and galleries
-- Custom page templates and workflow automation
-- Integration with external documentation tools
-- Advanced collaboration features like comments and reviews
-- Analytics and usage tracking for documentation effectiveness
-
-## 🎯 Media Management Specifications
-
-### Image Attachment Feature
-- **Drag-and-Drop Upload**: Direct drag from file system into markdown editor with instant preview
-- **Paste Support**: Clipboard image pasting with automatic upload and embedding
-- **Multiple Formats**: Support for PNG, JPG, GIF, WebP, and SVG with format conversion
-- **Upload Progress**: Real-time progress indicators with cancel option and retry functionality
-
-### S3 Storage Integration
-- **Automatic Upload**: Background upload to AWS S3 with configurable bucket and region
-- **Folder Structure**: Organized by project/wiki-media/YYYY/MM/DD/filename for easy management
-- **CDN Integration**: CloudFront distribution for fast global media delivery
-- **Security**: Signed URLs for private content, public URLs for shared documentation
-
-### Image Handling
-- **Compression**: Automatic compression for images over 1MB with quality settings
-- **Thumbnail Generation**: Multiple sizes (150px, 300px, 600px) for responsive display
-- **Lazy Loading**: Progressive loading for pages with multiple images
-- **Alt Text**: Automatic alt text generation with manual override options
-
-### Media Organization
-- **Naming Convention**: project-id_page-slug_timestamp_original-name.ext
-- **Metadata Storage**: Image dimensions, file size, upload date, and usage tracking
-- **Cleanup**: Automatic removal of unused media with 30-day grace period
-- **Backup**: Cross-region replication for disaster recovery and data protection
-
-## 🏗️ Component Architecture
-
-### File Structure
-```
-src/
-├── components/
-│   └── wiki/
-│       ├── WikiPage.tsx           # Main wiki page container
-│       ├── WikiEditor.tsx         # Markdown editor with toolbar
-│       ├── WikiRenderer.tsx       # Notion-style content renderer
-│       ├── WikiSidebar.tsx        # Navigation and page tree
-│       ├── WikiSearch.tsx         # Search interface and results
-│       ├── MediaUploader.tsx      # Drag-and-drop media upload
-│       ├── PageTemplates.tsx      # Template selector and manager
-│       └── CollaborationBar.tsx   # Real-time editing indicators
-├── hooks/
-│   ├── useWikiPages.ts           # Wiki data management
-│   ├── useWikiSearch.ts          # Search functionality
-│   └── useMediaUpload.ts         # S3 upload management
-└── types/
-    └── wiki.ts                   # Wiki-specific TypeScript interfaces
-```
-
-### Database Schema
-```sql
--- Wiki Pages
-CREATE TABLE wiki_pages (
-  id UUID PRIMARY KEY,
-  project_id UUID REFERENCES projects(id),
-  title VARCHAR(255) NOT NULL,
-  slug VARCHAR(255) UNIQUE NOT NULL,
-  content TEXT,
-  metadata JSONB,
-  created_by UUID REFERENCES users(id),
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW(),
-  is_published BOOLEAN DEFAULT false
-);
-
--- Wiki Media
-CREATE TABLE wiki_media (
-  id UUID PRIMARY KEY,
-  page_id UUID REFERENCES wiki_pages(id),
-  filename VARCHAR(255) NOT NULL,
-  s3_key VARCHAR(500) NOT NULL,
-  file_size INTEGER,
-  mime_type VARCHAR(100),
-  dimensions JSONB,
-  uploaded_at TIMESTAMP DEFAULT NOW()
-);
-
--- Wiki Tags
-CREATE TABLE wiki_tags (
-  id UUID PRIMARY KEY,
-  page_id UUID REFERENCES wiki_pages(id),
-  tag VARCHAR(100) NOT NULL,
-  created_at TIMESTAMP DEFAULT NOW()
-);
-```
-
-### API Endpoints
-```typescript
-// Wiki Pages CRUD
-GET    /api/v1/wiki/pages              # List all pages with pagination
-POST   /api/v1/wiki/pages              # Create new page
-GET    /api/v1/wiki/pages/:id          # Get specific page
-PUT    /api/v1/wiki/pages/:id          # Update page content
-DELETE /api/v1/wiki/pages/:id          # Delete page
-
-// Media Management
-POST   /api/v1/wiki/media/upload       # Upload media to S3
-GET    /api/v1/wiki/media/:id          # Get media metadata
-DELETE /api/v1/wiki/media/:id          # Delete media file
-
-// Search and Discovery
-GET    /api/v1/wiki/search?q=query     # Full-text search
-GET    /api/v1/wiki/tags               # Get all available tags
-GET    /api/v1/wiki/backlinks/:id      # Get pages linking to this page
-```
-
-### Security Considerations
-- **File Upload Security**: Virus scanning, file type validation, size limits (10MB max)
-- **S3 Access Control**: IAM roles with minimal permissions, signed URLs for private content
-- **Content Sanitization**: XSS prevention in markdown rendering, HTML sanitization
-- **Permission System**: Role-based access control for page creation, editing, and viewing
-- **Audit Trail**: Complete logging of all page changes, media uploads, and access patterns
+- Basic image embedding (simple file upload, no S3 complexity)
+- Export wiki content to markdown files
+- Simple page templates for common documentation types
 
 ## 📚 References & Examples
 
 ### Visual References
-- **Notion**: Block-based editing, clean typography, seamless media integration
-- **GitBook**: Technical documentation layout, search functionality, navigation patterns
-- **Linear**: Clean interface design, consistent component usage, keyboard shortcuts
-- **Confluence**: Page organization, collaborative editing, template system
+- **Notion**: Clean, simple page editing and hierarchical organization
+- **Linear**: Consistent interface design and navigation patterns
+- **GitBook**: Simple documentation structure and markdown rendering
+- **Existing Liikii Interface**: Maintain consistency with current design system
 
 ### Technical References
-- **React Markdown**: react-markdown library for rendering with custom components
-- **AWS S3 SDK**: @aws-sdk/client-s3 for direct browser uploads with presigned URLs
-- **Monaco Editor**: VS Code editor component for advanced markdown editing
-- **Fuse.js**: Lightweight fuzzy search for client-side page discovery
+- **React Markdown**: Simple markdown rendering library
+- **Existing Template System**: Follow current JSON configuration patterns
+- **Current Navigation**: Extend existing tab-based navigation patterns
 
 ## 🚨 Constraints & Considerations
 
 ### Technical Constraints
-- **Bundle Size**: Keep wiki components under 500KB to maintain app performance
-- **Browser Compatibility**: Support modern browsers with ES2020+ features
-- **S3 Costs**: Implement intelligent media cleanup to control storage costs
-- **Search Performance**: Index optimization for fast search across large page collections
+- **Bundle Size**: Keep wiki components lightweight to maintain app performance
+- **Browser Compatibility**: Support existing browser requirements
+- **Integration**: Must not break existing functionality or navigation patterns
+- **Data Structure**: Must be consistent with existing JSON configuration approach
 
 ### Business Constraints
-- **Migration Path**: Provide import tools for existing documentation from other platforms
-- **Training Requirements**: Intuitive interface requiring minimal user training
-- **Data Ownership**: Ensure all content remains under user control with export capabilities
+- **Simplicity**: Must be intuitive and require minimal user training
+- **Project Scope**: Wiki pages must remain scoped to individual projects
+- **Migration Path**: Must support future MongoDB migration without data loss
 
 ### User Constraints
-- **Learning Curve**: Familiar markdown syntax with visual editing aids for non-technical users
-- **Collaboration Conflicts**: Clear conflict resolution without data loss
-- **Mobile Editing**: Functional mobile editing for urgent documentation updates
+- **Learning Curve**: Should feel familiar to users of existing interface
+- **Navigation**: Must integrate seamlessly with existing project navigation
+- **Content Structure**: Should encourage structured documentation with user stories and technical notes
 
 ## ✅ Definition of Done
 
 ### Functional Requirements
-- [ ] Users can create, edit, and delete wiki pages with rich markdown formatting
-- [ ] Drag-and-drop image upload works seamlessly with S3 integration and CDN delivery
-- [ ] Search functionality returns relevant results from page content, titles, and tags
-- [ ] Page templates integrate with existing template system and support customization
-- [ ] Offline editing saves locally and syncs automatically when connection is restored
-- [ ] Real-time collaboration indicators show when multiple users are editing
+- [ ] Users can create, edit, and delete wiki pages within project context
+- [ ] Wiki pages are organized hierarchically (project → department → episode → topic)
+- [ ] Simple markdown formatting works correctly (headers, lists, emphasis, links)
+- [ ] Wiki tab integrates seamlessly with existing project navigation
+- [ ] All existing functionality continues to work without issues
 
 ### Technical Requirements
-- [ ] TypeScript compilation passes with comprehensive type definitions for all wiki components
-- [ ] All existing functionality continues to work without performance degradation
-- [ ] Wiki components have 90%+ test coverage including upload and search functionality
-- [ ] Performance benchmarks met: page load <500ms, search <200ms, upload progress indicators
-- [ ] Accessibility requirements satisfied with full keyboard navigation and screen reader support
-- [ ] Security audit passed for file uploads, content sanitization, and access controls
+- [ ] TypeScript compilation passes with proper type definitions
+- [ ] All existing tests continue to pass
+- [ ] New wiki functionality has appropriate test coverage
+- [ ] Performance remains consistent with existing application
+- [ ] Follows existing code patterns and architecture
 
 ### Integration Requirements
-- [ ] Seamlessly integrates with existing project structure and navigation
-- [ ] Follows established Linear-inspired design patterns and component usage
-- [ ] Template system extended without breaking existing template functionality
+- [ ] Integrates with existing project structure and navigation
+- [ ] Follows established Linear-inspired design patterns
+- [ ] Uses existing template-first JSON configuration approach
 - [ ] No breaking changes to existing data contexts or state management
-- [ ] S3 integration configured with proper IAM roles and cost optimization
+- [ ] Maintains data structure consistency for future MongoDB migration
 
 ### Documentation Requirements
-- [ ] Component API documentation with usage examples and props reference
-- [ ] User guide with screenshots covering all major workflows and features
-- [ ] Technical documentation for S3 setup, security configuration, and deployment
-- [ ] Migration guide for importing existing documentation from other platforms
+- [ ] Component documentation with usage examples
+- [ ] User guide for wiki functionality
+- [ ] Technical documentation for data structure and integration patterns
 
 ---
 
 ## Notes for Implementation
-This wiki system should feel like a natural extension of the existing project management workflow. Start with core editing and media upload functionality, then add collaborative features and advanced search. The system should be modular enough to work as standalone documentation or integrated project knowledge base. Consider implementing a plugin architecture for future extensions like diagram support, code execution, or integration with external tools.
+This wiki system should feel like a natural extension of the existing project management workflow. Start with basic page creation and editing functionality, focusing on simplicity and integration with existing patterns. The system should be lightweight and focused on the core need: project-scoped documentation with hierarchical organization.
 
-The S3 integration should be configurable to work with different cloud providers in the future, and the markdown rendering should support custom extensions for VFX-specific content like frame ranges, color spaces, and technical specifications.
+Keep the implementation simple and avoid over-engineering. The goal is to provide a clean, easy-to-use wiki system that integrates seamlessly with the existing Linear-inspired interface and maintains consistency with the current template-first approach. Focus on the essential features that directly address the user's requirements for project knowledge sharing and documentation.

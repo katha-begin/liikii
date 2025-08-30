@@ -542,7 +542,7 @@ const DesignSystemDemo: React.FC = () => {
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-2)' }}>
                     <h3 className="text-h3">Timeline</h3>
                     <Button
-                      variant="outline"
+                      variant="secondary"
                       size="sm"
                       onClick={() => navigate('/design-system/timeline')}
                     >
@@ -553,6 +553,24 @@ const DesignSystemDemo: React.FC = () => {
                     Project scheduling and milestone tracking with interactive timeline visualization.
                     Click "View Full Timeline Demo" to see the Linear.com-inspired full-page implementation.
                   </p>
+
+                {/* Wiki System */}
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-2)' }}>
+                    <h3 className="text-h3">Wiki System</h3>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => navigate('/design-system/wiki')}
+                    >
+                      View Wiki Demo
+                    </Button>
+                  </div>
+                  <p className="text-body text-secondary">
+                    Project-scoped documentation system with hierarchical organization (department → episode → topic).
+                    Features markdown editing, clean rendering, and seamless design system integration.
+                  </p>
+                </div>
                   <div style={{ marginTop: 'var(--space-4)' }}>
                     <TimelineWidget
                       title="Animation Production Timeline - Gantt View"

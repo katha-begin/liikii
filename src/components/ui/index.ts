@@ -29,6 +29,7 @@ export { default as Progress } from './Progress'
 export type { ProgressProps } from '@/types/designSystem'
 
 export { default as Tooltip } from './Tooltip'
+export { default as MarkdownRenderer } from './MarkdownRenderer'
 export type { TooltipProps } from '@/types/designSystem'
 
 // Icon Library

@@ -17,6 +17,7 @@ export { default as IconWidget } from './IconWidget'
 // Advanced Widgets (simplified for debugging)
 export { default as KanbanWidget } from './KanbanWidget'
 export { default as TimelineWidget } from './TimelineWidget'
+export { default as WikiWidget } from './WikiWidget'
 
 // Widget type definitions
 export interface BaseWidgetProps {
