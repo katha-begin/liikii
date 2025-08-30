@@ -5353,66 +5353,24 @@ code {
 }
 
 .user-menu-trigger {
-  padding: 4px var(--space-3) !important;
-  border-radius: var(--radius-input) !important;
-  background: transparent !important;
-  border: none !important;
-  transition: all 0.2s ease !important;
-  min-width: 0;
-  max-width: 220px;
-  height: 48px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-input);
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .user-menu-trigger:hover {
-  background: var(--bg-surface-2) !important;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-width: 0;
-  overflow: hidden;
-}
-
-/* Remove avatar border for clean header appearance */
-.user-menu-trigger .avatar {
-  border: none !important;
-}
-
-.user-details {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  min-width: 0;
-  flex: 1;
-  overflow: hidden;
-}
-
-.user-name {
-  font-size: var(--text-caption);
-  font-weight: 500;
+  background-color: var(--bg-surface-2);
   color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100px;
-  line-height: 1.2;
 }
 
-.user-project {
-  font-size: 10px;
-  color: var(--text-secondary);
-  font-weight: 400;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100px;
-  line-height: 1.2;
-}
+/* Clean avatar-only user menu */
 
 .chevron {
   transition: transform 0.2s ease;
@@ -5515,50 +5473,4 @@ code {
   color: var(--semantic-danger);
 }
 
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-  .user-name {
-    max-width: 80px;
-  }
-
-  .user-project {
-    max-width: 80px;
-  }
-}
-
-@media (max-width: 768px) {
-  .user-details {
-    display: none;
-  }
-
-  .user-menu-trigger {
-    padding: 4px !important;
-    min-width: 48px;
-    max-width: 48px;
-    height: 48px;
-    justify-content: center;
-  }
-
-  .user-info {
-    gap: 0;
-    justify-content: center;
-  }
-
-  .chevron {
-    display: none;
-  }
-}
-
-@media (max-width: 480px) {
-  .header-right {
-    gap: var(--space-1);
-  }
-
-  .user-menu-trigger {
-    padding: 4px !important;
-    min-width: 48px;
-    max-width: 48px;
-    height: 48px;
-    justify-content: center;
-  }
-}
+/* User menu is now consistent across all screen sizes */

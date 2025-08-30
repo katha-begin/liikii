@@ -74,20 +74,13 @@ const Header: React.FC<HeaderProps> = ({ isMobile, onToggleSidebar }) => {
             onClick={() => setUserMenuOpen(!userMenuOpen)}
             title="User menu"
           >
-            <div className="user-info">
-              <Avatar
-                src={state.user?.profile.avatarUrl}
-                alt={state.user?.displayName}
-                fallback={state.user?.displayName || 'User'}
-                size="md"
-                variant="circle"
-              />
-              <div className="user-details">
-                <span className="user-name">{state.user?.displayName}</span>
-                <span className="user-project">{state.user?.projectId}</span>
-              </div>
-              <ChevronDown size={14} className={`chevron ${userMenuOpen ? 'open' : ''}`} />
-            </div>
+            <Avatar
+              src={state.user?.profile.avatarUrl}
+              alt={state.user?.displayName}
+              fallback={state.user?.displayName || 'User'}
+              size="xs"
+              variant="circle"
+            />
           </button>
 
           {userMenuOpen && (
