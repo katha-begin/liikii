@@ -44,9 +44,9 @@ const TableEditor: React.FC<TableEditorProps> = ({
   const [editingCell, setEditingCell] = useState<TablePosition | null>(null)
   const [contextMenu, setContextMenu] = useState<ContextMenu>({ show: false, x: 0, y: 0, type: 'row', index: 0 })
   const [cellValues, setCellValues] = useState<Record<string, string>>({})
-  
+
   const tableRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRefs = useRef<Record<string, HTMLInputElement | null>>({})
 
   // Initialize cell values from table data
   useEffect(() => {
@@ -61,9 +61,13 @@ const TableEditor: React.FC<TableEditorProps> = ({
 
   // Focus input when editing starts
   useEffect(() => {
-    if (editingCell && inputRef.current) {
-      inputRef.current.focus()
-      inputRef.current.select()
+    if (editingCell) {
+      const key = `${editingCell.rowIndex}-${editingCell.colIndex}`
+      const inputRef = inputRefs.current[key]
+      if (inputRef) {
+        inputRef.focus()
+        inputRef.select()
+      }
     }
   }, [editingCell])
 
@@ -307,7 +311,10 @@ const TableEditor: React.FC<TableEditorProps> = ({
                   >
                     {isEditing ? (
                       <input
-                        ref={inputRef}
+                        ref={(el) => {
+                          const key = `${rowIndex}-${colIndex}`
+                          inputRefs.current[key] = el
+                        }}
                         type="text"
                         value={cellValue}
                         onChange={(e) => handleCellChange(e.target.value)}

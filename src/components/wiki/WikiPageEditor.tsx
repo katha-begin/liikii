@@ -134,6 +134,69 @@ const WikiPageEditor: React.FC<WikiPageEditorProps> = ({
     setEditingTable(null)
   }
 
+  // Detect tables in content for editing
+  const detectTableAtCursor = () => {
+    if (!textareaRef.current) return null
+
+    const textarea = textareaRef.current
+    const cursorPos = textarea.selectionStart
+    const lines = content.split('\n')
+
+    let currentLine = 0
+    let charCount = 0
+
+    // Find which line the cursor is on
+    for (let i = 0; i < lines.length; i++) {
+      if (charCount + lines[i].length >= cursorPos) {
+        currentLine = i
+        break
+      }
+      charCount += lines[i].length + 1 // +1 for newline
+    }
+
+    // Check if current line or nearby lines contain table syntax
+    const tablePattern = /^\s*\|.*\|\s*$/
+    const separatorPattern = /^\s*\|[\s\-\|]*\|\s*$/
+
+    let tableStart = -1
+    let tableEnd = -1
+
+    // Find table boundaries
+    for (let i = currentLine; i >= 0; i--) {
+      if (tablePattern.test(lines[i]) || separatorPattern.test(lines[i])) {
+        tableStart = i
+      } else if (tableStart !== -1) {
+        break
+      }
+    }
+
+    if (tableStart !== -1) {
+      for (let i = tableStart; i < lines.length; i++) {
+        if (tablePattern.test(lines[i]) || separatorPattern.test(lines[i])) {
+          tableEnd = i
+        } else {
+          break
+        }
+      }
+    }
+
+    if (tableStart !== -1 && tableEnd !== -1) {
+      const tableLines = lines.slice(tableStart, tableEnd + 1)
+      return tableLines.join('\n')
+    }
+
+    return null
+  }
+
+  const handleEditTableAtCursor = () => {
+    const tableMarkdown = detectTableAtCursor()
+    if (tableMarkdown) {
+      handleEditTable(tableMarkdown)
+    } else {
+      alert('No table found at cursor position. Place your cursor inside a table to edit it.')
+    }
+  }
+
   const sampleContent = `# ${title || 'Wiki Page Title'}
 
 ## User Stories
@@ -354,6 +417,26 @@ Additional notes, references, or considerations for this ${currentHierarchy.topi
           >
             <Table size={14} style={{ marginRight: 'var(--space-2)' }} />
             Insert Table
+          </button>
+          <button
+            onClick={() => {
+              handleEditTableAtCursor()
+              setContextMenu({ show: false, x: 0, y: 0 })
+            }}
+            style={{
+              width: '100%',
+              padding: 'var(--space-2) var(--space-3)',
+              textAlign: 'left',
+              border: 'none',
+              backgroundColor: 'transparent',
+              cursor: 'pointer',
+              fontSize: '0.875rem',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
+            <Edit size={14} style={{ marginRight: 'var(--space-2)' }} />
+            Edit Table
           </button>
         </div>
       )}
