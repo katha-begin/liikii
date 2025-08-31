@@ -1416,6 +1416,21 @@ html, body {
 .stack--justify-between { justify-content: space-between; }
 .stack--justify-around { justify-content: space-around; }
 
+/* Context menu styles */
+.context-menu-item:hover {
+  background-color: var(--bg-surface-2);
+}
+
+/* Table editor styles */
+.table-editor-cell:hover {
+  background-color: var(--bg-surface-2);
+}
+
+.table-editor-cell.editing {
+  background-color: var(--bg-surface);
+  border: 2px solid var(--border-accent);
+}
+
 /* Responsive Utilities */
 .hidden { display: none; }
 .block { display: block; }

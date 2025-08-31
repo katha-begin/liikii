@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Button, Input, Card } from '@/components/ui'
 import MarkdownRenderer from '@/components/ui/MarkdownRenderer'
+import TableInsertModal from './TableInsertModal'
+import TableEditor from './TableEditor'
 import { WikiPage } from '@/types/wiki'
 import { Stack } from '@/components/layout'
-import { Eye, Edit, Save, X } from 'lucide-react'
+import { Eye, Edit, Save, X, Table, MoreVertical } from 'lucide-react'
+import { parseMarkdownTable } from '@/utils/tableEditor'
 
 export interface WikiPageEditorProps {
   page?: WikiPage
@@ -25,6 +28,11 @@ const WikiPageEditor: React.FC<WikiPageEditorProps> = ({
   const [tags, setTags] = useState(page?.tags?.join(', ') || '')
   const [isPreview, setIsPreview] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
+  const [showTableModal, setShowTableModal] = useState(false)
+  const [editingTable, setEditingTable] = useState<any>(null)
+  const [contextMenu, setContextMenu] = useState<{ show: boolean; x: number; y: number }>({ show: false, x: 0, y: 0 })
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   const currentHierarchy = page?.hierarchy || hierarchy || {
     department: '',
@@ -39,6 +47,18 @@ const WikiPageEditor: React.FC<WikiPageEditorProps> = ({
       setTags(page.tags.join(', '))
     }
   }, [page])
+
+  // Close context menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => {
+      if (contextMenu.show) {
+        setContextMenu({ show: false, x: 0, y: 0 })
+      }
+    }
+
+    document.addEventListener('click', handleClickOutside)
+    return () => document.removeEventListener('click', handleClickOutside)
+  }, [contextMenu.show])
 
   const handleSave = async () => {
     if (!title.trim()) {
@@ -67,6 +87,51 @@ const WikiPageEditor: React.FC<WikiPageEditorProps> = ({
     } finally {
       setIsSaving(false)
     }
+  }
+
+  const handleTextareaRightClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    setContextMenu({
+      show: true,
+      x: e.clientX,
+      y: e.clientY
+    })
+  }
+
+  const handleInsertTable = (markdown: string) => {
+    if (textareaRef.current) {
+      const textarea = textareaRef.current
+      const start = textarea.selectionStart
+      const end = textarea.selectionEnd
+      const newContent = content.substring(0, start) + '\n\n' + markdown + '\n\n' + content.substring(end)
+      setContent(newContent)
+
+      // Focus back to textarea
+      setTimeout(() => {
+        textarea.focus()
+        const newPosition = start + markdown.length + 4
+        textarea.setSelectionRange(newPosition, newPosition)
+      }, 0)
+    }
+  }
+
+  const handleEditTable = (tableMarkdown: string) => {
+    const table = parseMarkdownTable(tableMarkdown)
+    if (table) {
+      setEditingTable({ table, originalMarkdown: tableMarkdown })
+    }
+  }
+
+  const handleTableSave = (newMarkdown: string) => {
+    if (editingTable) {
+      const updatedContent = content.replace(editingTable.originalMarkdown, newMarkdown)
+      setContent(updatedContent)
+      setEditingTable(null)
+    }
+  }
+
+  const handleTableCancel = () => {
+    setEditingTable(null)
   }
 
   const sampleContent = `# ${title || 'Wiki Page Title'}
@@ -135,6 +200,17 @@ Additional notes, references, or considerations for this ${currentHierarchy.topi
             </p>
           </div>
           <Stack direction="horizontal" gap="sm">
+            {!isPreview && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowTableModal(true)}
+                title="Insert Table"
+              >
+                <Table size={14} />
+                Table
+              </Button>
+            )}
             <Button
               variant="secondary"
               size="sm"
@@ -212,9 +288,11 @@ Additional notes, references, or considerations for this ${currentHierarchy.topi
                 )}
               </div>
               <textarea
+                ref={textareaRef}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                placeholder="Enter your content in markdown format..."
+                onContextMenu={handleTextareaRightClick}
+                placeholder="Enter your content in markdown format... (Right-click for table options)"
                 style={{
                   width: '100%',
                   minHeight: '400px',
@@ -241,6 +319,82 @@ Additional notes, references, or considerations for this ${currentHierarchy.topi
           </Card>
         )}
       </div>
+
+      {/* Context Menu */}
+      {contextMenu.show && (
+        <div
+          style={{
+            position: 'fixed',
+            top: contextMenu.y,
+            left: contextMenu.x,
+            backgroundColor: 'var(--bg-surface)',
+            border: '1px solid var(--border-primary)',
+            borderRadius: 'var(--radius-sm)',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+            zIndex: 1000,
+            minWidth: '160px'
+          }}
+        >
+          <button
+            onClick={() => {
+              setShowTableModal(true)
+              setContextMenu({ show: false, x: 0, y: 0 })
+            }}
+            style={{
+              width: '100%',
+              padding: 'var(--space-2) var(--space-3)',
+              textAlign: 'left',
+              border: 'none',
+              backgroundColor: 'transparent',
+              cursor: 'pointer',
+              fontSize: '0.875rem',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
+            <Table size={14} style={{ marginRight: 'var(--space-2)' }} />
+            Insert Table
+          </button>
+        </div>
+      )}
+
+      {/* Table Insert Modal */}
+      <TableInsertModal
+        isOpen={showTableModal}
+        onClose={() => setShowTableModal(false)}
+        onInsert={handleInsertTable}
+      />
+
+      {/* Table Editor */}
+      {editingTable && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          zIndex: 2000,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 'var(--space-4)'
+        }}>
+          <div style={{
+            backgroundColor: 'var(--bg-surface)',
+            borderRadius: 'var(--radius-lg)',
+            maxWidth: '90vw',
+            maxHeight: '90vh',
+            overflow: 'auto'
+          }}>
+            <TableEditor
+              table={editingTable.table}
+              onSave={handleTableSave}
+              onCancel={handleTableCancel}
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

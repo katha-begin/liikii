@@ -17,6 +17,7 @@ This document describes the implementation of the project-scoped wiki system for
 
 ### Enhanced Features (Latest Update)
 - ✅ **Table Support**: Full markdown table syntax with design system styling
+- ✅ **Interactive Table Editor**: Visual table creation and editing interface
 - ✅ **Internal Linking**: Link to wiki pages, tasks, shots, sequences, and episodes
 - ✅ **Optimized Layout**: Reduced navigation sidebar width (300px → 240px)
 - ✅ **Enhanced Templates**: Sample content includes tables and internal links
@@ -59,6 +60,20 @@ Template system integration widget.
 - Seamless integration with existing widget patterns
 - Project-scoped functionality
 
+#### 6. TableInsertModal (`src/components/wiki/TableInsertModal.tsx`)
+Interactive table creation modal.
+- Visual table size selection with preview
+- Quick size presets for common table dimensions
+- Input validation and user-friendly interface
+- Automatic markdown generation
+
+#### 7. TableEditor (`src/components/wiki/TableEditor.tsx`)
+Visual table editing interface.
+- Spreadsheet-like editing experience
+- Click-to-edit cells with keyboard navigation
+- Context menus for row/column manipulation
+- Real-time table structure updates
+
 ## File Structure
 
 ```
@@ -78,7 +93,8 @@ src/
 ├── types/
 │   └── wiki.ts                           # TypeScript interfaces
 ├── utils/
-│   └── linkResolver.ts                   # Internal link processing utilities
+│   ├── linkResolver.ts                   # Internal link processing utilities
+│   └── tableEditor.ts                    # Table editing utilities and data structures
 └── pages/
     └── WikiDemo.tsx                      # Enhanced design system demo page
 ```
