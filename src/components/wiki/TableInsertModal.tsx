@@ -57,8 +57,8 @@ const TableInsertModal: React.FC<TableInsertModalProps> = ({
 
   return (
     <Modal
-      isOpen={isOpen}
-      onClose={handleCancel}
+      open={isOpen}
+      onOpenChange={(open) => !open && handleCancel()}
       title="Insert Table"
       size="md"
     >
