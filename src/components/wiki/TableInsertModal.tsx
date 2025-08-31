@@ -100,18 +100,18 @@ const TableInsertModal: React.FC<TableInsertModalProps> = ({
             Preview
           </label>
           <div style={{
-            border: '1px solid var(--border-primary)',
+            border: '1px solid var(--border-line)',
             borderRadius: 'var(--radius-input)',
             padding: 'var(--space-3)',
-            backgroundColor: 'var(--bg-surface)',
+            backgroundColor: 'var(--bg-surface-1)',
             overflow: 'auto'
           }}>
             <div style={{
               display: 'grid',
               gridTemplateColumns: `repeat(${Math.min(cols, 8)}, 1fr)`,
               gap: '1px',
-              backgroundColor: 'var(--border-primary)',
-              border: '1px solid var(--border-primary)',
+              backgroundColor: 'var(--border-line)',
+              border: '1px solid var(--border-line)',
               borderRadius: 'var(--radius-sm)',
               overflow: 'hidden',
               minWidth: 'fit-content'
@@ -121,7 +121,7 @@ const TableInsertModal: React.FC<TableInsertModalProps> = ({
                   <div
                     key={`${rowIndex}-${colIndex}`}
                     style={{
-                      backgroundColor: cell.isHeader ? 'var(--bg-surface-2)' : 'var(--bg-surface)',
+                      backgroundColor: cell.isHeader ? 'var(--bg-surface-2)' : 'var(--bg-surface-1)',
                       padding: 'var(--space-1) var(--space-2)',
                       minHeight: '24px',
                       display: 'flex',

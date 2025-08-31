@@ -200,10 +200,10 @@ const TableEditor: React.FC<TableEditorProps> = ({
   }
 
   return (
-    <div style={{ 
-      border: '1px solid var(--border-primary)',
+    <div style={{
+      border: '1px solid var(--border-line)',
       borderRadius: 'var(--radius-input)',
-      backgroundColor: 'var(--bg-surface)',
+      backgroundColor: 'var(--bg-surface-1)',
       padding: 'var(--space-3)'
     }}>
       {/* Header */}
@@ -222,9 +222,9 @@ const TableEditor: React.FC<TableEditorProps> = ({
       </Stack>
 
       {/* Table Container */}
-      <div style={{ 
+      <div style={{
         overflowX: 'auto',
-        border: '1px solid var(--border-primary)',
+        border: '1px solid var(--border-line)',
         borderRadius: 'var(--radius-sm)'
       }}>
         <div ref={tableRef} style={{ minWidth: 'fit-content' }}>
@@ -233,7 +233,7 @@ const TableEditor: React.FC<TableEditorProps> = ({
             display: 'grid',
             gridTemplateColumns: `40px repeat(${currentTable.rows[0]?.cells.length || 0}, minmax(120px, 1fr))`,
             backgroundColor: 'var(--bg-surface-2)',
-            borderBottom: '1px solid var(--border-primary)'
+            borderBottom: '1px solid var(--border-line)'
           }}>
             <div style={{ padding: 'var(--space-1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <MoreVertical size={12} style={{ color: 'var(--text-secondary)' }} />
@@ -246,7 +246,7 @@ const TableEditor: React.FC<TableEditorProps> = ({
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  borderLeft: '1px solid var(--border-primary)',
+                  borderLeft: '1px solid var(--border-line)',
                   cursor: 'context-menu',
                   fontSize: '0.75rem',
                   fontWeight: '600',
@@ -267,7 +267,7 @@ const TableEditor: React.FC<TableEditorProps> = ({
               style={{
                 display: 'grid',
                 gridTemplateColumns: `40px repeat(${row.cells.length}, minmax(120px, 1fr))`,
-                borderBottom: rowIndex < currentTable.rows.length - 1 ? '1px solid var(--border-primary)' : 'none'
+                borderBottom: rowIndex < currentTable.rows.length - 1 ? '1px solid var(--border-line)' : 'none'
               }}
             >
               {/* Row Header */}
@@ -278,7 +278,7 @@ const TableEditor: React.FC<TableEditorProps> = ({
                   alignItems: 'center',
                   justifyContent: 'center',
                   backgroundColor: 'var(--bg-surface-2)',
-                  borderRight: '1px solid var(--border-primary)',
+                  borderRight: '1px solid var(--border-line)',
                   cursor: 'context-menu',
                   fontSize: '0.75rem',
                   fontWeight: '600',
@@ -300,8 +300,8 @@ const TableEditor: React.FC<TableEditorProps> = ({
                   <div
                     key={cell.id}
                     style={{
-                      borderLeft: '1px solid var(--border-primary)',
-                      backgroundColor: isHeader ? 'var(--bg-surface-2)' : 'var(--bg-surface)',
+                      borderLeft: '1px solid var(--border-line)',
+                      backgroundColor: isHeader ? 'var(--bg-surface-2)' : 'var(--bg-surface-1)',
                       position: 'relative'
                     }}
                   >
@@ -316,9 +316,9 @@ const TableEditor: React.FC<TableEditorProps> = ({
                         style={{
                           width: '100%',
                           padding: 'var(--space-2)',
-                          border: '2px solid var(--border-accent)',
+                          border: '2px solid var(--accent-blue)',
                           borderRadius: '0',
-                          backgroundColor: 'var(--bg-surface)',
+                          backgroundColor: 'var(--bg-surface-1)',
                           fontSize: '0.875rem',
                           fontWeight: isHeader ? '600' : '400'
                         }}
@@ -358,8 +358,8 @@ const TableEditor: React.FC<TableEditorProps> = ({
             position: 'fixed',
             top: contextMenu.y,
             left: contextMenu.x,
-            backgroundColor: 'var(--bg-surface)',
-            border: '1px solid var(--border-primary)',
+            backgroundColor: 'var(--bg-surface-1)',
+            border: '1px solid var(--border-line)',
             borderRadius: 'var(--radius-sm)',
             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
             zIndex: 1000,

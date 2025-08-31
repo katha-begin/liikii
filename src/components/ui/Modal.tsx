@@ -62,7 +62,8 @@ const Modal: React.FC<ModalProps> = ({
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'rgba(0, 0, 0, 0.75)',
+        backdropFilter: 'blur(4px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -77,12 +78,15 @@ const Modal: React.FC<ModalProps> = ({
     >
       <div
         style={{
-          backgroundColor: 'var(--bg-surface)',
-          borderRadius: 'var(--radius-lg)',
-          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+          backgroundColor: 'var(--bg-surface-1)',
+          borderRadius: 'var(--radius-card)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+          border: '1px solid var(--border-line)',
           width: '100%',
           maxHeight: '90vh',
           overflow: 'auto',
+          position: 'relative',
+          zIndex: 1001,
           ...sizeStyles[size]
         }}
         onClick={(e) => e.stopPropagation()}
@@ -92,7 +96,7 @@ const Modal: React.FC<ModalProps> = ({
           <div
             style={{
               padding: 'var(--space-4) var(--space-4) var(--space-3) var(--space-4)',
-              borderBottom: '1px solid var(--border-primary)',
+              borderBottom: '1px solid var(--border-line)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between'

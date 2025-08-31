@@ -1427,8 +1427,8 @@ html, body {
 }
 
 .table-editor-cell.editing {
-  background-color: var(--bg-surface);
-  border: 2px solid var(--border-accent);
+  background-color: var(--bg-surface-1);
+  border: 2px solid var(--accent-blue);
 }
 
 /* Responsive Utilities */
