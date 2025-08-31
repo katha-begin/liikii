@@ -17,7 +17,6 @@ import {
 import { PageWrapper, Grid, Stack, ScrollToTop } from '@/components/layout'
 import { KanbanWidget, TimelineWidget } from '@/components/widgets'
 import { IconLibrary } from '@/systems/IconLibrary'
-import TableEditorTest from '@/components/wiki/TableEditorTest'
 
 const DesignSystemDemo: React.FC = () => {
   const navigate = useNavigate()
@@ -711,19 +710,6 @@ const DesignSystemDemo: React.FC = () => {
                   </div>
                 </div>
               </Stack>
-            </Stack>
-          </Card>
-
-          {/* Table Editor Test */}
-          <Card variant="outlined" padding="lg">
-            <Stack direction="vertical" gap="lg">
-              <div>
-                <h2 className="text-h2">Table Editor Test</h2>
-                <p className="text-body text-secondary">
-                  Test the interactive table editor functionality.
-                </p>
-              </div>
-              <TableEditorTest />
             </Stack>
           </Card>
 
