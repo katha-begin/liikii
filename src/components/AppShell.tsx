@@ -17,6 +17,7 @@ import MyTasksPage from '@/pages/MyTasksPage'
 import DesignSystemDemo from '@/pages/DesignSystemDemo'
 import TimelineDemo from '@/pages/TimelineDemo'
 import TemplateSystemDemo from '@/pages/TemplateSystemDemo'
+import WikiDemo from '@/pages/WikiDemo'
 import ProjectDetailsPage from '@/pages/ProjectDetailsPage'
 
 const AppShell: React.FC = () => {
@@ -87,6 +88,7 @@ const AppShell: React.FC = () => {
                             <Route path="/views" element={<div>Views Page - Coming Soon</div>} />
                             <Route path="/design-system" element={<DesignSystemDemo />} />
                             <Route path="/design-system/timeline" element={<TimelineDemo />} />
+                            <Route path="/design-system/wiki" element={<WikiDemo />} />
                             <Route path="/templates" element={<TemplateSystemDemo />} />
                           </Routes>
                         </main>
